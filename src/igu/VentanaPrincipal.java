@@ -30,8 +30,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
-
+import java.io.PrintWriter;
 import java.awt.Font;
 import net.miginfocom.swing.MigLayout;
 import java.awt.GridBagLayout;
@@ -108,6 +109,7 @@ public class VentanaPrincipal {
 		private boolean sinFallosFormato = true;
 		private boolean sinFallosDni = true;
 		private boolean sinFallosNombreCarrera = true;
+		private boolean sinFallosEstructura = true;
 		private GestorComprobaciones gc = new GestorComprobaciones();	
 		private JButton btnRegistrarTiempos;
 		
@@ -410,7 +412,7 @@ public class VentanaPrincipal {
 			if (tablaResultados == null) {
 				MyTableModel model = new MyTableModel();
 				model.addColumn("DNI");
-				model.addColumn("PosiciÛn");
+				model.addColumn("Posici√≥n");
 				model.addColumn("Sexo");	
 				model.addColumn("Dorsal");
 				model.addColumn("Nombre");
@@ -480,7 +482,7 @@ public class VentanaPrincipal {
 							
 							int contadorPosM = 1;	//contador para las posiciones masculinas
 							int contadorPosF = 1;	//contador para las posiciones femeninas
-							for(int i = 0; i<atletasConTiempo.size(); i++){	//A—ADIMOS PRIMERO LOS QUE TIENEN TIEMPO
+							for(int i = 0; i<atletasConTiempo.size(); i++){	//A√ëADIMOS PRIMERO LOS QUE TIENEN TIEMPO
 								
 								if(atletasConTiempo.get(i).getSexo().equals(m)) {
 									Object[] temp = {atletasConTiempo.get(i).getDni() ,contadorPosM, atletasConTiempo.get(i).getSexo(), 
@@ -599,7 +601,7 @@ public class VentanaPrincipal {
 		
 		
 		/*
-		 * A PARTIR DE AQUI TODO LO RELACIONADO CON EL TÕTULO: "RESULTADOS" Y LAS COLUMNAS DE LA JTABLE 
+		 * A PARTIR DE AQUI TODO LO RELACIONADO CON EL T√çTULO: "RESULTADOS" Y LAS COLUMNAS DE LA JTABLE 
 		 */
 			
 		
@@ -867,15 +869,15 @@ public class VentanaPrincipal {
 				public void actionPerformed(ActionEvent arg0) {
 					try {
 						cargaContenido(archivo);
-						if(sinFallosFormato && sinFallosDni && sinFallosNombreCarrera) {
-							JOptionPane.showMessageDialog(null, "OperaciÛn realizada con Èxito.");
+						if(sinFallosFormato && sinFallosDni && sinFallosNombreCarrera && sinFallosEstructura) {
+							JOptionPane.showMessageDialog(null, "Operaci√≥n realizada con √©xito.");
 							btnCargar.setEnabled(false);
 							archivo = null;
-							lblCarreraElegida.setText("Carrera elegida:");
 						}
 						sinFallosFormato = true;
 						sinFallosDni = true;
 						sinFallosNombreCarrera = true;
+						sinFallosEstructura = true;
 					} catch (FileNotFoundException e) {
 						e.printStackTrace();
 					} catch (IOException e) {
@@ -913,68 +915,120 @@ public class VentanaPrincipal {
 	
 	//METODO QUE CARGA EL CONTENIDO EN LA BBDD, SI ALGUN DATO ESTA MAL NO LO CARGA, NO IMPLICA QUE NO CARGUE LA TOTALIDAD DEL FICHERO, SOLO AQUELLOS DATOS QUE TENGAN EL FORMATO CORRECTO
 	void cargaContenido(File archivo) throws FileNotFoundException, IOException, SQLException {
-	      boolean errorFormato = false;
-	      boolean errorPresencia = false;
-	      boolean errorNombreCarrera = false;
-	      
-	      String carrera = archivo.getName();
-	      String nombreCarrera = obtenNombreCarrera(carrera);
-	      
-	      if(!gc.comprobadorCarrera(nombreCarrera)) {
-	    	  errorNombreCarrera = true;
-	      }
-	      
-	      
-		  String cadena;							//ESTRUCTURA DEL FICHERO: TIEMPO DNI
-	      FileReader f = new FileReader(archivo);
-	      BufferedReader b = new BufferedReader(f);
-	      
-	      while((cadena = b.readLine())!=null) {
-	          String[] partes = cadena.split(" ");	//dividimos las partes
-	          if(partes.length==2) {
-	        	  if(partes[0].equals("---")) {     	//sin tiempo?
-	        		  DataBaseManager.aÒadirTiempoAtleta(nombreCarrera, partes[0], partes[1]);						//buscamos su dni en la bbdd y le asignamos su tiempo null
-	        	  }
-	        	  else {								//con tiempo?
-	        		  if(gc.comprobadorTiempos(partes[0])) { //si el tiempo es valido buscamos su dni en la bbdd y le asignamos su tiempo
-	        			  DataBaseManager.aÒadirTiempoAtleta(nombreCarrera, partes[0], partes[1]);
-	        		  }
-	        		  else {
-	        			  errorFormato = true;
-	        		  }
-	        	  }
-	          	//Lo que conseguimos asÌ es que aÒada los corredores cuyo formato es correcto, los que tengan un formato incorrecto han de ser revisados por el cliente
-	          
-	          	//Vamos a comprobar tambien que el corredor estÈ en la carrera, si no est· lo daremos a conocer:
-	          	if(!gc.comprobadorPresencia(partes[1],nombreCarrera)) {
-	          		errorPresencia = true;
-	          	}
-	          }
-	          else {
-	        	 errorFormato = true; 
-	          }
-	      }
-	      if(errorNombreCarrera) {
-	    	  JOptionPane.showMessageDialog(null, "La carrera referente al nombre del fichero no existe en la base de datos.");
-        	  sinFallosNombreCarrera = false;
-	      }
-	      else {
-	    	  if(errorFormato) {
-	    		  JOptionPane.showMessageDialog(null, "Algunos tiempos no han sido aÒadidos a la base de datos. Por favor, compruebe el fichero de tiempos.");
-	    		  sinFallosFormato=false;
-	    	  }
-	    	  if(errorPresencia) {
-	    		  JOptionPane.showMessageDialog(null, "Alguno de los corredores del fichero no se encuentra en Èsta carrera, por tanto no ha sido aÒadido.");
-	    		  sinFallosDni = false;
-	    	  }
-	      }
-	      
-	      b.close();
+      boolean errorFormato = false;
+      boolean errorPresencia = false;
+      boolean errorNombreCarrera = false;
+      boolean errorEstructura = false;
+      ArrayList<String> datosIncorrectos = new ArrayList<String>();
+      String falloTiempo = "   El formato de tiempo es incorrecto";
+      String falloDNI = "   El corredor no est√° en la base de datos";
+      
+      String carrera = archivo.getName();
+      String nombreCarrera = obtenNombreCarrera(carrera);
+      
+      if(!gc.comprobadorCarrera(nombreCarrera)) {
+    	  errorNombreCarrera = true;
+      }
+      
+      
+	  String cadena;							//ESTRUCTURA DEL FICHERO: TIEMPO DNI
+      FileReader f = new FileReader(archivo);
+      BufferedReader b = new BufferedReader(f);
+      
+      while((cadena = b.readLine())!=null) {
+          boolean comprobadorTiempo = false;
+          boolean comprobadorDNI = false;
+          String[] partes = cadena.split(" ");	//dividimos las partes
+          if(partes.length==2) {
+        	  if(partes[0].equals("---")) {     	//sin tiempo?
+        		  DataBaseManager.a√±adirTiempoAtleta(nombreCarrera, partes[0], partes[1]);						//buscamos su dni en la bbdd y le asignamos su tiempo null
+        	  }
+        	  else {								//con tiempo?
+        		  if(gc.comprobadorTiempos(partes[0])) { //si el tiempo es valido buscamos su dni en la bbdd y le asignamos su tiempo
+        			  DataBaseManager.a√±adirTiempoAtleta(nombreCarrera, partes[0], partes[1]);
+        		  }
+        		  else {
+        			  comprobadorTiempo = true;        			  
+        			  errorFormato = true;
+        		  }
+        	  }
+          	//Lo que conseguimos as√≠ es que a√±ada los corredores cuyo formato es correcto, los que tengan un formato incorrecto han de ser revisados por el cliente
+          
+          	//Vamos a comprobar tambien que el corredor est√© en la carrera, si no est√° lo daremos a conocer:
+          	if(!gc.comprobadorPresencia(partes[1],nombreCarrera)) {
+  			  	comprobadorDNI = true;
+          		errorPresencia = true;
+          	}
+          }
+          else {
+        	 //aqui no hace falta que a√±ada datos incorrectos, si la estructura del fichero esta mal no debe a√±adir cada linea al fichero de salida
+        	 errorEstructura = true; 
+          }      	  
+          if((comprobadorTiempo&&!comprobadorDNI)||(!comprobadorTiempo&&comprobadorDNI)) { 
+        	  if(comprobadorTiempo) 
+        		  datosIncorrectos.add(cadena + "   El formato de tiempo es incorrecto");
+        	  else if(comprobadorDNI)
+        		  datosIncorrectos.add(cadena + "   El corredor no est√° en la base de datos");
+          }
+		  else if(comprobadorTiempo&&comprobadorDNI) {
+			  datosIncorrectos.add(cadena + "   El corredor no est√° en la base de datos y el formato de tiempo es incorrecto");
+		  }
+          
+      }
+      if(errorNombreCarrera) {
+    	  JOptionPane.showMessageDialog(null, "La carrera referente al nombre del fichero no existe en la base de datos.");
+    	  sinFallosNombreCarrera = false;
+      }
+      else {
+    	  if(errorFormato) {
+    		  JOptionPane.showMessageDialog(null, "Algunos tiempos no han sido a√±adidos a la base de datos. Por favor, compruebe el fichero de tiempos.");
+    		  sinFallosFormato=false;
+    	  }
+    	  if(errorPresencia) {
+    		  JOptionPane.showMessageDialog(null, "Alguno de los corredores del fichero no se encuentra en √©sta carrera, por tanto no ha sido a√±adido.");
+    		  sinFallosDni = false;
+    	  }
+    	  if(errorEstructura) {
+    		  JOptionPane.showMessageDialog(null, "Los datos del fichero poseen una estructura incorrecta.");
+    		  sinFallosEstructura = false;
+    	  }
+      }   
+      b.close();
+      generaFicheroFallos(datosIncorrectos, nombreCarrera);
+      lblCarreraElegida.setText("Carrera elegida:");
 	}
 
 	private String obtenNombreCarrera(String carrera) {
-		int caracteresBorrar = 4; //la extension .txt
-		return carrera.substring(0, carrera.length()-caracteresBorrar);
+	int caracteresBorrar = 4; //la extension .txt
+	return carrera.substring(0, carrera.length()-caracteresBorrar);
+	}
+
+	private void generaFicheroFallos(ArrayList<String> datos, String nombreCarrera) {
+	 int idFallo = (int) (Math.random()*9999999 + 10000);
+	 FileWriter fichero = null;
+     PrintWriter pw = null;
+     if(datos.size()>0) {
+    	 try
+    	 {
+    		 fichero = new FileWriter("./Fallo_"+idFallo+"_"+nombreCarrera+".txt");
+    		 pw = new PrintWriter(fichero);
+    		 pw.println("El fichero de la carrera " + nombreCarrera + " contiene datos que no se han podido introducir.");
+    		 pw.println("Datos que no han podido ser introducidos en la base de datos:");
+    		 for (int i = 0; i < datos.size(); i++)
+    			 pw.println("    "+datos.get(i));
+    	 } catch (Exception e) {
+    		 e.printStackTrace();
+    	 } finally {
+    		 try {
+    			 // Nuevamente aprovechamos el finally para 
+    			 // asegurarnos que se cierra el fichero.
+    			 if (null != fichero)
+    				 fichero.close();
+    		 } catch (Exception e2) {
+    			 e2.printStackTrace();
+    		 }
+    	 }
+     }
 	}
 	private JButton getBtnAsignarDorsales() {
 		if (btnAsignarDorsales == null) {
@@ -1013,7 +1067,7 @@ public class VentanaPrincipal {
 			modelAtletas.addColumn("DNI");
 			modelAtletas.addColumn("Nombre");
 			modelAtletas.addColumn("Sexo");
-			modelAtletas.addColumn("Fecha de inscripciÛn");
+			modelAtletas.addColumn("Fecha de inscripci√≥n");
 			modelAtletas.addColumn("Estado");
 			modelAtletas.addColumn("Dorsal");
 			tableAtletas = new JTable(modelAtletas);
@@ -1031,7 +1085,7 @@ public class VentanaPrincipal {
 					carreraSeleccionada = txtfldCarrera1.getText();
 					lblCarreraSeleccionada.setText(carreraSeleccionada + " seleccionada");
 					removeModelContent(modelAtletas);
-					String[] cabeceras = { "DNI", "Nombre", "Sexo", "Fecha de InscripciÛn", "Estado", "Dorsal" };
+					String[] cabeceras = { "DNI", "Nombre", "Sexo", "Fecha de Inscripci√≥n", "Estado", "Dorsal" };
 					modelAtletas.addRow(cabeceras);
 					for (String[] a : atletas) {
 						if(a[5] == null)
@@ -1138,8 +1192,8 @@ public class VentanaPrincipal {
 								{
 									int siguienteDorsal = DataBaseManager.getSiguienteDorsalDisponible(carrera);
 									dorsal  = ""+siguienteDorsal;
-									DataBaseManager.aÒadirDorsalCorredor(dni, carrera, dorsal);
-									JOptionPane.showMessageDialog(null, "Dorsal "+dorsal+" aÒadido al corredor "+dni+" para la carrera "+carrera);
+									DataBaseManager.a√±adirDorsalCorredor(dni, carrera, dorsal);
+									JOptionPane.showMessageDialog(null, "Dorsal "+dorsal+" a√±adido al corredor "+dni+" para la carrera "+carrera);
 								} 
 								catch (SQLException e1) {
 									JOptionPane.showMessageDialog(null, "No se han podido realizar los cambios!");
@@ -1148,7 +1202,7 @@ public class VentanaPrincipal {
 								
 							}
 							else
-								JOptionPane.showMessageDialog(null, "No puedes asignar dorsal a un corredor que a˙n no ha pagado.");
+								JOptionPane.showMessageDialog(null, "No puedes asignar dorsal a un corredor que a√∫n no ha pagado.");
 						}
 						else
 						{
@@ -1157,7 +1211,7 @@ public class VentanaPrincipal {
 					}
 					else
 					{
-						JOptionPane.showMessageDialog(null, "Para ejecutar esta opciÛn debe seleccionar el atleta al que quiere asignar un dorsal.");
+						JOptionPane.showMessageDialog(null, "Para ejecutar esta opci√≥n debe seleccionar el atleta al que quiere asignar un dorsal.");
 					}
 				}
 			});
