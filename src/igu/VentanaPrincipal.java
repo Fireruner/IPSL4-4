@@ -234,7 +234,7 @@ public class VentanaPrincipal {
 			btnActualizar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) 
 				{
-					actualizarTablaPagos((String)comboClasificacion.getSelectedItem());
+					actualizarTablaPagos((String)comboCarreras.getSelectedItem());
 				}
 			});
 			btnActualizar.setBounds(483, 134, 156, 23);
@@ -286,24 +286,27 @@ public class VentanaPrincipal {
 		    modelPagos.addRow(cabeceras);
 		    int rowCount = 0;
 		    
-		    for(String[] atleta : atletasSinPagar)
-			{
-		    	boolean coincide = false;
-		    	for(String[] fueraPlazo: atletasFueraDePlazo)
-		    	{
-		    		if(atleta[1].equals(fueraPlazo[0]) && atleta[2].equals(fueraPlazo[1]))
-		    		{
-		    				coincide = true;
-		    				break;
-		    		}
-		    	}
-		    	if(coincide)
-		    		atleta[3] = "Fuera de plazo";
-		    	
-			    modelPagos.addRow(atleta);
-		    	rowCount ++;
-		    	
-			}
+		    if(atletasSinPagar.size()>1)
+		    {
+			    for(String[] atleta : atletasSinPagar)
+				{
+			    	boolean coincide = false;
+			    	for(String[] fueraPlazo: atletasFueraDePlazo)
+			    	{
+			    		if(atleta[1].equals(fueraPlazo[0]) && atleta[2].equals(fueraPlazo[1]))
+			    		{
+			    				coincide = true;
+			    				break;
+			    		}
+			    	}
+			    	if(coincide)
+			    		atleta[3] = "Fuera de plazo";
+			    	
+				    modelPagos.addRow(atleta);
+			    	rowCount ++;
+			    	
+				}
+		    }
 		    
 		} catch (SQLException e1) 
 		{
@@ -461,6 +464,7 @@ public class VentanaPrincipal {
 						try{
 							MyTableModel model = (MyTableModel) tablaResultados.getModel();
 							participantes = DataBaseManager.getCorredores();
+								
 							
 							for(int i = 0; i<participantes.size();i++){
 								if(participantes.get(i)[5].equals(carrera)) {
@@ -530,7 +534,7 @@ public class VentanaPrincipal {
 									contadorPosF++;
 								}
 							}
-							
+
 							tablaResultados.setModel(model);
 						}
 						
@@ -1081,10 +1085,13 @@ public class VentanaPrincipal {
 					removeModelContent(modelAtletas);
 					String[] cabeceras = { "DNI", "Nombre", "Sexo", "Fecha de Inscripción", "Estado", "Dorsal" };
 					modelAtletas.addRow(cabeceras);
-					for (String[] a : atletas) {
-						if(a[5] == null)
-							a[5] = "No asignado";
-						modelAtletas.addRow(a);
+					if(atletas.size()>1)
+					{
+						for (String[] a : atletas) {
+							if(a[5] == null)
+								a[5] = "No asignado";
+							modelAtletas.addRow(a);
+						}
 					}
 					tableAtletas.setModel(modelAtletas);
 				}
