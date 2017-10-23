@@ -1,147 +1,106 @@
-/*C78*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C79*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C80*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C81*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C82*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C83*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C84*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C85*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C86*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C87*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C88*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C89*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C90*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C91*/SET SCHEMA PUBLIC
-DELETE FROM ATLETA WHERE DNI='71736779D' AND FK_CARRERA='San Silvestre'
-INSERT INTO ATLETA VALUES('71736779D','Daniel','Fuego San Francisco','masculino','1997-03-05','San Silvestre','2017-10-12','pagado','13',NULL)
+/*C64*/SET SCHEMA PUBLIC
+drop table atleta\u000a\u000a
+drop table carrera
+Create table Carrera\u000a(\u000a\u0009nombre varchar(20) not null,\u000a\u0009constraint pk_nombre primary key (nombre)\u000a)\u000a\u000a\u000a
+Create table Atleta\u000a(\u000a\u0009DNI varchar(9) not null,\u000a\u0009Nombre varchar(50) not null,\u000a\u0009Apellidos varchar(100),\u000a\u0009sexo varchar(20) not null,\u000a\u0009fecha_nacimiento date not null,\u000a\u0009fk_carrera varchar(20) not null,\u000a\u0009fecha_inscripcion date not null,\u000a\u0009estado varchar(20) not null,\u000a\u0009dorsal varchar(20),\u000a\u0009tiempo varchar(10),\u000a\u0009constraint pk_atleta primary key (DNI, fk_carrera),\u000a\u0009constraint fk_carrera foreign key (fk_carrera) references carrera (nombre),\u000a\u0009constraint ck_sexo check (sexo in('masculino', 'femenino')),\u000a\u0009constraint ck_estado check (estado in('inscrito', 'pagado'))\u000a)
+INSERT INTO CARRERA VALUES('Sanita Marca Running')
 COMMIT
-DISCONNECT
-/*C92*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C93*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C94*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C96*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C98*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C97*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C95*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C99*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C100*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C101*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C102*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C103*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C104*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C105*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C106*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C107*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C108*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C109*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C110*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C111*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C112*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C113*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C114*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C115*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C116*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C117*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C118*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C119*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C120*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C121*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C122*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C123*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C124*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C125*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C127*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C128*/SET SCHEMA PUBLIC
-DELETE FROM ATLETA WHERE DNI='45361345R' AND FK_CARRERA='Iron Man'
-INSERT INTO ATLETA VALUES('45361345R','Pepa','Garcia Rodriguez','femenino','1983-08-24','Iron Man','2017-10-02','pagado','11','1:05:09')
+INSERT INTO CARRERA VALUES('San Silvestre')
 COMMIT
-DELETE FROM ATLETA WHERE DNI='32525678T' AND FK_CARRERA='Iron Man'
-INSERT INTO ATLETA VALUES('32525678T','Tom\u00e1s','Gutierrez Alonso','masculino','1977-02-01','Iron Man','2017-10-05','pagado','12','1:13:1')
+INSERT INTO CARRERA VALUES('Iron Man')
 COMMIT
-DELETE FROM ATLETA WHERE DNI='71736779D' AND FK_CARRERA='Iron Man'
-INSERT INTO ATLETA VALUES('71736779D','Daniel','Fuego San Francisco','masculino','1997-03-05','Iron Man','2017-10-12','inscrito','13','0:59:30')
+INSERT INTO CARRERA VALUES('Viesgo Night Race')
 COMMIT
-DELETE FROM ATLETA WHERE DNI='71736479P' AND FK_CARRERA='Iron Man'
-INSERT INTO ATLETA VALUES('71736479P','Sergio','Dominguez Cabrero','masculino','1997-03-29','Iron Man','2017-10-12','pagado','14','3:54:45')
+INSERT INTO CARRERA VALUES('Media Marat\u00f3n Avil\u00e9s')
 COMMIT
-DELETE FROM ATLETA WHERE DNI='53778825H' AND FK_CARRERA='Iron Man'
-INSERT INTO ATLETA VALUES('53778825H','\u00c1lavaro','Garc\u00eda Barb\u00e9s','masculino','1998-06-07','Iron Man','2017-10-13','pagado','15',NULL)
+INSERT INTO ATLETA VALUES('71736779D','Daniel','Fuego San Francisco','masculino','1997-03-05','Viesgo Night Race','2017-10-23','inscrito',NULL,NULL)
 COMMIT
-DELETE FROM ATLETA WHERE DNI='74596962P' AND FK_CARRERA='Iron Man'
-INSERT INTO ATLETA VALUES('74596962P','Ra\u00fal','Gonsales Peres','masculino','2014-04-06','Iron Man','2017-10-16','pagado','16',NULL)
+INSERT INTO ATLETA VALUES('32513564A','Jos\u00e9','Mart\u00ednez P\u00e9rez','masculino','1979-08-22','San Silvestre','2017-10-17','inscrito',NULL,NULL)
 COMMIT
-DISCONNECT
-/*C126*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C129*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C130*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C131*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C132*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C133*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C134*/SET SCHEMA PUBLIC
-INSERT INTO ATLETA VALUES('11111111A','Pelayo','Martinez Capela','masculino','1997-05-04','Iron Man','2017-10-23','inscrito',NULL,NULL)
+INSERT INTO ATLETA VALUES('72452614W','Carmen','Sirgo','femenino','1999-06-16','Viesgo Night Race','2017-10-16','inscrito',NULL,NULL)
 COMMIT
-/*C136*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C135*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C134*/DISCONNECT
-/*C137*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C138*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C139*/SET SCHEMA PUBLIC
+INSERT INTO ATLETA VALUES('45361345R','Pepa','Garcia Rodriguez','femenino','1983-08-24','Iron Man','2017-10-22','inscrito',NULL,NULL)
+COMMIT
+INSERT INTO ATLETA VALUES('75896485G','Manuel','Moscarda G\u00f3mez','masculino','1977-06-03','San Silvestre','2017-10-21','inscrito',NULL,NULL)
+COMMIT
+INSERT INTO ATLETA VALUES('32525678T','Tom\u00e1s','Gutierrez Alonso','masculino','1977-02-01','Iron Man','2017-10-23','inscrito',NULL,NULL)
+COMMIT
+INSERT INTO ATLETA VALUES('59475698G','\u00c1lvaro','Fernandez Alonso','masculino','1987-06-15','Iron Man','2017-10-21','inscrito',NULL,NULL)
+COMMIT
+INSERT INTO ATLETA VALUES('74685245P','Alejandro','Barrera S\u00e1nchez','masculino','1997-12-06','Viesgo Night Race','2017-10-15','inscrito',NULL,NULL)
+COMMIT
+INSERT INTO ATLETA VALUES('58469254K','Alfredo','Acevedo Monta\u00f1a','masculino','1992-11-25','Media Marat\u00f3n Avil\u00e9s','2017-10-15','inscrito',NULL,NULL)
+COMMIT
+INSERT INTO ATLETA VALUES('65324789G','Montserrat','Campuzano Perales','femenino','1947-12-30','Sanita Marca Running','2017-10-23','inscrito',NULL,NULL)
+COMMIT
+INSERT INTO ATLETA VALUES('21458547H','Juana','Oreg\u00f3n Montes','femenino','1997-02-19','San Silvestre','2017-10-21','inscrito',NULL,NULL)
+COMMIT
+INSERT INTO ATLETA VALUES('74585214D','Eduardo','Belenguer Lasa','masculino','1983-07-23','Sanita Marca Running','2017-10-22','inscrito',NULL,NULL)
+COMMIT
+INSERT INTO ATLETA VALUES('65893256L','Josefina','Trujillo Pardo','femenino','1998-03-21','Sanita Marca Running','2017-10-23','inscrito',NULL,NULL)
+COMMIT
+INSERT INTO ATLETA VALUES('54783256A','Milagros','Verde Nu\u00f1o','femenino','1981-06-21','Viesgo Night Race','2017-10-22','inscrito',NULL,NULL)
+COMMIT
+INSERT INTO ATLETA VALUES('87651234N','F\u00e9lix','Ortiz Ezquerro','masculino','1982-10-30','Iron Man','2017-10-15','inscrito',NULL,NULL)
+COMMIT
+INSERT INTO ATLETA VALUES('45612321S','Eva Maria','Hortelano Andr\u00e9s','femenino','1986-06-21','Iron Man','2017-10-23','inscrito',NULL,NULL)
+COMMIT
+INSERT INTO ATLETA VALUES('78659856X','Ramon','Cardoso Azorin','masculino','1967-09-12','Sanita Marca Running','2017-10-22','inscrito',NULL,NULL)
+COMMIT
+INSERT INTO ATLETA VALUES('87412369G','Lidia','Enrique Llabres','femenino','1989-07-30','Sanita Marca Running','2017-10-23','inscrito',NULL,NULL)
+COMMIT
+INSERT INTO ATLETA VALUES('74563218V','Ritchie','Espino Bataller','masculino','1997-08-07','Iron Man','2017-10-23','inscrito',NULL,NULL)
+COMMIT
+drop table atleta\u000a\u000a
+drop table carrera
+Create table Carrera\u000a(\u000a\u0009nombre varchar(20) not null,\u000a\u0009constraint pk_nombre primary key (nombre)\u000a)\u000a\u000a\u000a
+Create table Atleta\u000a(\u000a\u0009DNI varchar(9) not null,\u000a\u0009Nombre varchar(50) not null,\u000a\u0009Apellidos varchar(100),\u000a\u0009sexo varchar(20) not null,\u000a\u0009fecha_nacimiento date not null,\u000a\u0009fk_carrera varchar(20) not null,\u000a\u0009fecha_inscripcion date not null,\u000a\u0009estado varchar(20) not null,\u000a\u0009dorsal varchar(20),\u000a\u0009tiempo varchar(10),\u000a\u0009constraint pk_atleta primary key (DNI, fk_carrera),\u000a\u0009constraint fk_carrera foreign key (fk_carrera) references carrera (nombre),\u000a\u0009constraint ck_sexo check (sexo in('masculino', 'femenino')),\u000a\u0009constraint ck_estado check (estado in('inscrito', 'pagado'))\u000a)
+INSERT INTO CARRERA VALUES('Sanita Marca Running')
+COMMIT
+INSERT INTO CARRERA VALUES('San Silvestre')
+COMMIT
+INSERT INTO CARRERA VALUES('Iron Man')
+COMMIT
+INSERT INTO CARRERA VALUES('Viesgo Night Race')
+COMMIT
+INSERT INTO CARRERA VALUES('Media Marat\u00f3n Avil\u00e9s')
+COMMIT
+INSERT INTO ATLETA VALUES('71736779D','Daniel','Fuego San Francisco','masculino','1997-03-05','Viesgo Night Race','2017-10-23','inscrito',NULL,NULL)
+COMMIT
+INSERT INTO ATLETA VALUES('32513564A','Jos\u00e9','Mart\u00ednez P\u00e9rez','masculino','1979-08-22','San Silvestre','2017-10-17','inscrito',NULL,NULL)
+COMMIT
+INSERT INTO ATLETA VALUES('72452614W','Carmen','Sirgo','femenino','1999-06-16','Viesgo Night Race','2017-10-16','inscrito',NULL,NULL)
+COMMIT
+INSERT INTO ATLETA VALUES('45361345R','Pepa','Garcia Rodriguez','femenino','1983-08-24','Iron Man','2017-10-22','inscrito',NULL,NULL)
+COMMIT
+INSERT INTO ATLETA VALUES('75896485G','Manuel','Moscarda G\u00f3mez','masculino','1977-06-03','San Silvestre','2017-10-21','inscrito',NULL,NULL)
+COMMIT
+INSERT INTO ATLETA VALUES('32525678T','Tom\u00e1s','Gutierrez Alonso','masculino','1977-02-01','Iron Man','2017-10-23','inscrito',NULL,NULL)
+COMMIT
+INSERT INTO ATLETA VALUES('59475698G','\u00c1lvaro','Fernandez Alonso','masculino','1987-06-15','Iron Man','2017-10-21','inscrito',NULL,NULL)
+COMMIT
+INSERT INTO ATLETA VALUES('74685245P','Alejandro','Barrera S\u00e1nchez','masculino','1997-12-06','Viesgo Night Race','2017-10-15','inscrito',NULL,NULL)
+COMMIT
+INSERT INTO ATLETA VALUES('58469254K','Alfredo','Acevedo Monta\u00f1a','masculino','1992-11-25','San Silvestre','2017-10-15','inscrito',NULL,NULL)
+COMMIT
+INSERT INTO ATLETA VALUES('65324789G','Montserrat','Campuzano Perales','femenino','1947-12-30','Sanita Marca Running','2017-10-23','inscrito',NULL,NULL)
+COMMIT
+INSERT INTO ATLETA VALUES('21458547H','Juana','Oreg\u00f3n Montes','femenino','1997-02-19','San Silvestre','2017-10-21','inscrito',NULL,NULL)
+COMMIT
+INSERT INTO ATLETA VALUES('74585214D','Eduardo','Belenguer Lasa','masculino','1983-07-23','Sanita Marca Running','2017-10-22','inscrito',NULL,NULL)
+COMMIT
+INSERT INTO ATLETA VALUES('65893256L','Josefina','Trujillo Pardo','femenino','1998-03-21','Sanita Marca Running','2017-10-23','inscrito',NULL,NULL)
+COMMIT
+INSERT INTO ATLETA VALUES('54783256A','Milagros','Verde Nu\u00f1o','femenino','1981-06-21','Viesgo Night Race','2017-10-22','inscrito',NULL,NULL)
+COMMIT
+INSERT INTO ATLETA VALUES('87651234N','F\u00e9lix','Ortiz Ezquerro','masculino','1982-10-30','Iron Man','2017-10-15','inscrito',NULL,NULL)
+COMMIT
+INSERT INTO ATLETA VALUES('45612321S','Eva Maria','Hortelano Andr\u00e9s','femenino','1986-06-21','Iron Man','2017-10-23','inscrito',NULL,NULL)
+COMMIT
+INSERT INTO ATLETA VALUES('78659856X','Ramon','Cardoso Azorin','masculino','1967-09-12','Sanita Marca Running','2017-10-22','inscrito',NULL,NULL)
+COMMIT
+INSERT INTO ATLETA VALUES('87412369G','Lidia','Enrique Llabres','femenino','1989-07-30','Sanita Marca Running','2017-10-23','inscrito',NULL,NULL)
+COMMIT
+INSERT INTO ATLETA VALUES('74563218V','Ritchie','Espino Bataller','masculino','1997-08-07','Iron Man','2017-10-23','inscrito',NULL,NULL)
+COMMIT
 DISCONNECT
