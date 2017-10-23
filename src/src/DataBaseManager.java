@@ -113,6 +113,7 @@ public class DataBaseManager
 		con.close();
 	}
 	
+	
 	//Con este metodo cogemos los corredores de la bbdd ya ordenados por tiempo
 		public static List<String[]> getCorredores() throws SQLException
 		{
@@ -145,14 +146,13 @@ public class DataBaseManager
 			
 		}
 		
-		public static List<String> getCarreras() throws SQLException
+		public static ArrayList<String> getCarreras() throws SQLException
 		{
-			List<String> carreras = new ArrayList<String>();
+			ArrayList<String> carreras = new ArrayList<String>();
 			
 			Connection con = getConnection();
 			Statement st = con.createStatement();
-			String texto = "select distinct fk_carrera" + 
-					" from atleta";
+			String texto = "select nombre from carrera";
 			ResultSet rs = st.executeQuery(texto);
 			while(rs.next())
 			{

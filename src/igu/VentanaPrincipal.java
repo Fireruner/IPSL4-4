@@ -45,6 +45,7 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JScrollPane;
 import javax.swing.JList;
+import javax.swing.JComboBox;
 
 public class VentanaPrincipal {
 	
@@ -116,7 +117,6 @@ public class VentanaPrincipal {
 		private JButton btnMostrar;
 		private JButton btnMenu;
 		private JLabel lblListarAtletasSegn;
-		private JTextField txtfldCarrera1;
 		private JButton btnAtletas;
 		private MyTableModel modelAtletas;
 		
@@ -124,6 +124,7 @@ public class VentanaPrincipal {
 		private JButton btnAsignarDorsal;
 		private String carreraSeleccionada;
 		private JLabel lblCarreraSeleccionada;
+		private JComboBox comboBox;
 	
 
 	/**
@@ -1000,9 +1001,9 @@ public class VentanaPrincipal {
 			pnlAtletasSegunCarrera.add(getBtnMostrar());
 			pnlAtletasSegunCarrera.add(getBtnMenu());
 			pnlAtletasSegunCarrera.add(getLblListarAtletasSegn());
-			pnlAtletasSegunCarrera.add(getTxtfldCarrera1());
 			pnlAtletasSegunCarrera.add(getBtnAsignarDorsal());
 			pnlAtletasSegunCarrera.add(getLblCarreraSeleccionada());
+			pnlAtletasSegunCarrera.add(getComboBox());
 		}
 		return pnlAtletasSegunCarrera;
 	}
@@ -1025,10 +1026,10 @@ public class VentanaPrincipal {
 	private void actualizarTablaAtletas() {
 		ArrayList<String[]> atletas;
 		try {
-				if(DataBaseManager.existeCarrera(txtfldCarrera1.getText()))
+				if(DataBaseManager.existeCarrera((String) comboBox.getSelectedItem()))
 				{
-					atletas = DataBaseManager.listarAtletas(txtfldCarrera1.getText());
-					carreraSeleccionada = txtfldCarrera1.getText();
+					carreraSeleccionada = (String) comboBox.getSelectedItem();
+					atletas = DataBaseManager.listarAtletas(carreraSeleccionada);
 					lblCarreraSeleccionada.setText(carreraSeleccionada + " seleccionada");
 					removeModelContent(modelAtletas);
 					String[] cabeceras = { "DNI", "Nombre", "Sexo", "Fecha de Inscripción", "Estado", "Dorsal" };
@@ -1075,6 +1076,9 @@ public class VentanaPrincipal {
 			btnMenu.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) 
 				{
+					removeModelContent(modelAtletas);
+					carreraSeleccionada = "Ninguna carrera";
+					lblCarreraSeleccionada.setText(carreraSeleccionada + " seleccionada");
 					CardLayout card = (CardLayout)frame.getContentPane().getLayout();
 					card.show(frame.getContentPane(), "panelTitulo");
 				}
@@ -1089,19 +1093,9 @@ public class VentanaPrincipal {
 		if (lblListarAtletasSegn == null) {
 			lblListarAtletasSegn = new JLabel("Listar atletas seg\u00FAn la siguiente carrera: ");
 			lblListarAtletasSegn.setDisplayedMnemonic('L');
-			lblListarAtletasSegn.setLabelFor(getTxtfldCarrera1());
-			lblListarAtletasSegn.setBounds(481, 35, 205, 14);
+			lblListarAtletasSegn.setBounds(481, 35, 294, 14);
 		}
 		return lblListarAtletasSegn;
-	}
-
-	private JTextField getTxtfldCarrera1() {
-		if (txtfldCarrera1 == null) {
-			txtfldCarrera1 = new JTextField();
-			txtfldCarrera1.setBounds(481, 61, 195, 20);
-			txtfldCarrera1.setColumns(10);
-		}
-		return txtfldCarrera1;
 	}
 
 	private JButton getBtnAtletas() {
@@ -1173,5 +1167,23 @@ public class VentanaPrincipal {
 			lblCarreraSeleccionada.setBounds(10, 350, 461, 23);
 		}
 		return lblCarreraSeleccionada;
+	}
+	private JComboBox getComboBox() {
+		if (comboBox == null) {
+			comboBox = new JComboBox();
+			comboBox.setBounds(481, 61, 195, 20);
+			try {
+				ArrayList<String> carreras = DataBaseManager.getCarreras();
+				for (String carrera : carreras)
+				{
+					comboBox.addItem(carrera);
+				}
+			} catch (SQLException e) 
+			{
+				JOptionPane.showMessageDialog(null, SQLError + " recuperacionCarreras");
+				e.printStackTrace();
+			}
+		}
+		return comboBox;
 	}
 }
