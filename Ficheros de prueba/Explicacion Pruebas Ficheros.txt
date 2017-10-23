@@ -1,0 +1,15 @@
+Formato Tiempo Incorrecto:
+	Iron Man: no modifica ninguna fila
+	Kilometrin: añade la modificacion de la 2ª fila pero no la 1ª
+	San Silvestre: no modifica ninguna fila
+	
+DNI Incorrectos:
+	Iron Man: añade la modificacion de la 1ª fila pero no de la 2ª (No hay dni en el fichero)
+	Kilometrin: añade la modificacion de la 2ª fila pero no de la 1ª (No existe el dni en la bbdd)
+	San Silvestre: añade la modificacion de la 1ª fila pero no de la 2ª (No existe el dni en la bbdd)
+
+Carrera Inexistente:
+	Como el nombre del fichero no coincide con el de alguna carrera entonces no se comprueba
+
+Ficheros Correctos:
+	Todos se añaden sin percances
