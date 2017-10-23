@@ -1089,7 +1089,7 @@ public class VentanaPrincipal {
 	int caracteresBorrar = 4; //la extension .txt
 	return carrera.substring(0, carrera.length()-caracteresBorrar);
 	}
-	}
+	
 	private JButton getBtnAsignarDorsales() {
 		if (btnAsignarDorsales == null) {
 			btnAsignarDorsales = new JButton("Asignar dorsales");
