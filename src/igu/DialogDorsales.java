@@ -21,11 +21,14 @@ import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
+import javax.swing.JComboBox;
 
 public class DialogDorsales extends JDialog {
+	
+	private final String SQLError = "Ha ocurrido un error ejecutando una consulta a la base de datos! REF:";
 
 	private final JPanel contentPanel = new JPanel();
-	private JTextField nombreCarrera;
+	private JComboBox comboDorsales;
 
 	/**
 	 * Launch the application.
@@ -56,9 +59,8 @@ public class DialogDorsales extends JDialog {
 			contentPanel.add(lblIntroduzcaElNombre);
 		}
 		{
-			nombreCarrera = new JTextField();
-			contentPanel.add(nombreCarrera);
-			nombreCarrera.setColumns(10);
+			comboDorsales = getComboCarreras();
+			contentPanel.add(comboDorsales);
 		}
 		{
 			JPanel buttonPane = new JPanel();
@@ -71,22 +73,23 @@ public class DialogDorsales extends JDialog {
 					{
 						try 
 						{
-							if(DataBaseManager.existeCarrera(nombreCarrera.getText()))
+							String carrera = (String)comboDorsales.getSelectedItem();
+							if(DataBaseManager.existeCarrera(carrera))
 							{
-								ArrayList<String[]> atletas =DataBaseManager.listarAtletas(nombreCarrera.getText());
+								ArrayList<String[]> atletas =DataBaseManager.listarAtletas(carrera);
 								int contador = 11;
 								for(String[] a: atletas)
 								{
 									a[5] = ""+ contador;
 									contador++;
 								}
-								DataBaseManager.actualizarDorsales(atletas, nombreCarrera.getText());
+								DataBaseManager.actualizarDorsales(atletas, carrera);
 								JOptionPane.showMessageDialog(null, "Dorsales generados correctamente!");
 								dispose();
 							}
 							else
 							{
-								JOptionPane.showMessageDialog(null, "No se pudo encontrar la carrera "+nombreCarrera.getText()+" en la base de datos!");
+								JOptionPane.showMessageDialog(null, "No se pudo encontrar la carrera "+carrera+" en la base de datos!");
 							}
 						}
 						catch(SQLException ex)
@@ -102,10 +105,35 @@ public class DialogDorsales extends JDialog {
 			}
 			{
 				JButton cancelButton = new JButton("Cancel");
+				cancelButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) 
+					{
+						dispose();
+					}
+				});
 				cancelButton.setActionCommand("Cancel");
 				buttonPane.add(cancelButton);
 			}
 		}
+	}
+	
+	private JComboBox getComboCarreras() {
+		if (comboDorsales == null) {
+			comboDorsales = new JComboBox();
+			comboDorsales.setBounds(481, 61, 195, 20);
+			try {
+				ArrayList<String> carreras = DataBaseManager.getCarreras();
+				for (String carrera : carreras)
+				{
+					comboDorsales.addItem(carrera);
+				}
+			} catch (SQLException e) 
+			{
+				JOptionPane.showMessageDialog(null, SQLError + " recuperacionCarreras");
+				e.printStackTrace();
+			}
+		}
+		return comboDorsales;
 	}
 
 }

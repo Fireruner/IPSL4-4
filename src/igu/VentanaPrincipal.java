@@ -75,7 +75,6 @@ public class VentanaPrincipal {
 	private JLabel lblTitulo;
 	private JLabel lblNombreDeCarrera;
 	private JPanel panelNombreCarrera;
-	private JTextField textoNombreCarrera;
 	
 	//Otros datos
 		private String m = "masculino";
@@ -127,6 +126,8 @@ public class VentanaPrincipal {
 		private String carreraSeleccionada;
 		private JLabel lblCarreraSeleccionada;
 		private JComboBox comboBox;
+		private JComboBox comboClasificacion;
+		private JComboBox comboCarreras;
 	
 
 	/**
@@ -200,7 +201,7 @@ public class VentanaPrincipal {
 				public void actionPerformed(ActionEvent arg0) 
 				{
 					CardLayout card = (CardLayout)frame.getContentPane().getLayout();
-					actualizarTablaPagos();
+					removeModelContent((MyTableModel)tablePagos.getModel());
 					card.show(frame.getContentPane(), "panelPagos");
 				}
 			});
@@ -223,6 +224,7 @@ public class VentanaPrincipal {
 			pnControlPagos.add(getTable_1());
 			pnControlPagos.add(getBtnPagar());
 			pnControlPagos.add(getBtMenu());
+			pnControlPagos.add(getComboCarreras());
 		}
 		return pnControlPagos;
 	}
@@ -232,7 +234,7 @@ public class VentanaPrincipal {
 			btnActualizar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) 
 				{
-					actualizarTablaPagos();
+					actualizarTablaPagos((String)comboClasificacion.getSelectedItem());
 				}
 			});
 			btnActualizar.setBounds(483, 134, 156, 23);
@@ -262,19 +264,18 @@ public class VentanaPrincipal {
 			modelPagos.addColumn("DNI");
 			modelPagos.addColumn("Plazo");
 			tablePagos = new JTable(modelPagos);
-			actualizarTablaPagos();
 			tablePagos.setBounds(10, 11, 463, 432);
 		}
 		return tablePagos;
 	}
 	
-	public void actualizarTablaPagos()
+	public void actualizarTablaPagos(String carrera)
 	{
 		ArrayList<String[]> atletasSinPagar;
 		ArrayList<String[]> atletasFueraDePlazo;
 		try {
 			//Consulta para obtener los datos
-			atletasSinPagar = DataBaseManager.getAtletasSinPagar();
+			atletasSinPagar = DataBaseManager.getAtletasSinPagarCarrera(carrera);
 			atletasFueraDePlazo = DataBaseManager.getAtletasFueraPlazoPago();
 		    
 		    
@@ -357,7 +358,7 @@ public class VentanaPrincipal {
 							JOptionPane.showMessageDialog(null, "Error actualizando datos en la base de datos! Puede que sus cambios no hayan sido modificados!");
 							e.printStackTrace();
 						}
-						actualizarTablaPagos();
+						actualizarTablaPagos((String)comboClasificacion.getSelectedItem());
 					}
 					else
 						JOptionPane.showMessageDialog(null, "Para realizar el pago debe primero seleccionar un atleta que no haya pagado.");
@@ -413,7 +414,7 @@ public class VentanaPrincipal {
 			if (tablaResultados == null) {
 				MyTableModel model = new MyTableModel();
 				model.addColumn("DNI");
-				model.addColumn("Posición");
+				model.addColumn("PosiciÃ³n");
 				model.addColumn("Sexo");	
 				model.addColumn("Dorsal");
 				model.addColumn("Nombre");
@@ -451,7 +452,7 @@ public class VentanaPrincipal {
 				btnMostrarResultados = new JButton("Mostrar resultados");
 				btnMostrarResultados.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
-						String carrera = textoNombreCarrera.getText();
+						String carrera = (String) comboClasificacion.getSelectedItem();
 						List<String[]> participantes;
 						List<Atleta> atletasConTiempo = new ArrayList<Atleta>();
 						List<Atleta> atletasSinTiempo = new ArrayList<Atleta>();	//ya que el order by coloca primero a los sin tiempo
@@ -581,18 +582,9 @@ public class VentanaPrincipal {
 			if (panelNombreCarrera == null) {
 				panelNombreCarrera = new JPanel();
 				panelNombreCarrera.setLayout(new BorderLayout(0, 0));
-				panelNombreCarrera.add(getTextoNombreCarrera(), BorderLayout.NORTH);
+				panelNombreCarrera.add(getComboClasificacion(), BorderLayout.NORTH);
 			}
 			return panelNombreCarrera;
-		}
-		
-		//JTEXTFIELD PARA INDICAR EL NOMBRE DE LA CARRERA
-		private JTextField getTextoNombreCarrera() {
-			if (textoNombreCarrera == null) {
-				textoNombreCarrera = new JTextField();
-				textoNombreCarrera.setColumns(35);
-			}
-			return textoNombreCarrera;
 		}
 		
 		
@@ -657,7 +649,7 @@ public class VentanaPrincipal {
 		}
 		private JLabel getLblCPosicion() {
 			if (lblCPosicion == null) {
-				lblCPosicion = new JLabel("Posici\u00F3n");
+				lblCPosicion = new JLabel("Posición");
 				lblCPosicion.setFont(new Font("Tahoma", Font.PLAIN, 14));
 				lblCPosicion.setHorizontalAlignment(SwingConstants.CENTER);
 			}
@@ -705,7 +697,7 @@ public class VentanaPrincipal {
 		}
 		private JLabel getLblCFInscripcion() {
 			if (lblCFInscripcion == null) {
-				lblCFInscripcion = new JLabel("F. Inscripci\u00F3n");
+				lblCFInscripcion = new JLabel("F. Inscripción");
 				lblCFInscripcion.setHorizontalAlignment(SwingConstants.CENTER);
 				lblCFInscripcion.setFont(new Font("Tahoma", Font.PLAIN, 14));
 			}
@@ -721,7 +713,7 @@ public class VentanaPrincipal {
 		}
 	private JButton getBtnClasificacion() {
 		if (btnClasificacion == null) {
-			btnClasificacion = new JButton("Clasificacion");
+			btnClasificacion = new JButton("Clasificación");
 			btnClasificacion.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) 
 				{
@@ -740,6 +732,7 @@ public class VentanaPrincipal {
 				{
 					CardLayout card = (CardLayout)frame.getContentPane().getLayout();
 					card.show(frame.getContentPane(), "panelTitulo");
+					removeModelContent((MyTableModel)tablaResultados.getModel());
 				}
 			});
 		}
@@ -817,7 +810,7 @@ public class VentanaPrincipal {
 					FileNameExtensionFilter filter = new FileNameExtensionFilter(
 						    "TXT files", "txt");
 					fc.setFileFilter(filter);
-	                fc.setCurrentDirectory(new java.io.File("user.home"));
+	                fc.setCurrentDirectory(new java.io.File("."));
 	                fc.setDialogTitle("Selector de archivos");
 	                fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 	                fc.setMultiSelectionEnabled(false);
@@ -955,7 +948,7 @@ public class VentanaPrincipal {
         	  }
           	//Lo que conseguimos así es que añada los corredores cuyo formato es correcto, los que tengan un formato incorrecto han de ser revisados por el cliente
           
-          	//Vamos a comprobar tambien que el corredor esté en la carrera, si no está lo daremos a conocer:
+          	//Vamos a comprobar tambien que el corredor está en la carrera, si no está lo daremos a conocer:
           	if(!gc.comprobadorPresencia(partes[1],nombreCarrera)) {
   			  	comprobadorDNI = true;
           		errorPresencia = true;
@@ -986,7 +979,7 @@ public class VentanaPrincipal {
     		  sinFallosFormato=false;
     	  }
     	  if(errorPresencia) {
-    		  JOptionPane.showMessageDialog(null, "Alguno de los corredores del fichero no se encuentra en ésta carrera, por tanto no ha sido añadido.");
+    		  JOptionPane.showMessageDialog(null, "Alguno de los corredores del fichero no se encuentra en esta carrera, por tanto no ha sido añadido.");
     		  sinFallosDni = false;
     	  }
     	  if(errorEstructura) {
@@ -1126,7 +1119,7 @@ public class VentanaPrincipal {
 
 	private JButton getBtnMenu() {
 		if (btnMenu == null) {
-			btnMenu = new JButton("Men\u00FA");
+			btnMenu = new JButton("Menú");
 			btnMenu.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) 
 				{
@@ -1145,7 +1138,7 @@ public class VentanaPrincipal {
 
 	private JLabel getLblListarAtletasSegn() {
 		if (lblListarAtletasSegn == null) {
-			lblListarAtletasSegn = new JLabel("Listar atletas seg\u00FAn la siguiente carrera: ");
+			lblListarAtletasSegn = new JLabel("Listar atletas según la siguiente carrera: ");
 			lblListarAtletasSegn.setDisplayedMnemonic('L');
 			lblListarAtletasSegn.setBounds(481, 35, 294, 14);
 		}
@@ -1222,6 +1215,7 @@ public class VentanaPrincipal {
 		}
 		return lblCarreraSeleccionada;
 	}
+	
 	private JComboBox getComboBox() {
 		if (comboBox == null) {
 			comboBox = new JComboBox();
@@ -1239,5 +1233,42 @@ public class VentanaPrincipal {
 			}
 		}
 		return comboBox;
+	}
+	
+	private JComboBox getComboCarreras() {
+		if (comboCarreras == null) {
+			comboCarreras = new JComboBox();
+			comboCarreras.setBounds(481, 61, 195, 20);
+			try {
+				ArrayList<String> carreras = DataBaseManager.getCarreras();
+				for (String carrera : carreras)
+				{
+					comboCarreras.addItem(carrera);
+				}
+			} catch (SQLException e) 
+			{
+				JOptionPane.showMessageDialog(null, SQLError + " recuperacionCarreras");
+				e.printStackTrace();
+			}
+		}
+		return comboCarreras;
+	}
+	private JComboBox getComboClasificacion() {
+		if (comboClasificacion == null) {
+			comboClasificacion = new JComboBox();
+			comboClasificacion.setBounds(481, 61, 195, 20);
+			try {
+				ArrayList<String> carreras = DataBaseManager.getCarreras();
+				for (String carrera : carreras)
+				{
+					comboClasificacion.addItem(carrera);
+				}
+			} catch (SQLException e) 
+			{
+				JOptionPane.showMessageDialog(null, SQLError + " recuperacionCarreras");
+				e.printStackTrace();
+			}
+		}
+		return comboClasificacion;
 	}
 }

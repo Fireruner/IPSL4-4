@@ -394,4 +394,31 @@ public class DataBaseManager
 			ps.executeUpdate();
 		}
 	
+		public static ArrayList<String[]> getAtletasSinPagarCarrera(String carrera) throws SQLException
+		{
+			ArrayList<String[]> results = new ArrayList<String[]>();
+			
+			Connection con = getConnection();
+			String texto = "select nombre as nombre, apellidos as apellidos, dni as DNI, fk_carrera as carrera "
+					+ "from atleta  "
+					+ "where estado = 'inscrito' and fk_carrera = ?";
+			PreparedStatement st = con.prepareStatement(texto);
+			st.setString(1, carrera);
+			ResultSet rs = st.executeQuery();
+			while(rs.next())
+			{
+				String[] result = new String[4];
+				result[0] = rs.getString("NOMBRE") + " " + rs.getString("APELLIDOS");
+				result[1] = rs.getString("DNI");
+				result[2] = rs.getString("CARRERA");
+				result[3] = "En plazo";
+				results.add(result);
+			}
+			rs.close();
+			st.close();
+			con.close();
+			
+			return results;
+		}
+		
 }

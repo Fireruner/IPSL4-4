@@ -53,6 +53,7 @@ INSERT INTO MIEMBROS_EQUIPO VALUES('Pelayo','Rodr\u00edguez Garc\u00eda','719022
 INSERT INTO CARRERA VALUES('Iron Man')
 INSERT INTO CARRERA VALUES('Kilometrin')
 INSERT INTO CARRERA VALUES('San Silvestre')
+INSERT INTO ATLETA VALUES('25648339R','Sergio','Dominguez','masculino','2016-01-01','Kilometrin','2017-10-23','inscrito',NULL,NULL)
 INSERT INTO ATLETA VALUES('32513564A','Jos\u00e9','Mart\u00ednez P\u00e9rez','masculino','1979-08-22','San Silvestre','2017-10-07','inscrito','11','1:17:16')
 INSERT INTO ATLETA VALUES('32525678T','Tom\u00e1s','Gutierrez Alonso','masculino','1977-02-01','Iron Man','2017-10-05','pagado','12','1:13:1')
 INSERT INTO ATLETA VALUES('45361345R','Pepa','Garcia Rodriguez','femenino','1983-08-24','Iron Man','2017-10-02','pagado','11','1:05:09')

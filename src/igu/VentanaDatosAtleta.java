@@ -26,6 +26,7 @@ import java.util.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.awt.event.ActionEvent;
 
@@ -49,9 +50,9 @@ public class VentanaDatosAtleta extends JDialog {
 	private JButton btnAceptar;
 	private JButton btnCancelar;
 	private JLabel lblCarrera;
-	private JTextField txtfldCarrera;
 	private JLabel lblApellidos;
 	private JTextField txtfldApellidos;
+	private JComboBox<String> comboCarreras;
 
 	/**
 	 * Launch the application.
@@ -82,9 +83,9 @@ public class VentanaDatosAtleta extends JDialog {
 		getContentPane().add(getBtnAceptar());
 		getContentPane().add(getBtnCancelar());
 		getContentPane().add(getLblCarrera());
-		getContentPane().add(getTxtfldCarrera());
 		getContentPane().add(getLblApellidos());
 		getContentPane().add(getTxtfldApellidos());
+		getContentPane().add(getComboCarreras());
 		setBounds(100, 100, 591, 335);
 	}
 
@@ -101,7 +102,7 @@ public class VentanaDatosAtleta extends JDialog {
 	private JTextField getTxtfldNombre() {
 		if (txtfldNombre == null) {
 			txtfldNombre = new JTextField();
-			txtfldNombre.setBounds(85, 41, 103, 20);
+			txtfldNombre.setBounds(85, 41, 164, 20);
 			txtfldNombre.setColumns(10);
 		}
 		return txtfldNombre;
@@ -120,7 +121,7 @@ public class VentanaDatosAtleta extends JDialog {
 	private JTextField getTxtfldDNI() {
 		if (txtfldDNI == null) {
 			txtfldDNI = new JTextField();
-			txtfldDNI.setBounds(85, 132, 103, 20);
+			txtfldDNI.setBounds(85, 132, 164, 20);
 			txtfldDNI.setColumns(10);
 		}
 		return txtfldDNI;
@@ -222,8 +223,12 @@ public class VentanaDatosAtleta extends JDialog {
 				public void actionPerformed(ActionEvent arg0) {
 
 					boolean valido;
+					
+					String carrera = (String)comboCarreras.getSelectedItem();;
+					
 					try {
-						valido = DataBaseManager.atletaEstaEnCarrera(txtfldDNI.getText(), txtfldCarrera.getText());
+						
+						valido = DataBaseManager.atletaEstaEnCarrera(txtfldDNI.getText(), carrera);
 						if (valido) {
 
 							JOptionPane.showMessageDialog(null, "El atleta ya está inscrito en la carrera");
@@ -233,7 +238,7 @@ public class VentanaDatosAtleta extends JDialog {
 
 							Atleta atleta = new Atleta(txtfldDNI.getText(), txtfldNombre.getText(),
 									txtfldApellidos.getText(), comprobarSexo(), comprobarFechaNacimiento(),
-									txtfldCarrera.getText(), comprobarFechaInscripcion(), "inscrito", null, null);
+									carrera, comprobarFechaInscripcion(), "inscrito", null, null);
 							DataBaseManager.añadirCiertoAtleta(atleta);
 							atleta.imprimirResguardo();
 							dispose();
@@ -275,15 +280,6 @@ public class VentanaDatosAtleta extends JDialog {
 		return lblCarrera;
 	}
 
-	private JTextField getTxtfldCarrera() {
-		if (txtfldCarrera == null) {
-			txtfldCarrera = new JTextField();
-			txtfldCarrera.setBounds(85, 171, 103, 20);
-			txtfldCarrera.setColumns(10);
-		}
-		return txtfldCarrera;
-	}
-
 	private JLabel getLblApellidos() {
 		if (lblApellidos == null) {
 			lblApellidos = new JLabel("Apellidos: ");
@@ -295,7 +291,7 @@ public class VentanaDatosAtleta extends JDialog {
 	private JTextField getTxtfldApellidos() {
 		if (txtfldApellidos == null) {
 			txtfldApellidos = new JTextField();
-			txtfldApellidos.setBounds(85, 89, 103, 20);
+			txtfldApellidos.setBounds(85, 89, 164, 20);
 			txtfldApellidos.setColumns(10);
 		}
 		return txtfldApellidos;
@@ -330,5 +326,22 @@ public class VentanaDatosAtleta extends JDialog {
 		LocalDate fechaDeInscripcion = LocalDate.now(ZoneId.of("UTC"));
 		return fechaDeInscripcion;
 	}
-
+	private JComboBox getComboCarreras() {
+		if (comboCarreras == null) {
+			comboCarreras = new JComboBox();
+			comboCarreras.setBounds(85, 163, 164, 37);
+			try {
+				ArrayList<String> carreras = DataBaseManager.getCarreras();
+				for (String carrera : carreras)
+				{
+					comboCarreras.addItem(carrera);
+				}
+			} catch (SQLException e) 
+			{
+				JOptionPane.showMessageDialog(null, "Error accediendo a la base de datos" + " recuperacionCarreras");
+				e.printStackTrace();
+			}
+		}
+		return comboCarreras;
+	}
 }
