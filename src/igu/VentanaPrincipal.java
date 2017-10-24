@@ -472,12 +472,21 @@ public class VentanaPrincipal {
 										atletasConTiempo.add(new Atleta(participantes.get(i)[0],participantes.get(i)[1],participantes.get(i)[2],
 										participantes.get(i)[3],participantes.get(i)[4],participantes.get(i)[5],participantes.get(i)[6],
 										participantes.get(i)[7],participantes.get(i)[8],participantes.get(i)[9]));
+<<<<<<< HEAD
 									}
 									else{
 										atletasSinTiempo.add(new Atleta(participantes.get(i)[0],participantes.get(i)[1],participantes.get(i)[2],
 										participantes.get(i)[3],participantes.get(i)[4],participantes.get(i)[5],participantes.get(i)[6],
 										participantes.get(i)[7],participantes.get(i)[8],participantes.get(i)[9]));
 									}
+=======
+									}
+									else{
+										atletasSinTiempo.add(new Atleta(participantes.get(i)[0],participantes.get(i)[1],participantes.get(i)[2],
+										participantes.get(i)[3],participantes.get(i)[4],participantes.get(i)[5],participantes.get(i)[6],
+										participantes.get(i)[7],participantes.get(i)[8],participantes.get(i)[9]));
+									}
+>>>>>>> parent of 7a8ef88... Merge branch 'master' of https://github.com/Fireruner/IPSL4-4.git
 								}
 							}						
 							
@@ -914,6 +923,7 @@ public class VentanaPrincipal {
 	//METODO QUE CARGA EL CONTENIDO EN LA BBDD, SI ALGUN DATO ESTA MAL NO LO CARGA, NO IMPLICA QUE NO CARGUE LA TOTALIDAD DEL FICHERO, SOLO AQUELLOS DATOS QUE TENGAN EL FORMATO CORRECTO
 	void cargaContenido(File archivo) throws FileNotFoundException, IOException, SQLException {
 <<<<<<< HEAD
+<<<<<<< HEAD
 	      boolean errorFormato = false;
 	      boolean errorPresencia = false;
 	      boolean errorNombreCarrera = false;
@@ -1141,6 +1151,8 @@ public class VentanaPrincipal {
 	      }
 	      lblCarreraElegida.setText("Carrera elegida:");
 =======
+=======
+>>>>>>> parent of 7a8ef88... Merge branch 'master' of https://github.com/Fireruner/IPSL4-4.git
       boolean errorFormato = false;
       boolean errorPresencia = false;
       boolean errorNombreCarrera = false;
@@ -1222,7 +1234,10 @@ public class VentanaPrincipal {
       b.close();
       generaFicheroFallos(datosIncorrectos, nombreCarrera);
       lblCarreraElegida.setText("Carrera elegida:");
+<<<<<<< HEAD
 >>>>>>> parent of 9d084a9... Intentando arreglar esto a última hora
+=======
+>>>>>>> parent of 7a8ef88... Merge branch 'master' of https://github.com/Fireruner/IPSL4-4.git
 	}
 
 	private String obtenNombreCarrera(String carrera) {
