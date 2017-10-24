@@ -467,7 +467,6 @@ public class VentanaPrincipal {
 							MyTableModel model = (MyTableModel) tablaResultados.getModel();
 							participantes = DataBaseManager.getCorredores();
 								
-<<<<<<< HEAD
 							if(participantes.size()!=0) {
 							for(int i = 0; i<participantes.size();i++){
 								if(participantes.get(i)[5].equals(carrera)) {
@@ -475,81 +474,45 @@ public class VentanaPrincipal {
 										atletasConTiempo.add(new Atleta(participantes.get(i)[0],participantes.get(i)[1],participantes.get(i)[2],
 										participantes.get(i)[3],participantes.get(i)[4],participantes.get(i)[5],participantes.get(i)[6],
 										participantes.get(i)[7],participantes.get(i)[8],participantes.get(i)[9]));
-=======
-							if(0<participantes.size()) {
-								for(int i = 0; i<participantes.size();i++){
-									if(participantes.get(i)[5].equals(carrera)) {
-										if(participantes.get(i)[8] != null){
-											atletasConTiempo.add(new Atleta(participantes.get(i)[0],participantes.get(i)[1],participantes.get(i)[2],
-													participantes.get(i)[3],participantes.get(i)[4],participantes.get(i)[5],participantes.get(i)[6],
-													participantes.get(i)[7],participantes.get(i)[8],participantes.get(i)[9]));
-										}
-										else{
-											atletasSinTiempo.add(new Atleta(participantes.get(i)[0],participantes.get(i)[1],participantes.get(i)[2],
-											participantes.get(i)[3],participantes.get(i)[4],participantes.get(i)[5],participantes.get(i)[6],
-											participantes.get(i)[7],participantes.get(i)[8],participantes.get(i)[9]));
-										}
-									}
-								}						
-							
-								//Si hay datos en la tabla, los borra
-								removeModelContent((MyTableModel)tablaResultados.getModel());
-							
-							
-							
-								int contadorPosM = 1;	//contador para las posiciones masculinas
-								int contadorPosF = 1;	//contador para las posiciones femeninas
-								for(int i = 0; i<atletasConTiempo.size(); i++){	//ANNADIMOS PRIMERO LOS QUE TIENEN TIEMPO
-								
-									if(atletasConTiempo.get(i).getSexo().equals(m)) {
-										Object[] temp = {atletasConTiempo.get(i).getDni() ,contadorPosM, atletasConTiempo.get(i).getSexo(), 
-												atletasConTiempo.get(i).getDorsal(), atletasConTiempo.get(i).getNombre(), atletasConTiempo.get(i).getApellidos(),
-												atletasConTiempo.get(i).getFechaDeNacimiento(), atletasConTiempo.get(i).getFecha_inscripcion(), 
-												atletasConTiempo.get(i).getTiempo()};
-									
-										atletasConTiempo.get(i).setPosicion(String.valueOf(contadorPosM));
-										model.addRow(temp);
-										contadorPosM++;		
->>>>>>> branch 'master' of https://github.com/Fireruner/IPSL4-4
 									}
 									else{
-										Object[] temp = {atletasConTiempo.get(i).getDni() ,contadorPosF, atletasConTiempo.get(i).getSexo(), 
-												atletasConTiempo.get(i).getDorsal(), atletasConTiempo.get(i).getNombre(), atletasConTiempo.get(i).getApellidos(),
-												atletasConTiempo.get(i).getFechaDeNacimiento(), atletasConTiempo.get(i).getFecha_inscripcion(), 
-												atletasConTiempo.get(i).getTiempo()};
-										
-										atletasConTiempo.get(i).setPosicion(String.valueOf(contadorPosF));
-										model.addRow(temp);
-										contadorPosF++;	
-									}
-								}	
-
-								for(int i = 0; i<atletasSinTiempo.size(); i++){	//Y LUEGO LOS QUE NO
-									if(atletasSinTiempo.get(i).getSexo().equals(m)) {
-										Object[] temp = {atletasSinTiempo.get(i).getDni() ,contadorPosM, atletasSinTiempo.get(i).getSexo(), 
-												atletasSinTiempo.get(i).getDorsal(), atletasSinTiempo.get(i).getNombre(), atletasSinTiempo.get(i).getApellidos(),
-												atletasSinTiempo.get(i).getFechaDeNacimiento(), atletasSinTiempo.get(i).getFecha_inscripcion(), 
-												"---"};
-									
-										atletasSinTiempo.get(i).setPosicion(String.valueOf(contadorPosF));
-										model.addRow(temp);
-										contadorPosM++;
-									}
-									else{
-										Object[] temp = {atletasSinTiempo.get(i).getDni() ,contadorPosF, atletasSinTiempo.get(i).getSexo(), 
-												atletasSinTiempo.get(i).getDorsal(), atletasSinTiempo.get(i).getNombre(), atletasSinTiempo.get(i).getApellidos(),
-												atletasSinTiempo.get(i).getFechaDeNacimiento(), atletasSinTiempo.get(i).getFecha_inscripcion(), 
-												"---"};
-									
-										atletasSinTiempo.get(i).setPosicion(String.valueOf(contadorPosF));
-										model.addRow(temp);
-										contadorPosF++;
+										atletasSinTiempo.add(new Atleta(participantes.get(i)[0],participantes.get(i)[1],participantes.get(i)[2],
+										participantes.get(i)[3],participantes.get(i)[4],participantes.get(i)[5],participantes.get(i)[6],
+										participantes.get(i)[7],participantes.get(i)[8],participantes.get(i)[9]));
 									}
 								}
+							}						
+							
+							//Si hay datos en la tabla, los borra
+							removeModelContent((MyTableModel)tablaResultados.getModel());
+							
+							
+							
+							int contadorPosM = 1;	//contador para las posiciones masculinas
+							int contadorPosF = 1;	//contador para las posiciones femeninas
+							for(int i = 0; i<atletasConTiempo.size(); i++){	//AÑADIMOS PRIMERO LOS QUE TIENEN TIEMPO
 								
-								tablaResultados.setModel(model);
+								if(atletasConTiempo.get(i).getSexo().equals(m)) {
+									Object[] temp = {atletasConTiempo.get(i).getDni() ,contadorPosM, atletasConTiempo.get(i).getSexo(), 
+											atletasConTiempo.get(i).getDorsal(), atletasConTiempo.get(i).getNombre(), atletasConTiempo.get(i).getApellidos(),
+											atletasConTiempo.get(i).getFechaDeNacimiento(), atletasConTiempo.get(i).getFecha_inscripcion(), 
+											atletasConTiempo.get(i).getTiempo()};
+									
+									atletasConTiempo.get(i).setPosicion(String.valueOf(contadorPosM));
+									model.addRow(temp);
+									contadorPosM++;		
+								}
+								else{
+									Object[] temp = {atletasConTiempo.get(i).getDni() ,contadorPosF, atletasConTiempo.get(i).getSexo(), 
+											atletasConTiempo.get(i).getDorsal(), atletasConTiempo.get(i).getNombre(), atletasConTiempo.get(i).getApellidos(),
+											atletasConTiempo.get(i).getFechaDeNacimiento(), atletasConTiempo.get(i).getFecha_inscripcion(), 
+											atletasConTiempo.get(i).getTiempo()};
+									
+									atletasConTiempo.get(i).setPosicion(String.valueOf(contadorPosF));
+									model.addRow(temp);
+									contadorPosF++;	
+								}
 							}
-<<<<<<< HEAD
 
 							for(int i = 0; i<atletasSinTiempo.size(); i++){	//Y LUEGO LOS QUE NO
 								if(atletasSinTiempo.get(i).getSexo().equals(m)) {
@@ -572,21 +535,13 @@ public class VentanaPrincipal {
 									model.addRow(temp);
 									contadorPosF++;
 								}
-=======
-							else {
-								MyTableModel m = new MyTableModel();
-								tablaResultados.setModel(m);
->>>>>>> branch 'master' of https://github.com/Fireruner/IPSL4-4
 							}
-<<<<<<< HEAD
 							tablaResultados.setModel(model);
 							}
 							else {
 								MyTableModel m = new MyTableModel();
 								tablaResultados.setModel(m);
 							}
-=======
->>>>>>> branch 'master' of https://github.com/Fireruner/IPSL4-4
 						}
 						
 						catch (SQLException ex){
@@ -963,7 +918,6 @@ public class VentanaPrincipal {
 	}
 	
 	//METODO QUE CARGA EL CONTENIDO EN LA BBDD, SI ALGUN DATO ESTA MAL NO LO CARGA, NO IMPLICA QUE NO CARGUE LA TOTALIDAD DEL FICHERO, SOLO AQUELLOS DATOS QUE TENGAN EL FORMATO CORRECTO
-<<<<<<< HEAD
 	void cargaContenido(File archivo) throws FileNotFoundException, IOException, SQLException {
 	      boolean errorFormato = false;
 	      boolean errorPresencia = false;
@@ -1067,6 +1021,7 @@ public class VentanaPrincipal {
 	    	  }
 	    	  if(errorPago) {
 	    		  JOptionPane.showMessageDialog(null, "Alguno de los corredores no ha sido añadido debido a que no ha pagado la carrera.");
+<<<<<<< HEAD
 =======
 		void cargaContenido(File archivo) throws FileNotFoundException, IOException, SQLException {
 	      boolean errorFormato = false;
@@ -1178,6 +1133,8 @@ public class VentanaPrincipal {
 =======
 	    		  JOptionPane.showMessageDialog(null, "Alguno de los corredores no ha sido añadido debido a que no ha pagado la carrera.");
 >>>>>>> parent of 8ede338... Encoding VentanaPrincipal resuelto
+=======
+>>>>>>> parent of f8b9c57... Merge branch 'master' of https://github.com/Fireruner/IPSL4-4
 	    		  sinFallosEstructura = false;
 	    	  }
 	      }   
@@ -1244,11 +1201,7 @@ public class VentanaPrincipal {
 	int caracteresBorrar = 4; //la extension .txt
 	return carrera.substring(0, carrera.length()-caracteresBorrar);
 	}
-<<<<<<< HEAD
 
-=======
-	
->>>>>>> branch 'master' of https://github.com/Fireruner/IPSL4-4
 	private JButton getBtnAsignarDorsales() {
 		if (btnAsignarDorsales == null) {
 			btnAsignarDorsales = new JButton("Asignar dorsales");
