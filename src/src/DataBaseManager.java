@@ -167,7 +167,7 @@ public class DataBaseManager
 		}
 		
 		/*
-		 * Devuelve un array de arrays con los datos de todos los atletas en la base de datos. No muy útil.
+		 * Devuelve un array de arrays con los datos de todos los atletas en la base de datos. No muy Ãºtil.
 		 */
 		
 		public static ArrayList<String[]> getAtletas() throws SQLException
@@ -195,7 +195,7 @@ public class DataBaseManager
 		}
 		
 		/*
-		 * Para un atleta pasado como parámetro (dni) confirma si está o no registrado en cierta carrera(pasada como parámetro)
+		 * Para un atleta pasado como parÃ¡metro (dni) confirma si estÃ¡ o no registrado en cierta carrera(pasada como parÃ¡metro)
 		 */
 		public static boolean atletaEstaEnCarrera(String dniAtleta, String fk_carrera) throws SQLException {
 			Connection con = getConnection();
@@ -300,7 +300,7 @@ public class DataBaseManager
 		}
 		
 		/*
-		 * Lista atletas según una carrera pasada como parámetro
+		 * Lista atletas segÃºn una carrera pasada como parÃ¡metro
 		 */
 		public static ArrayList<String[]> listarAtletas(String fk_carrera) throws SQLException {
 			ArrayList<String[]> c = new ArrayList<String[]>();
@@ -444,3 +444,4 @@ public class DataBaseManager
 		}
 		
 }
+
