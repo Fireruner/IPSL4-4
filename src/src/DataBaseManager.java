@@ -421,4 +421,26 @@ public class DataBaseManager
 			return results;
 		}
 		
+		public static boolean comprobarAtletaPagado(String dni, String carrera) throws SQLException
+		{
+			boolean pagado = false;
+			Connection con = getConnection();
+			String texto = "select estado as estado "
+					+ "from atleta  "
+					+ "where dni = ? and fk_carrera = ?";
+			PreparedStatement st = con.prepareStatement(texto);
+			st.setString(1, dni);
+			st.setString(2, carrera);
+			ResultSet rs = st.executeQuery();
+			while(rs.next())
+			{
+				String result = new String();
+				result = rs.getString("estado");
+				if(result.equals("pagado")) {
+					pagado = true;
+				}
+			}
+			return pagado;
+		}
+		
 }
