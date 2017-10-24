@@ -41,7 +41,6 @@ import java.awt.Insets;
 import java.awt.FlowLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
-import java.awt.Desktop;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -463,11 +462,10 @@ public class VentanaPrincipal {
 						
 						
 						try{
-							
 							MyTableModel model = (MyTableModel) tablaResultados.getModel();
 							participantes = DataBaseManager.getCorredores();
 								
-							if(participantes.size()!=0) {
+							
 							for(int i = 0; i<participantes.size();i++){
 								if(participantes.get(i)[5].equals(carrera)) {
 									if(participantes.get(i)[8] != null){
@@ -529,19 +527,15 @@ public class VentanaPrincipal {
 									Object[] temp = {atletasSinTiempo.get(i).getDni() ,contadorPosF, atletasSinTiempo.get(i).getSexo(), 
 											atletasSinTiempo.get(i).getDorsal(), atletasSinTiempo.get(i).getNombre(), atletasSinTiempo.get(i).getApellidos(),
 											atletasSinTiempo.get(i).getFechaDeNacimiento(), atletasSinTiempo.get(i).getFecha_inscripcion(), 
-											"---"};
+											atletasSinTiempo.get(i).getTiempo()};
 									
 									atletasSinTiempo.get(i).setPosicion(String.valueOf(contadorPosF));
 									model.addRow(temp);
 									contadorPosF++;
 								}
 							}
+
 							tablaResultados.setModel(model);
-							}
-							else {
-								MyTableModel m = new MyTableModel();
-								tablaResultados.setModel(m);
-							}
 						}
 						
 						catch (SQLException ex){
@@ -919,6 +913,7 @@ public class VentanaPrincipal {
 	
 	//METODO QUE CARGA EL CONTENIDO EN LA BBDD, SI ALGUN DATO ESTA MAL NO LO CARGA, NO IMPLICA QUE NO CARGUE LA TOTALIDAD DEL FICHERO, SOLO AQUELLOS DATOS QUE TENGAN EL FORMATO CORRECTO
 	void cargaContenido(File archivo) throws FileNotFoundException, IOException, SQLException {
+<<<<<<< HEAD
 	      boolean errorFormato = false;
 	      boolean errorPresencia = false;
 	      boolean errorNombreCarrera = false;
@@ -1145,63 +1140,123 @@ public class VentanaPrincipal {
 	    	  abrirarchivo("./"+fichero);
 	      }
 	      lblCarreraElegida.setText("Carrera elegida:");
+=======
+      boolean errorFormato = false;
+      boolean errorPresencia = false;
+      boolean errorNombreCarrera = false;
+      boolean errorEstructura = false;
+      ArrayList<String> datosIncorrectos = new ArrayList<String>();
+      String falloTiempo = "   El formato de tiempo es incorrecto";
+      String falloDNI = "   El corredor no está en la base de datos";
+      
+      String carrera = archivo.getName();
+      String nombreCarrera = obtenNombreCarrera(carrera);
+      
+      if(!gc.comprobadorCarrera(nombreCarrera)) {
+    	  errorNombreCarrera = true;
+      }
+      
+      
+	  String cadena;							//ESTRUCTURA DEL FICHERO: TIEMPO DNI
+      FileReader f = new FileReader(archivo);
+      BufferedReader b = new BufferedReader(f);
+      
+      while((cadena = b.readLine())!=null) {
+          boolean comprobadorTiempo = false;
+          boolean comprobadorDNI = false;
+          String[] partes = cadena.split(" ");	//dividimos las partes
+          if(partes.length==2) {
+        	  if(partes[0].equals("---")) {     	//sin tiempo?
+        		  DataBaseManager.añadirTiempoAtleta(nombreCarrera, partes[0], partes[1]);						//buscamos su dni en la bbdd y le asignamos su tiempo null
+        	  }
+        	  else {								//con tiempo?
+        		  if(gc.comprobadorTiempos(partes[0])) { //si el tiempo es valido buscamos su dni en la bbdd y le asignamos su tiempo
+        			  DataBaseManager.añadirTiempoAtleta(nombreCarrera, partes[0], partes[1]);
+        		  }
+        		  else {
+        			  comprobadorTiempo = true;        			  
+        			  errorFormato = true;
+        		  }
+        	  }
+          	//Lo que conseguimos así es que añada los corredores cuyo formato es correcto, los que tengan un formato incorrecto han de ser revisados por el cliente
+          
+          	//Vamos a comprobar tambien que el corredor está en la carrera, si no está lo daremos a conocer:
+          	if(!gc.comprobadorPresencia(partes[1],nombreCarrera)) {
+  			  	comprobadorDNI = true;
+          		errorPresencia = true;
+          	}
+          }
+          else {
+        	 //aqui no hace falta que añada datos incorrectos, si la estructura del fichero esta mal no debe añadir cada linea al fichero de salida
+        	 errorEstructura = true; 
+          }      	  
+          if((comprobadorTiempo&&!comprobadorDNI)||(!comprobadorTiempo&&comprobadorDNI)) { 
+        	  if(comprobadorTiempo) 
+        		  datosIncorrectos.add(cadena + "   El formato de tiempo es incorrecto");
+        	  else if(comprobadorDNI)
+        		  datosIncorrectos.add(cadena + "   El corredor no está en la base de datos");
+          }
+		  else if(comprobadorTiempo&&comprobadorDNI) {
+			  datosIncorrectos.add(cadena + "   El corredor no está en la base de datos y el formato de tiempo es incorrecto");
+		  }
+          
+      }
+      if(errorNombreCarrera) {
+    	  JOptionPane.showMessageDialog(null, "La carrera referente al nombre del fichero no existe en la base de datos.");
+    	  sinFallosNombreCarrera = false;
+      }
+      else {
+    	  if(errorFormato) {
+    		  JOptionPane.showMessageDialog(null, "Algunos tiempos no han sido añadidos a la base de datos. Por favor, compruebe el fichero de tiempos.");
+    		  sinFallosFormato=false;
+    	  }
+    	  if(errorPresencia) {
+    		  JOptionPane.showMessageDialog(null, "Alguno de los corredores del fichero no se encuentra en esta carrera, por tanto no ha sido añadido.");
+    		  sinFallosDni = false;
+    	  }
+    	  if(errorEstructura) {
+    		  JOptionPane.showMessageDialog(null, "Los datos del fichero poseen una estructura incorrecta.");
+    		  sinFallosEstructura = false;
+    	  }
+      }   
+      b.close();
+      generaFicheroFallos(datosIncorrectos, nombreCarrera);
+      lblCarreraElegida.setText("Carrera elegida:");
+>>>>>>> parent of 9d084a9... Intentando arreglar esto a última hora
 	}
-
-	public void abrirarchivo(String archivo){
-
-		     try {
-
-		            File objetofile = new File (archivo);
-		            Desktop.getDesktop().open(objetofile);
-
-		     }catch (IOException ex) {
-
-		            System.out.println(ex);
-		     }
-		}
-
-	private String generaFicheroFallos(ArrayList<String> datos, String nombreCarrera) {
-		 int idFallo = (int) (Math.random()*9999999 + 10000);
-		 boolean fallo = true;
-		 String nombreFichero = "Fallo_"+idFallo+"_"+nombreCarrera+".txt";
-		 FileWriter fichero = null;
-	     PrintWriter pw = null;
-	     if(datos.size()>0) {
-	    	 try
-	    	 {
-	    		 fichero = new FileWriter("./"+nombreFichero);
-	    		 pw = new PrintWriter(fichero);
-	    		 pw.println("El fichero de la carrera " + nombreCarrera + " contiene datos que no se han podido introducir.");
-	    		 pw.println("Datos que no han podido ser introducidos en la base de datos:");
-	    		 for (int i = 0; i < datos.size(); i++)
-	    			 pw.println("    "+datos.get(i));
-	    	 } catch (Exception e) {
-	    		 e.printStackTrace();
-	    	 } finally {
-	    		 try {
-	    			 // Nuevamente aprovechamos el finally para 
-	    			 // asegurarnos que se cierra el fichero.
-	    			 if (null != fichero) {
-	    				 fichero.close();
-	    				 fallo = false;
-	    			 }
-	    		 } catch (Exception e2) {
-	    			 e2.printStackTrace();
-	    		 }
-	    	 }
-	     }
-	     if(!fallo)
-	    	 return nombreFichero;
-	     else {
-	    	 return "Se ha producido un error";
-	     }
-		}
 
 	private String obtenNombreCarrera(String carrera) {
 	int caracteresBorrar = 4; //la extension .txt
 	return carrera.substring(0, carrera.length()-caracteresBorrar);
 	}
 
+	private void generaFicheroFallos(ArrayList<String> datos, String nombreCarrera) {
+	 int idFallo = (int) (Math.random()*9999999 + 10000);
+	 FileWriter fichero = null;
+     PrintWriter pw = null;
+     if(datos.size()>0) {
+    	 try
+    	 {
+    		 fichero = new FileWriter("./Fallo_"+idFallo+"_"+nombreCarrera+".txt");
+    		 pw = new PrintWriter(fichero);
+    		 pw.println("El fichero de la carrera " + nombreCarrera + " contiene datos que no se han podido introducir.");
+    		 pw.println("Datos que no han podido ser introducidos en la base de datos:");
+    		 for (int i = 0; i < datos.size(); i++)
+    			 pw.println("    "+datos.get(i));
+    	 } catch (Exception e) {
+    		 e.printStackTrace();
+    	 } finally {
+    		 try {
+    			 // Nuevamente aprovechamos el finally para 
+    			 // asegurarnos que se cierra el fichero.
+    			 if (null != fichero)
+    				 fichero.close();
+    		 } catch (Exception e2) {
+    			 e2.printStackTrace();
+    		 }
+    	 }
+     }
+	}
 	private JButton getBtnAsignarDorsales() {
 		if (btnAsignarDorsales == null) {
 			btnAsignarDorsales = new JButton("Asignar dorsales");
