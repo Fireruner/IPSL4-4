@@ -17,20 +17,15 @@ import src.Atleta;
 import src.DataBaseManager;
 import src.GestorComprobaciones;
 import src.MyTableModel;
-
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.event.ActionEvent;
-
 import javax.swing.JPanel;
-
 import java.awt.GridLayout;
-
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -39,10 +34,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.awt.Font;
-
-//import net.miginfocom.swing.MigLayout;
-
-import java.awt.Desktop;
+import net.miginfocom.swing.MigLayout;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
@@ -426,7 +418,7 @@ public class VentanaPrincipal {
 			if (tablaResultados == null) {
 				MyTableModel model = new MyTableModel();
 				model.addColumn("DNI");
-				model.addColumn("PosiciÃƒÂ³n");
+				model.addColumn("PosiciÃ³n");
 				model.addColumn("Sexo");	
 				model.addColumn("Dorsal");
 				model.addColumn("Nombre");
@@ -657,7 +649,7 @@ public class VentanaPrincipal {
 		
 		
 		/*
-		 * A PARTIR DE AQUI TODO LO RELACIONADO CON EL TÃ?TULO: "RESULTADOS" Y LAS COLUMNAS DE LA JTABLE 
+		 * A PARTIR DE AQUI TODO LO RELACIONADO CON EL TÍTULO: "RESULTADOS" Y LAS COLUMNAS DE LA JTABLE 
 		 */
 			
 		
@@ -712,7 +704,7 @@ public class VentanaPrincipal {
 		}
 		private JLabel getLblCPosicion() {
 			if (lblCPosicion == null) {
-				lblCPosicion = new JLabel("PosiciÃ³n");
+				lblCPosicion = new JLabel("Posición");
 				lblCPosicion.setFont(new Font("Tahoma", Font.PLAIN, 14));
 				lblCPosicion.setHorizontalAlignment(SwingConstants.CENTER);
 			}
@@ -760,7 +752,7 @@ public class VentanaPrincipal {
 		}
 		private JLabel getLblCFInscripcion() {
 			if (lblCFInscripcion == null) {
-				lblCFInscripcion = new JLabel("F. InscripciÃ³n");
+				lblCFInscripcion = new JLabel("F. Inscripción");
 				lblCFInscripcion.setHorizontalAlignment(SwingConstants.CENTER);
 				lblCFInscripcion.setFont(new Font("Tahoma", Font.PLAIN, 14));
 			}
@@ -776,7 +768,7 @@ public class VentanaPrincipal {
 		}
 	private JButton getBtnClasificacion() {
 		if (btnClasificacion == null) {
-			btnClasificacion = new JButton("ClasificaciÃ³n");
+			btnClasificacion = new JButton("Clasificación");
 			btnClasificacion.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) 
 				{
@@ -927,7 +919,7 @@ public class VentanaPrincipal {
 					try {
 						cargaContenido(archivo);
 						if(sinFallosFormato && sinFallosDni && sinFallosNombreCarrera && sinFallosEstructura) {
-							JOptionPane.showMessageDialog(null, "OperaciÃ³n realizada con Ã©xito.");
+							JOptionPane.showMessageDialog(null, "Operación realizada con éxito.");
 							btnCargar.setEnabled(false);
 							archivo = null;
 						}
@@ -1114,7 +1106,7 @@ public class VentanaPrincipal {
 	        		  }
 	        	  }
 	        	  
-	          	//Lo que conseguimos asi es que aÃ±ada los corredores cuyo formato es correcto, los que tengan un formato incorrecto han de ser revisados por el cliente
+	          	//Lo que conseguimos asi es que añada los corredores cuyo formato es correcto, los que tengan un formato incorrecto han de ser revisados por el cliente
 	          
 	          	//Distintas comprobaciones con respecto a cada linea, los comprobadores se usan a la hora de imprimir los fallos en el fichero de fallos, los errores para la ventana emergente
 	          	if(!gc.comprobadorPresencia(partes[1],nombreCarrera)) {
@@ -1134,7 +1126,7 @@ public class VentanaPrincipal {
 	          }
 	          
 	          else {
-	        	 //aqui no hace falta que aÃ±ada datos incorrectos, si la estructura del fichero esta mal no debe aÃ±adir cada linea al fichero de salida
+	        	 //aqui no hace falta que añada datos incorrectos, si la estructura del fichero esta mal no debe añadir cada linea al fichero de salida
 	        	 errorEstructura = true; 
 	          }      
 	          
@@ -1143,22 +1135,22 @@ public class VentanaPrincipal {
 	        	  datosIncorrectos.add(cadena + "   El formato de tiempo es incorrecto");
 	          }
 	          else if(!comprobadorTiempo&&comprobadorDNI&&!comprobadorPago) {
-	        	  datosIncorrectos.add(cadena + "   El corredor no estÃ¡ en la base de datos");
+	        	  datosIncorrectos.add(cadena + "   El corredor no está en la base de datos");
 	          }
 	          else if(!comprobadorTiempo&&!comprobadorDNI&&comprobadorPago) {
 	        	  datosIncorrectos.add(cadena + "   El corredor no ha pagado para competir en esta carrera");
 	          }
 			  else if(comprobadorTiempo&&comprobadorDNI&&!comprobadorPago) {
-				  datosIncorrectos.add(cadena + "   El corredor no estÃ¡ en la base de datos y el formato de tiempo es incorrecto");
+				  datosIncorrectos.add(cadena + "   El corredor no está en la base de datos y el formato de tiempo es incorrecto");
 			  }
 			  else if(comprobadorTiempo&&!comprobadorDNI&&comprobadorPago) {
 				  datosIncorrectos.add(cadena + "   El formato de tiempo es incorrecto y el corredor no ha pagado para competir en esta carrera");
 			  }
 			  else if(!comprobadorTiempo&&comprobadorDNI&&comprobadorPago) {
-				  datosIncorrectos.add(cadena + "   El corredor no estÃ¡ en la base de datos y el corredor no ha pagado para competir en esta carrera");
+				  datosIncorrectos.add(cadena + "   El corredor no está en la base de datos y el corredor no ha pagado para competir en esta carrera");
 			  }
 			  else if(comprobadorTiempo&&comprobadorDNI&&comprobadorPago) {
-				  datosIncorrectos.add(cadena + "   El formato de tiempo es incorrecto, el corredor no estÃ¡ en la base de datos y no ha pagado para competir en esta carrera");
+				  datosIncorrectos.add(cadena + "   El formato de tiempo es incorrecto, el corredor no está en la base de datos y no ha pagado para competir en esta carrera");
 			  }
 	      }
 	      
@@ -1168,11 +1160,11 @@ public class VentanaPrincipal {
 	      }
 	      else {
 	    	  if(errorFormato) {
-	    		  JOptionPane.showMessageDialog(null, "Algunos tiempos no han sido aÃ±adidos a la base de datos. Por favor, compruebe el fichero de tiempos.");
+	    		  JOptionPane.showMessageDialog(null, "Algunos tiempos no han sido añadidos a la base de datos. Por favor, compruebe el fichero de tiempos.");
 	    		  sinFallosFormato=false;
 	    	  }
 	    	  if(errorPresencia) {
-	    		  JOptionPane.showMessageDialog(null, "Alguno de los corredores del fichero no se encuentra en esta carrera, por tanto no ha sido aÃ±adido.");
+	    		  JOptionPane.showMessageDialog(null, "Alguno de los corredores del fichero no se encuentra en esta carrera, por tanto no ha sido añadido.");
 	    		  sinFallosDni = false;
 	    	  }
 	    	  if(errorEstructura) {
@@ -1180,8 +1172,12 @@ public class VentanaPrincipal {
 	    		  sinFallosEstructura = false;
 	    	  }
 	    	  if(errorPago) {
+<<<<<<< HEAD
 	    		  JOptionPane.showMessageDialog(null, "Alguno de los corredores no ha sido aÃ±adido debido a que no ha pagado la carrera.");
 >>>>>>> branch 'master' of https://github.com/Fireruner/IPSL4-4
+=======
+	    		  JOptionPane.showMessageDialog(null, "Alguno de los corredores no ha sido añadido debido a que no ha pagado la carrera.");
+>>>>>>> parent of 8ede338... Encoding VentanaPrincipal resuelto
 	    		  sinFallosEstructura = false;
 	    	  }
 	      }   
@@ -1290,7 +1286,7 @@ public class VentanaPrincipal {
 			modelAtletas.addColumn("DNI");
 			modelAtletas.addColumn("Nombre");
 			modelAtletas.addColumn("Sexo");
-			modelAtletas.addColumn("Fecha de inscripciÃ³n");
+			modelAtletas.addColumn("Fecha de inscripción");
 			modelAtletas.addColumn("Estado");
 			modelAtletas.addColumn("Dorsal");
 			tableAtletas = new JTable(modelAtletas);
@@ -1308,7 +1304,7 @@ public class VentanaPrincipal {
 					atletas = DataBaseManager.listarAtletas(carreraSeleccionada);
 					lblCarreraSeleccionada.setText(carreraSeleccionada + " seleccionada");
 					removeModelContent(modelAtletas);
-					String[] cabeceras = { "DNI", "Nombre", "Sexo", "Fecha de InscripciÃ³n", "Estado", "Dorsal" };
+					String[] cabeceras = { "DNI", "Nombre", "Sexo", "Fecha de Inscripción", "Estado", "Dorsal" };
 					modelAtletas.addRow(cabeceras);
 					if(atletas.size()>1)
 					{
@@ -1351,7 +1347,7 @@ public class VentanaPrincipal {
 
 	private JButton getBtnMenu() {
 		if (btnMenu == null) {
-			btnMenu = new JButton("MenÃº");
+			btnMenu = new JButton("Menú");
 			btnMenu.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) 
 				{
@@ -1370,7 +1366,7 @@ public class VentanaPrincipal {
 
 	private JLabel getLblListarAtletasSegn() {
 		if (lblListarAtletasSegn == null) {
-			lblListarAtletasSegn = new JLabel("Listar atletas segÃºn la siguiente carrera: ");
+			lblListarAtletasSegn = new JLabel("Listar atletas según la siguiente carrera: ");
 			lblListarAtletasSegn.setDisplayedMnemonic('L');
 			lblListarAtletasSegn.setBounds(481, 35, 294, 14);
 		}
@@ -1412,7 +1408,7 @@ public class VentanaPrincipal {
 									int siguienteDorsal = DataBaseManager.getSiguienteDorsalDisponible(carrera);
 									dorsal  = ""+siguienteDorsal;
 									DataBaseManager.añadirDorsalCorredor(dni, carrera, dorsal);
-									JOptionPane.showMessageDialog(null, "Dorsal "+dorsal+" aÃ±adido al corredor "+dni+" para la carrera "+carrera);
+									JOptionPane.showMessageDialog(null, "Dorsal "+dorsal+" añadido al corredor "+dni+" para la carrera "+carrera);
 								} 
 								catch (SQLException e1) {
 									JOptionPane.showMessageDialog(null, "No se han podido realizar los cambios!");
@@ -1421,7 +1417,7 @@ public class VentanaPrincipal {
 								
 							}
 							else
-								JOptionPane.showMessageDialog(null, "No puedes asignar dorsal a un corredor que aÃºn no ha pagado.");
+								JOptionPane.showMessageDialog(null, "No puedes asignar dorsal a un corredor que aún no ha pagado.");
 						}
 						else
 						{
@@ -1430,7 +1426,7 @@ public class VentanaPrincipal {
 					}
 					else
 					{
-						JOptionPane.showMessageDialog(null, "Para ejecutar esta opciÃ³n debe seleccionar el atleta al que quiere asignar un dorsal.");
+						JOptionPane.showMessageDialog(null, "Para ejecutar esta opción debe seleccionar el atleta al que quiere asignar un dorsal.");
 					}
 				}
 			});
