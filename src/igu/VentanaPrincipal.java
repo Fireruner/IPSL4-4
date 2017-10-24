@@ -450,123 +450,105 @@ public class VentanaPrincipal {
 		}
 		
 		//BOTON ENCARGADO DE MOSTRAR LOS RESULTADOS DE CIERTA CARRERA ESCRITA EN EL JTEXTFIELD EN LA JTABLE
-		private JButton getBtnMostrarResultados() {
-			if (btnMostrarResultados == null) {
-				btnMostrarResultados = new JButton("Mostrar resultados");
-				btnMostrarResultados.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-						String carrera = (String) comboClasificacion.getSelectedItem();
-						List<String[]> participantes;
-						List<Atleta> atletasConTiempo = new ArrayList<Atleta>();
-						List<Atleta> atletasSinTiempo = new ArrayList<Atleta>();	//ya que el order by coloca primero a los sin tiempo
-						
-						
-						try{
-							MyTableModel model = (MyTableModel) tablaResultados.getModel();
-							participantes = DataBaseManager.getCorredores();
+				private JButton getBtnMostrarResultados() {
+					if (btnMostrarResultados == null) {
+						btnMostrarResultados = new JButton("Mostrar resultados");
+						btnMostrarResultados.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent arg0) {
+								String carrera = (String) comboClasificacion.getSelectedItem();
+								List<String[]> participantes;
+								List<Atleta> atletasConTiempo = new ArrayList<Atleta>();
+								List<Atleta> atletasSinTiempo = new ArrayList<Atleta>();	//ya que el order by coloca primero a los sin tiempo
 								
-							
-							for(int i = 0; i<participantes.size();i++){
-								if(participantes.get(i)[5].equals(carrera)) {
-									if(participantes.get(i)[8] != null){
-										atletasConTiempo.add(new Atleta(participantes.get(i)[0],participantes.get(i)[1],participantes.get(i)[2],
-										participantes.get(i)[3],participantes.get(i)[4],participantes.get(i)[5],participantes.get(i)[6],
-										participantes.get(i)[7],participantes.get(i)[8],participantes.get(i)[9]));
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> parent of 96f9507... Cambios de metodos
-									}
-									else{
-										atletasSinTiempo.add(new Atleta(participantes.get(i)[0],participantes.get(i)[1],participantes.get(i)[2],
-										participantes.get(i)[3],participantes.get(i)[4],participantes.get(i)[5],participantes.get(i)[6],
-										participantes.get(i)[7],participantes.get(i)[8],participantes.get(i)[9]));
-<<<<<<< HEAD
-									}
-=======
-									}
-									else{
-										atletasSinTiempo.add(new Atleta(participantes.get(i)[0],participantes.get(i)[1],participantes.get(i)[2],
-										participantes.get(i)[3],participantes.get(i)[4],participantes.get(i)[5],participantes.get(i)[6],
-										participantes.get(i)[7],participantes.get(i)[8],participantes.get(i)[9]));
-									}
->>>>>>> parent of 7a8ef88... Merge branch 'master' of https://github.com/Fireruner/IPSL4-4.git
-=======
-									}
->>>>>>> parent of 96f9507... Cambios de metodos
-								}
-							}						
-							
-							//Si hay datos en la tabla, los borra
-							removeModelContent((MyTableModel)tablaResultados.getModel());
-							
-							
-							
-							int contadorPosM = 1;	//contador para las posiciones masculinas
-							int contadorPosF = 1;	//contador para las posiciones femeninas
-							for(int i = 0; i<atletasConTiempo.size(); i++){	//AÑADIMOS PRIMERO LOS QUE TIENEN TIEMPO
 								
-								if(atletasConTiempo.get(i).getSexo().equals(m)) {
-									Object[] temp = {atletasConTiempo.get(i).getDni() ,contadorPosM, atletasConTiempo.get(i).getSexo(), 
-											atletasConTiempo.get(i).getDorsal(), atletasConTiempo.get(i).getNombre(), atletasConTiempo.get(i).getApellidos(),
-											atletasConTiempo.get(i).getFechaDeNacimiento(), atletasConTiempo.get(i).getFecha_inscripcion(), 
-											atletasConTiempo.get(i).getTiempo()};
+								try{
+									MyTableModel model = (MyTableModel) tablaResultados.getModel();
+									participantes = DataBaseManager.getCorredores();
 									
-									atletasConTiempo.get(i).setPosicion(String.valueOf(contadorPosM));
-									model.addRow(temp);
-									contadorPosM++;		
-								}
-								else{
-									Object[] temp = {atletasConTiempo.get(i).getDni() ,contadorPosF, atletasConTiempo.get(i).getSexo(), 
-											atletasConTiempo.get(i).getDorsal(), atletasConTiempo.get(i).getNombre(), atletasConTiempo.get(i).getApellidos(),
-											atletasConTiempo.get(i).getFechaDeNacimiento(), atletasConTiempo.get(i).getFecha_inscripcion(), 
-											atletasConTiempo.get(i).getTiempo()};
+									for(int i = 0; i<participantes.size();i++){
+										if(participantes.get(i)[5].equals(carrera)) {
+											if(participantes.get(i)[8] != null){
+												atletasConTiempo.add(new Atleta(participantes.get(i)[0],participantes.get(i)[1],participantes.get(i)[2],
+												participantes.get(i)[3],participantes.get(i)[4],participantes.get(i)[5],participantes.get(i)[6],
+												participantes.get(i)[7],participantes.get(i)[8],participantes.get(i)[9]));
+											}
+											else{
+												atletasSinTiempo.add(new Atleta(participantes.get(i)[0],participantes.get(i)[1],participantes.get(i)[2],
+												participantes.get(i)[3],participantes.get(i)[4],participantes.get(i)[5],participantes.get(i)[6],
+												participantes.get(i)[7],participantes.get(i)[8],participantes.get(i)[9]));
+											}
+										}
+									}						
 									
-									atletasConTiempo.get(i).setPosicion(String.valueOf(contadorPosF));
-									model.addRow(temp);
-									contadorPosF++;	
-								}
-							}
+									//Si hay datos en la tabla, los borra
+									removeModelContent((MyTableModel)tablaResultados.getModel());
+									
+									
+									
+									int contadorPosM = 1;	//contador para las posiciones masculinas
+									int contadorPosF = 1;	//contador para las posiciones femeninas
+									for(int i = 0; i<atletasConTiempo.size(); i++){	//AÑADIMOS PRIMERO LOS QUE TIENEN TIEMPO
+										
+										if(atletasConTiempo.get(i).getSexo().equals(m)) {
+											Object[] temp = {atletasConTiempo.get(i).getDni() ,contadorPosM, atletasConTiempo.get(i).getSexo(), 
+													atletasConTiempo.get(i).getDorsal(), atletasConTiempo.get(i).getNombre(), atletasConTiempo.get(i).getApellidos(),
+													atletasConTiempo.get(i).getFechaDeNacimiento(), atletasConTiempo.get(i).getFecha_inscripcion(), 
+													atletasConTiempo.get(i).getTiempo()};
+											
+											atletasConTiempo.get(i).setPosicion(String.valueOf(contadorPosM));
+											model.addRow(temp);
+											contadorPosM++;		
+										}
+										else{
+											Object[] temp = {atletasConTiempo.get(i).getDni() ,contadorPosF, atletasConTiempo.get(i).getSexo(), 
+													atletasConTiempo.get(i).getDorsal(), atletasConTiempo.get(i).getNombre(), atletasConTiempo.get(i).getApellidos(),
+													atletasConTiempo.get(i).getFechaDeNacimiento(), atletasConTiempo.get(i).getFecha_inscripcion(), 
+													atletasConTiempo.get(i).getTiempo()};
+											
+											atletasConTiempo.get(i).setPosicion(String.valueOf(contadorPosF));
+											model.addRow(temp);
+											contadorPosF++;	
+										}
+									}
 
-							for(int i = 0; i<atletasSinTiempo.size(); i++){	//Y LUEGO LOS QUE NO
-								if(atletasSinTiempo.get(i).getSexo().equals(m)) {
-									Object[] temp = {atletasSinTiempo.get(i).getDni() ,contadorPosM, atletasSinTiempo.get(i).getSexo(), 
-											atletasSinTiempo.get(i).getDorsal(), atletasSinTiempo.get(i).getNombre(), atletasSinTiempo.get(i).getApellidos(),
-											atletasSinTiempo.get(i).getFechaDeNacimiento(), atletasSinTiempo.get(i).getFecha_inscripcion(), 
-											"---"};
+									for(int i = 0; i<atletasSinTiempo.size(); i++){	//Y LUEGO LOS QUE NO
+										if(atletasSinTiempo.get(i).getSexo().equals(m)) {
+											Object[] temp = {atletasSinTiempo.get(i).getDni() ,contadorPosM, atletasSinTiempo.get(i).getSexo(), 
+													atletasSinTiempo.get(i).getDorsal(), atletasSinTiempo.get(i).getNombre(), atletasSinTiempo.get(i).getApellidos(),
+													atletasSinTiempo.get(i).getFechaDeNacimiento(), atletasSinTiempo.get(i).getFecha_inscripcion(), 
+													"---"};
+											
+											atletasSinTiempo.get(i).setPosicion(String.valueOf(contadorPosF));
+											model.addRow(temp);
+											contadorPosM++;
+										}
+										else{
+											Object[] temp = {atletasSinTiempo.get(i).getDni() ,contadorPosF, atletasSinTiempo.get(i).getSexo(), 
+													atletasSinTiempo.get(i).getDorsal(), atletasSinTiempo.get(i).getNombre(), atletasSinTiempo.get(i).getApellidos(),
+													atletasSinTiempo.get(i).getFechaDeNacimiento(), atletasSinTiempo.get(i).getFecha_inscripcion(), 
+													atletasSinTiempo.get(i).getTiempo()};
+											
+											atletasSinTiempo.get(i).setPosicion(String.valueOf(contadorPosF));
+											model.addRow(temp);
+											contadorPosF++;
+										}
+									}
 									
-									atletasSinTiempo.get(i).setPosicion(String.valueOf(contadorPosF));
-									model.addRow(temp);
-									contadorPosM++;
+									tablaResultados.setModel(model);
 								}
-								else{
-									Object[] temp = {atletasSinTiempo.get(i).getDni() ,contadorPosF, atletasSinTiempo.get(i).getSexo(), 
-											atletasSinTiempo.get(i).getDorsal(), atletasSinTiempo.get(i).getNombre(), atletasSinTiempo.get(i).getApellidos(),
-											atletasSinTiempo.get(i).getFechaDeNacimiento(), atletasSinTiempo.get(i).getFecha_inscripcion(), 
-											atletasSinTiempo.get(i).getTiempo()};
-									
-									atletasSinTiempo.get(i).setPosicion(String.valueOf(contadorPosF));
-									model.addRow(temp);
-									contadorPosF++;
+								
+								catch (SQLException ex){
+									JOptionPane.showMessageDialog(null, "Error en atleta");
+									System.err.println("Error en atleta");
+									ex.printStackTrace();
 								}
+								
+								
 							}
-
-							tablaResultados.setModel(model);
-						}
-						
-						catch (SQLException ex){
-							JOptionPane.showMessageDialog(null, "Error en atleta");
-							System.err.println("Error en atleta");
-							ex.printStackTrace();
-						}
-						
-						
+						});
 					}
-				});
-			}
-			return btnMostrarResultados;
-		}
-		
+					return btnMostrarResultados;
+				}		
 		
 		
 		
@@ -927,22 +909,15 @@ public class VentanaPrincipal {
 		return btnVolverAlMen;
 	}
 	
-	//METODO QUE CARGA EL CONTENIDO EN LA BBDD, SI ALGUN DATO ESTA MAL NO LO CARGA, NO IMPLICA QUE NO CARGUE LA TOTALIDAD DEL FICHERO, SOLO AQUELLOS DATOS QUE TENGAN EL FORMATO CORRECTO
 	void cargaContenido(File archivo) throws FileNotFoundException, IOException, SQLException {
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 	      boolean errorFormato = false;
 	      boolean errorPresencia = false;
 	      boolean errorNombreCarrera = false;
-	      boolean errorEstructura = false;
-	      boolean errorPago = false;
-	      ArrayList<String> datosIncorrectos = new ArrayList<String>();
 	      
 	      String carrera = archivo.getName();
 	      String nombreCarrera = obtenNombreCarrera(carrera);
 	      
-	      if(!gc.comprobadorCarrera(nombreCarrera)) {	//si la carrera no existe error carrera
+	      if(!gc.comprobadorCarrera(nombreCarrera)) {
 	    	  errorNombreCarrera = true;
 	      }
 	      
@@ -952,72 +927,33 @@ public class VentanaPrincipal {
 	      BufferedReader b = new BufferedReader(f);
 	      
 	      while((cadena = b.readLine())!=null) {
-	          boolean comprobadorTiempo = false;
-	          boolean comprobadorDNI = false;
-	          boolean comprobadorPago = false;
-	          String[] partes = cadena.split(" ");	//dividimos las partes en tiempo y dni respectivamente
+	          String[] partes = cadena.split(" ");	//dividimos las partes
 	          if(partes.length==2) {
-	        	  if(partes[0].equals("---"))
-	        		  if(gc.comprobadorPresencia(partes[1],nombreCarrera)&&"pagado".equals(DataBaseManager.comprobarAtletaPagado(partes[1],nombreCarrera))) {     	//sin tiempo?
-	        			  DataBaseManager.añadirTiempoAtleta(nombreCarrera, partes[0], partes[1]);						//buscamos su dni en la bbdd y le asignamos su tiempo null
-	        		  }
-	        	  else	{			//con tiempo        			  
-	        		  if(gc.comprobadorTiempos(partes[0])&&gc.comprobadorPresencia(partes[1],nombreCarrera)&&"pagado".equals(DataBaseManager.comprobarAtletaPagado(partes[1],nombreCarrera))) { //si el tiempo es valido buscamos su dni en la bbdd y le asignamos su tiempo
+	        	  if(partes[0].equals("---")) {     	//sin tiempo?
+	        		  DataBaseManager.añadirTiempoAtleta(nombreCarrera, partes[0], partes[1]);						//buscamos su dni en la bbdd y le asignamos su tiempo null
+	        	  }
+	        	  else {								//con tiempo?
+	        		  if(gc.comprobadorTiempos(partes[0])) { //si el tiempo es valido buscamos su dni en la bbdd y le asignamos su tiempo
 	        			  DataBaseManager.añadirTiempoAtleta(nombreCarrera, partes[0], partes[1]);
 	        		  }
+	        		  else {
+	        			  errorFormato = true;
+	        		  }
 	        	  }
-	        	  System.out.println("pagado".equals(DataBaseManager.comprobarAtletaPagado(partes[1],nombreCarrera)) + "   " + DataBaseManager.comprobarAtletaPagado(partes[1],nombreCarrera));
-	        	  
 	          	//Lo que conseguimos así es que añada los corredores cuyo formato es correcto, los que tengan un formato incorrecto han de ser revisados por el cliente
 	          
-	          	//Distintas comprobaciones con respecto a cada linea, los comprobadores se usan a la hora de imprimir los fallos en el fichero de fallos, los errores para la ventana emergente
+	          	//Vamos a comprobar tambien que el corredor esté en la carrera, si no está lo daremos a conocer:
 	          	if(!gc.comprobadorPresencia(partes[1],nombreCarrera)) {
-	  			  	comprobadorDNI = true;
 	          		errorPresencia = true;
-	          	}
-	          	else {
-	          		if(!"pagado".equals(DataBaseManager.comprobarAtletaPagado(partes[1],nombreCarrera))) {
-	          			comprobadorPago = true;
-	          			errorPago = true;
-	          		}
-	          	}
-	          	if(!gc.comprobadorTiempos(partes[0])&&!partes[0].equals("---")) {
-	  			    comprobadorTiempo = true;        			  
-	  			    errorFormato = true;
 	          	}
 	          }
 	          else {
-	        	 //aqui no hace falta que añada datos incorrectos, si la estructura del fichero esta mal no debe añadir cada linea al fichero de salida
-	        	 errorEstructura = true; 
-	          }      
-	          
-	          //Comprobamos los distintos errores
-	          if(comprobadorTiempo&&!comprobadorDNI&&!comprobadorPago) {
-	        	  datosIncorrectos.add(cadena + "   El formato de tiempo es incorrecto");
+	        	 errorFormato = true; 
 	          }
-	          else if(!comprobadorTiempo&&comprobadorDNI&&!comprobadorPago) {
-	        	  datosIncorrectos.add(cadena + "   El corredor no está en la base de datos");
-	          }
-	          else if(!comprobadorTiempo&&!comprobadorDNI&&comprobadorPago) {
-	        	  datosIncorrectos.add(cadena + "   El corredor no ha pagado para competir en esta carrera");
-	          }
-			  else if(comprobadorTiempo&&comprobadorDNI&&!comprobadorPago) {
-				  datosIncorrectos.add(cadena + "   El corredor no está en la base de datos y el formato de tiempo es incorrecto");
-			  }
-			  else if(comprobadorTiempo&&!comprobadorDNI&&comprobadorPago) {
-				  datosIncorrectos.add(cadena + "   El formato de tiempo es incorrecto y el corredor no ha pagado para competir en esta carrera");
-			  }
-			  else if(!comprobadorTiempo&&comprobadorDNI&&comprobadorPago) {
-				  datosIncorrectos.add(cadena + "   El corredor no está en la base de datos y el corredor no ha pagado para competir en esta carrera");
-			  }
-			  else if(comprobadorTiempo&&comprobadorDNI&&comprobadorPago) {
-				  datosIncorrectos.add(cadena + "   El formato de tiempo es incorrecto, el corredor no está en la base de datos y no ha pagado para competir en esta carrera");
-			  }
 	      }
-	      
 	      if(errorNombreCarrera) {
 	    	  JOptionPane.showMessageDialog(null, "La carrera referente al nombre del fichero no existe en la base de datos.");
-	    	  sinFallosNombreCarrera = false;
+        	  sinFallosNombreCarrera = false;
 	      }
 	      else {
 	    	  if(errorFormato) {
@@ -1025,246 +961,19 @@ public class VentanaPrincipal {
 	    		  sinFallosFormato=false;
 	    	  }
 	    	  if(errorPresencia) {
-	    		  JOptionPane.showMessageDialog(null, "Alguno de los corredores del fichero no se encuentra en esta carrera, por tanto no ha sido añadido.");
+	    		  JOptionPane.showMessageDialog(null, "Alguno de los corredores del fichero no se encuentra en ésta carrera, por tanto no ha sido añadido.");
 	    		  sinFallosDni = false;
 	    	  }
-	    	  if(errorEstructura) {
-	    		  JOptionPane.showMessageDialog(null, "Los datos del fichero poseen una estructura incorrecta.");
-	    		  sinFallosEstructura = false;
-	    	  }
-	    	  if(errorPago) {
-	    		  JOptionPane.showMessageDialog(null, "Alguno de los corredores no ha sido añadido debido a que no ha pagado la carrera.");
-<<<<<<< HEAD
-=======
-		void cargaContenido(File archivo) throws FileNotFoundException, IOException, SQLException {
-	      boolean errorFormato = false;
-	      boolean errorPresencia = false;
-	      boolean errorNombreCarrera = false;
-	      boolean errorEstructura = false;
-	      boolean errorPago = false;
-	      ArrayList<String> datosIncorrectos = new ArrayList<String>();
-	      
-	      String carrera = archivo.getName();
-	      String nombreCarrera = obtenNombreCarrera(carrera);
-	      
-	      if(!gc.comprobadorCarrera(nombreCarrera)) {	//si la carrera no existe error carrera
-	    	  errorNombreCarrera = true;
 	      }
 	      
-	      
-		  String cadena;							//ESTRUCTURA DEL FICHERO: TIEMPO DNI
-	      FileReader f = new FileReader(archivo);
-	      BufferedReader b = new BufferedReader(f);
-	      
-	      while((cadena = b.readLine())!=null) {
-	          boolean comprobadorTiempo = false;
-	          boolean comprobadorDNI = false;
-	          boolean comprobadorPago = false;
-	          String[] partes = cadena.split(" ");	//dividimos las partes en tiempo y dni respectivamente
-	          if(partes.length==2) {
-	           	  if(partes[0].equals("---")) {
-	        		  if(gc.comprobadorPresencia(partes[1],nombreCarrera)&&"pagado".equals(DataBaseManager.comprobarAtletaPagado(partes[1],nombreCarrera))) {     	//sin tiempo?
-	        			  DataBaseManager.añadirTiempoAtleta(nombreCarrera, partes[0], partes[1]);						//buscamos su dni en la bbdd y le asignamos su tiempo null
-	        		  }
-	           	  }
-	        	  else	{		
-	        		  //con tiempo        			  
-	        		  if(gc.comprobadorTiempos(partes[0])&&gc.comprobadorPresencia(partes[1],nombreCarrera)&&"pagado".equals(DataBaseManager.comprobarAtletaPagado(partes[1],nombreCarrera))) { //si el tiempo es valido buscamos su dni en la bbdd y le asignamos su tiempo
-	        			  DataBaseManager.añadirTiempoAtleta(nombreCarrera, partes[0], partes[1]);
-	        		  }
-	        	  }
-	        	  
-	          	//Lo que conseguimos asi es que añada los corredores cuyo formato es correcto, los que tengan un formato incorrecto han de ser revisados por el cliente
-	          
-	          	//Distintas comprobaciones con respecto a cada linea, los comprobadores se usan a la hora de imprimir los fallos en el fichero de fallos, los errores para la ventana emergente
-	          	if(!gc.comprobadorPresencia(partes[1],nombreCarrera)) {
-	  			  	comprobadorDNI = true;
-	          		errorPresencia = true;
-	          	}
-	          	else {
-	          		if(!"pagado".equals(DataBaseManager.comprobarAtletaPagado(partes[1],nombreCarrera))) {
-	          			comprobadorPago = true;
-	          			errorPago = true;
-	          		}
-	          	}
-	          	if(!gc.comprobadorTiempos(partes[0])&&!partes[0].equals("---")) {
-	  			    comprobadorTiempo = true;        			  
-	  			    errorFormato = true;
-	          	}
-	          }
-	          
-	          else {
-	        	 //aqui no hace falta que añada datos incorrectos, si la estructura del fichero esta mal no debe añadir cada linea al fichero de salida
-	        	 errorEstructura = true; 
-	          }      
-	          
-	          //Comprobamos los distintos errores
-	          if(comprobadorTiempo&&!comprobadorDNI&&!comprobadorPago) {
-	        	  datosIncorrectos.add(cadena + "   El formato de tiempo es incorrecto");
-	          }
-	          else if(!comprobadorTiempo&&comprobadorDNI&&!comprobadorPago) {
-	        	  datosIncorrectos.add(cadena + "   El corredor no está en la base de datos");
-	          }
-	          else if(!comprobadorTiempo&&!comprobadorDNI&&comprobadorPago) {
-	        	  datosIncorrectos.add(cadena + "   El corredor no ha pagado para competir en esta carrera");
-	          }
-			  else if(comprobadorTiempo&&comprobadorDNI&&!comprobadorPago) {
-				  datosIncorrectos.add(cadena + "   El corredor no está en la base de datos y el formato de tiempo es incorrecto");
-			  }
-			  else if(comprobadorTiempo&&!comprobadorDNI&&comprobadorPago) {
-				  datosIncorrectos.add(cadena + "   El formato de tiempo es incorrecto y el corredor no ha pagado para competir en esta carrera");
-			  }
-			  else if(!comprobadorTiempo&&comprobadorDNI&&comprobadorPago) {
-				  datosIncorrectos.add(cadena + "   El corredor no está en la base de datos y el corredor no ha pagado para competir en esta carrera");
-			  }
-			  else if(comprobadorTiempo&&comprobadorDNI&&comprobadorPago) {
-				  datosIncorrectos.add(cadena + "   El formato de tiempo es incorrecto, el corredor no está en la base de datos y no ha pagado para competir en esta carrera");
-			  }
-	      }
-	      
-	      if(errorNombreCarrera) {
-	    	  JOptionPane.showMessageDialog(null, "La carrera referente al nombre del fichero no existe en la base de datos.");
-	    	  sinFallosNombreCarrera = false;
-	      }
-	      else {
-	    	  if(errorFormato) {
-	    		  JOptionPane.showMessageDialog(null, "Algunos tiempos no han sido añadidos a la base de datos. Por favor, compruebe el fichero de tiempos.");
-	    		  sinFallosFormato=false;
-	    	  }
-	    	  if(errorPresencia) {
-	    		  JOptionPane.showMessageDialog(null, "Alguno de los corredores del fichero no se encuentra en esta carrera, por tanto no ha sido añadido.");
-	    		  sinFallosDni = false;
-	    	  }
-	    	  if(errorEstructura) {
-	    		  JOptionPane.showMessageDialog(null, "Los datos del fichero poseen una estructura incorrecta.");
-	    		  sinFallosEstructura = false;
-	    	  }
-	    	  if(errorPago) {
-<<<<<<< HEAD
-<<<<<<< HEAD
-	    		  JOptionPane.showMessageDialog(null, "Alguno de los corredores no ha sido aÃ±adido debido a que no ha pagado la carrera.");
->>>>>>> branch 'master' of https://github.com/Fireruner/IPSL4-4
-=======
-	    		  JOptionPane.showMessageDialog(null, "Alguno de los corredores no ha sido añadido debido a que no ha pagado la carrera.");
->>>>>>> parent of 8ede338... Encoding VentanaPrincipal resuelto
-=======
->>>>>>> parent of f8b9c57... Merge branch 'master' of https://github.com/Fireruner/IPSL4-4
-=======
-	    		  JOptionPane.showMessageDialog(null, "Alguno de los corredores no ha sido añadido debido a que no ha pagado la carrera.");
->>>>>>> parent of 8ede338... Encoding VentanaPrincipal resuelto
-	    		  sinFallosEstructura = false;
-	    	  }
-	      }   
 	      b.close();
-	      String fichero = generaFicheroFallos(datosIncorrectos, nombreCarrera);
-	      if(!fichero.equals("Se ha producido un error")) {
-	    	  //abre el fichero
-	    	  abrirarchivo("./"+fichero);
-	      }
-	      lblCarreraElegida.setText("Carrera elegida:");
-=======
-=======
->>>>>>> parent of 7a8ef88... Merge branch 'master' of https://github.com/Fireruner/IPSL4-4.git
-=======
->>>>>>> parent of 96f9507... Cambios de metodos
-      boolean errorFormato = false;
-      boolean errorPresencia = false;
-      boolean errorNombreCarrera = false;
-      boolean errorEstructura = false;
-      ArrayList<String> datosIncorrectos = new ArrayList<String>();
-      String falloTiempo = "   El formato de tiempo es incorrecto";
-      String falloDNI = "   El corredor no está en la base de datos";
-      
-      String carrera = archivo.getName();
-      String nombreCarrera = obtenNombreCarrera(carrera);
-      
-      if(!gc.comprobadorCarrera(nombreCarrera)) {
-    	  errorNombreCarrera = true;
-      }
-      
-      
-	  String cadena;							//ESTRUCTURA DEL FICHERO: TIEMPO DNI
-      FileReader f = new FileReader(archivo);
-      BufferedReader b = new BufferedReader(f);
-      
-      while((cadena = b.readLine())!=null) {
-          boolean comprobadorTiempo = false;
-          boolean comprobadorDNI = false;
-          String[] partes = cadena.split(" ");	//dividimos las partes
-          if(partes.length==2) {
-        	  if(partes[0].equals("---")) {     	//sin tiempo?
-        		  DataBaseManager.añadirTiempoAtleta(nombreCarrera, partes[0], partes[1]);						//buscamos su dni en la bbdd y le asignamos su tiempo null
-        	  }
-        	  else {								//con tiempo?
-        		  if(gc.comprobadorTiempos(partes[0])) { //si el tiempo es valido buscamos su dni en la bbdd y le asignamos su tiempo
-        			  DataBaseManager.añadirTiempoAtleta(nombreCarrera, partes[0], partes[1]);
-        		  }
-        		  else {
-        			  comprobadorTiempo = true;        			  
-        			  errorFormato = true;
-        		  }
-        	  }
-          	//Lo que conseguimos así es que añada los corredores cuyo formato es correcto, los que tengan un formato incorrecto han de ser revisados por el cliente
-          
-          	//Vamos a comprobar tambien que el corredor está en la carrera, si no está lo daremos a conocer:
-          	if(!gc.comprobadorPresencia(partes[1],nombreCarrera)) {
-  			  	comprobadorDNI = true;
-          		errorPresencia = true;
-          	}
-          }
-          else {
-        	 //aqui no hace falta que añada datos incorrectos, si la estructura del fichero esta mal no debe añadir cada linea al fichero de salida
-        	 errorEstructura = true; 
-          }      	  
-          if((comprobadorTiempo&&!comprobadorDNI)||(!comprobadorTiempo&&comprobadorDNI)) { 
-        	  if(comprobadorTiempo) 
-        		  datosIncorrectos.add(cadena + "   El formato de tiempo es incorrecto");
-        	  else if(comprobadorDNI)
-        		  datosIncorrectos.add(cadena + "   El corredor no está en la base de datos");
-          }
-		  else if(comprobadorTiempo&&comprobadorDNI) {
-			  datosIncorrectos.add(cadena + "   El corredor no está en la base de datos y el formato de tiempo es incorrecto");
-		  }
-          
-      }
-      if(errorNombreCarrera) {
-    	  JOptionPane.showMessageDialog(null, "La carrera referente al nombre del fichero no existe en la base de datos.");
-    	  sinFallosNombreCarrera = false;
-      }
-      else {
-    	  if(errorFormato) {
-    		  JOptionPane.showMessageDialog(null, "Algunos tiempos no han sido añadidos a la base de datos. Por favor, compruebe el fichero de tiempos.");
-    		  sinFallosFormato=false;
-    	  }
-    	  if(errorPresencia) {
-    		  JOptionPane.showMessageDialog(null, "Alguno de los corredores del fichero no se encuentra en esta carrera, por tanto no ha sido añadido.");
-    		  sinFallosDni = false;
-    	  }
-    	  if(errorEstructura) {
-    		  JOptionPane.showMessageDialog(null, "Los datos del fichero poseen una estructura incorrecta.");
-    		  sinFallosEstructura = false;
-    	  }
-      }   
-      b.close();
-      generaFicheroFallos(datosIncorrectos, nombreCarrera);
-      lblCarreraElegida.setText("Carrera elegida:");
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> parent of 9d084a9... Intentando arreglar esto a última hora
-=======
->>>>>>> parent of 7a8ef88... Merge branch 'master' of https://github.com/Fireruner/IPSL4-4.git
-=======
->>>>>>> parent of 96f9507... Cambios de metodos
 	}
 
 	private String obtenNombreCarrera(String carrera) {
 	int caracteresBorrar = 4; //la extension .txt
 	return carrera.substring(0, carrera.length()-caracteresBorrar);
 	}
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> parent of 96f9507... Cambios de metodos
+
 
 	private void generaFicheroFallos(ArrayList<String> datos, String nombreCarrera) {
 	 int idFallo = (int) (Math.random()*9999999 + 10000);
@@ -1292,11 +1001,6 @@ public class VentanaPrincipal {
     		 }
     	 }
      }
-<<<<<<< HEAD
-=======
->>>>>>> parent of 3b27fc1... Cambios en los metodos de add tiempos en la BBDD
-=======
->>>>>>> parent of 96f9507... Cambios de metodos
 	}
 	private JButton getBtnAsignarDorsales() {
 		if (btnAsignarDorsales == null) {

@@ -169,12 +169,12 @@ public class DataBaseManager
 		/*
 <<<<<<< HEAD
 <<<<<<< HEAD
-		 * Devuelve un array de arrays con los datos de todos los atletas en la base de datos. No muy útil.
+		 * Devuelve un array de arrays con los datos de todos los atletas en la base de datos. No muy ï¿½til.
 =======
 		 * Devuelve un array de arrays con los datos de todos los atletas en la base de datos. No muy Ãºtil.
 >>>>>>> parent of ae76061... Problemas encoding resueltos
 =======
-		 * Devuelve un array de arrays con los datos de todos los atletas en la base de datos. No muy útil.
+		 * Devuelve un array de arrays con los datos de todos los atletas en la base de datos. No muy ï¿½til.
 >>>>>>> parent of a81ee71... AÃ±adido el metodo comprobarAtletaPagado
 		 */
 		
@@ -205,12 +205,12 @@ public class DataBaseManager
 		/*
 <<<<<<< HEAD
 <<<<<<< HEAD
-		 * Para un atleta pasado como parámetro (dni) confirma si está o no registrado en cierta carrera(pasada como parámetro)
+		 * Para un atleta pasado como parï¿½metro (dni) confirma si estï¿½ o no registrado en cierta carrera(pasada como parï¿½metro)
 =======
 		 * Para un atleta pasado como parÃ¡metro (dni) confirma si estÃ¡ o no registrado en cierta carrera(pasada como parÃ¡metro)
 >>>>>>> parent of ae76061... Problemas encoding resueltos
 =======
-		 * Para un atleta pasado como parámetro (dni) confirma si está o no registrado en cierta carrera(pasada como parámetro)
+		 * Para un atleta pasado como parï¿½metro (dni) confirma si estï¿½ o no registrado en cierta carrera(pasada como parï¿½metro)
 >>>>>>> parent of a81ee71... AÃ±adido el metodo comprobarAtletaPagado
 		 */
 		public static boolean atletaEstaEnCarrera(String dniAtleta, String fk_carrera) throws SQLException {
@@ -249,7 +249,7 @@ public class DataBaseManager
 //			}
 		}
 			
-		public static boolean añadirCiertoAtleta(Atleta atleta) throws SQLException {
+		public static boolean aÃ±adirCiertoAtleta(Atleta atleta) throws SQLException {
 			Connection con = getConnection();
 			String dni = atleta.getDni();
 			String nombre = atleta.getNombre();
@@ -282,7 +282,7 @@ public class DataBaseManager
 				
 		}
 		
-		public static void añadirTiempoAtleta(String carrera, String tiempo, String dni) throws SQLException {
+		public static void aÃ±adirTiempoAtleta(String carrera, String tiempo, String dni) throws SQLException {
 			Connection con = getConnection();
 			
 			PreparedStatement ps = con.prepareStatement("UPDATE ATLETA SET tiempo = ? WHERE dni = ? and fk_carrera = ?");
@@ -318,12 +318,12 @@ public class DataBaseManager
 		/*
 <<<<<<< HEAD
 <<<<<<< HEAD
-		 * Lista atletas según una carrera pasada como parámetro
+		 * Lista atletas segï¿½n una carrera pasada como parï¿½metro
 =======
 		 * Lista atletas segÃºn una carrera pasada como parÃ¡metro
 >>>>>>> parent of ae76061... Problemas encoding resueltos
 =======
-		 * Lista atletas según una carrera pasada como parámetro
+		 * Lista atletas segï¿½n una carrera pasada como parï¿½metro
 >>>>>>> parent of a81ee71... AÃ±adido el metodo comprobarAtletaPagado
 		 */
 		public static ArrayList<String[]> listarAtletas(String fk_carrera) throws SQLException {
@@ -408,7 +408,7 @@ public class DataBaseManager
 			return nextOne;
 		}
 		
-		public static void añadirDorsalCorredor(String dni, String carrera, String dorsal) throws SQLException
+		public static void aÃ±adirDorsalCorredor(String dni, String carrera, String dorsal) throws SQLException
 		{
 			Connection con = getConnection();
 			PreparedStatement ps = con.prepareStatement("update atleta set dorsal = ? where dni = ? and fk_carrera = ?");
