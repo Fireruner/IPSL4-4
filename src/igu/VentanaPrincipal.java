@@ -1248,6 +1248,7 @@ public class VentanaPrincipal {
 	int caracteresBorrar = 4; //la extension .txt
 	return carrera.substring(0, carrera.length()-caracteresBorrar);
 	}
+<<<<<<< HEAD
 
 	private void generaFicheroFallos(ArrayList<String> datos, String nombreCarrera) {
 	 int idFallo = (int) (Math.random()*9999999 + 10000);
@@ -1275,6 +1276,8 @@ public class VentanaPrincipal {
     		 }
     	 }
      }
+=======
+>>>>>>> parent of 3b27fc1... Cambios en los metodos de add tiempos en la BBDD
 	}
 	private JButton getBtnAsignarDorsales() {
 		if (btnAsignarDorsales == null) {
