@@ -1133,6 +1133,7 @@ public class VentanaPrincipal {
 	    	  }
 	    	  if(errorPago) {
 <<<<<<< HEAD
+<<<<<<< HEAD
 	    		  JOptionPane.showMessageDialog(null, "Alguno de los corredores no ha sido aÃ±adido debido a que no ha pagado la carrera.");
 >>>>>>> branch 'master' of https://github.com/Fireruner/IPSL4-4
 =======
@@ -1140,6 +1141,9 @@ public class VentanaPrincipal {
 >>>>>>> parent of 8ede338... Encoding VentanaPrincipal resuelto
 =======
 >>>>>>> parent of f8b9c57... Merge branch 'master' of https://github.com/Fireruner/IPSL4-4
+=======
+	    		  JOptionPane.showMessageDialog(null, "Alguno de los corredores no ha sido añadido debido a que no ha pagado la carrera.");
+>>>>>>> parent of 8ede338... Encoding VentanaPrincipal resuelto
 	    		  sinFallosEstructura = false;
 	    	  }
 	      }   
