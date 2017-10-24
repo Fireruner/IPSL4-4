@@ -473,11 +473,15 @@ public class VentanaPrincipal {
 										participantes.get(i)[3],participantes.get(i)[4],participantes.get(i)[5],participantes.get(i)[6],
 										participantes.get(i)[7],participantes.get(i)[8],participantes.get(i)[9]));
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> parent of 96f9507... Cambios de metodos
 									}
 									else{
 										atletasSinTiempo.add(new Atleta(participantes.get(i)[0],participantes.get(i)[1],participantes.get(i)[2],
 										participantes.get(i)[3],participantes.get(i)[4],participantes.get(i)[5],participantes.get(i)[6],
 										participantes.get(i)[7],participantes.get(i)[8],participantes.get(i)[9]));
+<<<<<<< HEAD
 									}
 =======
 									}
@@ -487,6 +491,9 @@ public class VentanaPrincipal {
 										participantes.get(i)[7],participantes.get(i)[8],participantes.get(i)[9]));
 									}
 >>>>>>> parent of 7a8ef88... Merge branch 'master' of https://github.com/Fireruner/IPSL4-4.git
+=======
+									}
+>>>>>>> parent of 96f9507... Cambios de metodos
 								}
 							}						
 							
@@ -924,6 +931,7 @@ public class VentanaPrincipal {
 	void cargaContenido(File archivo) throws FileNotFoundException, IOException, SQLException {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	      boolean errorFormato = false;
 	      boolean errorPresencia = false;
 	      boolean errorNombreCarrera = false;
@@ -1157,6 +1165,8 @@ public class VentanaPrincipal {
 =======
 =======
 >>>>>>> parent of 7a8ef88... Merge branch 'master' of https://github.com/Fireruner/IPSL4-4.git
+=======
+>>>>>>> parent of 96f9507... Cambios de metodos
       boolean errorFormato = false;
       boolean errorPresencia = false;
       boolean errorNombreCarrera = false;
@@ -1239,9 +1249,12 @@ public class VentanaPrincipal {
       generaFicheroFallos(datosIncorrectos, nombreCarrera);
       lblCarreraElegida.setText("Carrera elegida:");
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> parent of 9d084a9... Intentando arreglar esto a última hora
 =======
 >>>>>>> parent of 7a8ef88... Merge branch 'master' of https://github.com/Fireruner/IPSL4-4.git
+=======
+>>>>>>> parent of 96f9507... Cambios de metodos
 	}
 
 	private String obtenNombreCarrera(String carrera) {
@@ -1249,6 +1262,9 @@ public class VentanaPrincipal {
 	return carrera.substring(0, carrera.length()-caracteresBorrar);
 	}
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> parent of 96f9507... Cambios de metodos
 
 	private void generaFicheroFallos(ArrayList<String> datos, String nombreCarrera) {
 	 int idFallo = (int) (Math.random()*9999999 + 10000);
@@ -1276,8 +1292,11 @@ public class VentanaPrincipal {
     		 }
     	 }
      }
+<<<<<<< HEAD
 =======
 >>>>>>> parent of 3b27fc1... Cambios en los metodos de add tiempos en la BBDD
+=======
+>>>>>>> parent of 96f9507... Cambios de metodos
 	}
 	private JButton getBtnAsignarDorsales() {
 		if (btnAsignarDorsales == null) {
