@@ -167,7 +167,15 @@ public class DataBaseManager
 		}
 		
 		/*
-		 * Devuelve un array de arrays con los datos de todos los atletas en la base de datos. No muy ÃƒÂºtil.
+<<<<<<< HEAD
+<<<<<<< HEAD
+		 * Devuelve un array de arrays con los datos de todos los atletas en la base de datos. No muy útil.
+=======
+		 * Devuelve un array de arrays con los datos de todos los atletas en la base de datos. No muy Ãºtil.
+>>>>>>> parent of ae76061... Problemas encoding resueltos
+=======
+		 * Devuelve un array de arrays con los datos de todos los atletas en la base de datos. No muy útil.
+>>>>>>> parent of a81ee71... AÃ±adido el metodo comprobarAtletaPagado
 		 */
 		
 		public static ArrayList<String[]> getAtletas() throws SQLException
@@ -195,7 +203,15 @@ public class DataBaseManager
 		}
 		
 		/*
-		 * Para un atleta pasado como parÃƒÂ¡metro (dni) confirma si estÃƒÂ¡ o no registrado en cierta carrera(pasada como parÃƒÂ¡metro)
+<<<<<<< HEAD
+<<<<<<< HEAD
+		 * Para un atleta pasado como parámetro (dni) confirma si está o no registrado en cierta carrera(pasada como parámetro)
+=======
+		 * Para un atleta pasado como parÃ¡metro (dni) confirma si estÃ¡ o no registrado en cierta carrera(pasada como parÃ¡metro)
+>>>>>>> parent of ae76061... Problemas encoding resueltos
+=======
+		 * Para un atleta pasado como parámetro (dni) confirma si está o no registrado en cierta carrera(pasada como parámetro)
+>>>>>>> parent of a81ee71... AÃ±adido el metodo comprobarAtletaPagado
 		 */
 		public static boolean atletaEstaEnCarrera(String dniAtleta, String fk_carrera) throws SQLException {
 			Connection con = getConnection();
@@ -300,7 +316,15 @@ public class DataBaseManager
 		}
 		
 		/*
-		 * Lista atletas segÃƒÂºn una carrera pasada como parÃƒÂ¡metro
+<<<<<<< HEAD
+<<<<<<< HEAD
+		 * Lista atletas según una carrera pasada como parámetro
+=======
+		 * Lista atletas segÃºn una carrera pasada como parÃ¡metro
+>>>>>>> parent of ae76061... Problemas encoding resueltos
+=======
+		 * Lista atletas según una carrera pasada como parámetro
+>>>>>>> parent of a81ee71... AÃ±adido el metodo comprobarAtletaPagado
 		 */
 		public static ArrayList<String[]> listarAtletas(String fk_carrera) throws SQLException {
 			ArrayList<String[]> c = new ArrayList<String[]>();
@@ -420,28 +444,5 @@ public class DataBaseManager
 			
 			return results;
 		}
-	
-		public static String comprobarAtletaPagado(String dni, String carrera) throws SQLException
-		{
-			String estado = "vacio";
-			Connection con = getConnection();
-			String texto = "select estado as estado "
-					+ "from atleta  "
-					+ "where dni = ? and fk_carrera = ?";
-			PreparedStatement st = con.prepareStatement(texto);
-			st.setString(1, dni);
-			st.setString(2, carrera);
-			ResultSet rs = st.executeQuery();
-			while(rs.next())
-			{
-				String result = new String();
-				result = rs.getString("estado");
-				if(result.equals("pagado")) {
-					estado = "pagado";
-				}
-			}
-			return estado;
-		}
 		
 }
-
