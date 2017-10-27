@@ -249,7 +249,7 @@ public class DataBaseManager
 //			}
 		}
 			
-		public static boolean aÃ±adirCiertoAtleta(Atleta atleta) throws SQLException {
+		public static boolean añadirCiertoAtleta(Atleta atleta) throws SQLException {
 			Connection con = getConnection();
 			String dni = atleta.getDni();
 			String nombre = atleta.getNombre();
@@ -282,7 +282,7 @@ public class DataBaseManager
 				
 		}
 		
-		public static void aÃ±adirTiempoAtleta(String carrera, String tiempo, String dni) throws SQLException {
+		public static void añadirTiempoAtleta(String carrera, String tiempo, String dni) throws SQLException {
 			Connection con = getConnection();
 			
 			PreparedStatement ps = con.prepareStatement("UPDATE ATLETA SET tiempo = ? WHERE dni = ? and fk_carrera = ?");
@@ -408,7 +408,7 @@ public class DataBaseManager
 			return nextOne;
 		}
 		
-		public static void aÃ±adirDorsalCorredor(String dni, String carrera, String dorsal) throws SQLException
+		public static void añadirDorsalCorredor(String dni, String carrera, String dorsal) throws SQLException
 		{
 			Connection con = getConnection();
 			PreparedStatement ps = con.prepareStatement("update atleta set dorsal = ? where dni = ? and fk_carrera = ?");
