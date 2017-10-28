@@ -651,7 +651,7 @@ public class VentanaPrincipal {
 		}
 		private JLabel getLblCPosicion() {
 			if (lblCPosicion == null) {
-				lblCPosicion = new JLabel("Posición");
+				lblCPosicion = new JLabel("Posici\u00F3n");
 				lblCPosicion.setFont(new Font("Tahoma", Font.PLAIN, 14));
 				lblCPosicion.setHorizontalAlignment(SwingConstants.CENTER);
 			}
@@ -699,7 +699,7 @@ public class VentanaPrincipal {
 		}
 		private JLabel getLblCFInscripcion() {
 			if (lblCFInscripcion == null) {
-				lblCFInscripcion = new JLabel("F. Inscripción");
+				lblCFInscripcion = new JLabel("F. Inscripci\u00F3n");
 				lblCFInscripcion.setHorizontalAlignment(SwingConstants.CENTER);
 				lblCFInscripcion.setFont(new Font("Tahoma", Font.PLAIN, 14));
 			}
@@ -715,7 +715,7 @@ public class VentanaPrincipal {
 		}
 	private JButton getBtnClasificacion() {
 		if (btnClasificacion == null) {
-			btnClasificacion = new JButton("Clasificación");
+			btnClasificacion = new JButton("Clasificaci\u00F3n");
 			btnClasificacion.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) 
 				{
@@ -866,7 +866,7 @@ public class VentanaPrincipal {
 					try {
 						cargaContenido(archivo);
 						if(sinFallosFormato && sinFallosDni && sinFallosNombreCarrera && sinFallosEstructura) {
-							JOptionPane.showMessageDialog(null, "Operación realizada con éxito.");
+							JOptionPane.showMessageDialog(null, "Operaci\u00F3n realizada con \u00E9xito.");
 							btnCargar.setEnabled(false);
 							archivo = null;
 						}
@@ -1039,7 +1039,7 @@ public class VentanaPrincipal {
 			modelAtletas.addColumn("DNI");
 			modelAtletas.addColumn("Nombre");
 			modelAtletas.addColumn("Sexo");
-			modelAtletas.addColumn("Fecha de inscripción");
+			modelAtletas.addColumn("Fecha de inscripci\u00F3n");
 			modelAtletas.addColumn("Estado");
 			modelAtletas.addColumn("Dorsal");
 			tableAtletas = new JTable(modelAtletas);
@@ -1057,7 +1057,7 @@ public class VentanaPrincipal {
 					atletas = DataBaseManager.listarAtletas(carreraSeleccionada);
 					lblCarreraSeleccionada.setText(carreraSeleccionada + " seleccionada");
 					removeModelContent(modelAtletas);
-					String[] cabeceras = { "DNI", "Nombre", "Sexo", "Fecha de Inscripción", "Estado", "Dorsal" };
+					String[] cabeceras = { "DNI", "Nombre", "Sexo", "Fecha de Inscripci\u00F3n", "Estado", "Dorsal" };
 					modelAtletas.addRow(cabeceras);
 					if(atletas.size()>1)
 					{
@@ -1119,7 +1119,7 @@ public class VentanaPrincipal {
 
 	private JLabel getLblListarAtletasSegn() {
 		if (lblListarAtletasSegn == null) {
-			lblListarAtletasSegn = new JLabel("Listar atletas según la siguiente carrera: ");
+			lblListarAtletasSegn = new JLabel("Listar atletas seg\u00FAn la siguiente carrera: ");
 			lblListarAtletasSegn.setDisplayedMnemonic('L');
 			lblListarAtletasSegn.setBounds(481, 35, 294, 14);
 		}
@@ -1170,7 +1170,7 @@ public class VentanaPrincipal {
 								
 							}
 							else
-								JOptionPane.showMessageDialog(null, "No puedes asignar dorsal a un corredor que aún no ha pagado.");
+								JOptionPane.showMessageDialog(null, "No puedes asignar dorsal a un corredor que a\u00FAn no ha pagado.");
 						}
 						else
 						{

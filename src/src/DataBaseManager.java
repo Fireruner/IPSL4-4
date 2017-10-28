@@ -167,15 +167,7 @@ public class DataBaseManager
 		}
 		
 		/*
-<<<<<<< HEAD
-<<<<<<< HEAD
 		 * Devuelve un array de arrays con los datos de todos los atletas en la base de datos. No muy �til.
-=======
-		 * Devuelve un array de arrays con los datos de todos los atletas en la base de datos. No muy útil.
->>>>>>> parent of ae76061... Problemas encoding resueltos
-=======
-		 * Devuelve un array de arrays con los datos de todos los atletas en la base de datos. No muy �til.
->>>>>>> parent of a81ee71... Añadido el metodo comprobarAtletaPagado
 		 */
 		
 		public static ArrayList<String[]> getAtletas() throws SQLException
@@ -203,50 +195,23 @@ public class DataBaseManager
 		}
 		
 		/*
-<<<<<<< HEAD
-<<<<<<< HEAD
 		 * Para un atleta pasado como par�metro (dni) confirma si est� o no registrado en cierta carrera(pasada como par�metro)
-=======
-		 * Para un atleta pasado como parámetro (dni) confirma si está o no registrado en cierta carrera(pasada como parámetro)
->>>>>>> parent of ae76061... Problemas encoding resueltos
-=======
-		 * Para un atleta pasado como par�metro (dni) confirma si est� o no registrado en cierta carrera(pasada como par�metro)
->>>>>>> parent of a81ee71... Añadido el metodo comprobarAtletaPagado
 		 */
-		public static boolean atletaEstaEnCarrera(String dniAtleta, String fk_carrera) throws SQLException {
+		public static boolean atletaEstaEnCarrera(String dniAtleta, String fk_carrera) throws SQLException 
+		{
+			
+			boolean coincide = false;
 			Connection con = getConnection();
-			
-			PreparedStatement ps = con.prepareStatement("select dni,fk_carrera from atleta where dni = ? and fk_carrera = ?");
+			PreparedStatement ps = con.prepareStatement("select ? from atleta where fk_carrera = ?");
 			ps.setString(1, dniAtleta);
-			ps.setString(2, fk_carrera);
-			
+			ps.setString(1, fk_carrera);
 			ResultSet rs = ps.executeQuery();
-			if(rs.getRow() == 0) {
-				rs.close();
-				ps.close();
-				con.close();	
-				return false;
-				
+			while(rs.next())
+			{
+				coincide = rs.getString("nombre").equals(dniAtleta);
 			}
-			else {
-				rs.close();
-				ps.close();
-				con.close();
-				return true;
+			return coincide;
 				
-			}
-//			String dni = rs.getString("DNI");
-//			
-//			String fk_carrera1 = rs.getString("fk_carrera");
-			
-			
-			
-//			if ((!dni.isEmpty() && fk_carrera1.isEmpty()) || (dni.equals(null) && fk_carrera1.equals(null))) {
-//				
-//			}
-//			else {
-//				
-//			}
 		}
 			
 		public static boolean anadirCiertoAtleta(Atleta atleta) throws SQLException {
@@ -315,17 +280,9 @@ public class DataBaseManager
 			return dnis;
 		}
 		
-		/*
-<<<<<<< HEAD
-<<<<<<< HEAD
-		 * Lista atletas seg�n una carrera pasada como par�metro
-=======
-		 * Lista atletas según una carrera pasada como parámetro
->>>>>>> parent of ae76061... Problemas encoding resueltos
-=======
-		 * Lista atletas seg�n una carrera pasada como par�metro
->>>>>>> parent of a81ee71... Añadido el metodo comprobarAtletaPagado
-		 */
+		
+		 /* Lista atletas seg�n una carrera pasada como par�metro*/
+
 		public static ArrayList<String[]> listarAtletas(String fk_carrera) throws SQLException {
 			ArrayList<String[]> c = new ArrayList<String[]>();
 			Connection con = getConnection();

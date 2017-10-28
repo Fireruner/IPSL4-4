@@ -231,7 +231,7 @@ public class VentanaDatosAtleta extends JDialog {
 						valido = DataBaseManager.atletaEstaEnCarrera(txtfldDNI.getText(), carrera);
 						if (valido) {
 
-							JOptionPane.showMessageDialog(null, "El atleta ya est� inscrito en la carrera");
+							JOptionPane.showMessageDialog(null, "El atleta ya est\u00E1 inscrito en la carrera");
 						}
 
 						else {
