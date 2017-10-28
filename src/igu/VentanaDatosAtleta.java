@@ -248,7 +248,7 @@ public class VentanaDatosAtleta extends JDialog {
 
 							Atleta atleta = new Atleta(txtfldDNI.getText().toUpperCase(), txtfldNombre.getText(),
 									txtfldApellidos.getText(), comprobarSexo(), comprobarFechaNacimiento(),
-									carrera, comprobarFechaInscripcion(), "inscrito", null, null);
+									carrera, comprobarFechaInscripcion(), "inscrito", null, null, "indefinido");
 							DataBaseManager.anadirCiertoAtleta(atleta);
 							atleta.imprimirResguardo();
 							dispose();

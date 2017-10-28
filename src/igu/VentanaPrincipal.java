@@ -481,16 +481,16 @@ public class VentanaPrincipal {
 									participantes = DataBaseManager.getCorredores();
 									
 									for(int i = 0; i<participantes.size();i++){
-										if(participantes.get(i)[5].equals(carrera)) {
-											if(participantes.get(i)[8] != null){
+										if(participantes.get(i)[6].equals(carrera)) {
+											if(participantes.get(i)[9] != null){
 												atletasConTiempo.add(new Atleta(participantes.get(i)[0],participantes.get(i)[1],participantes.get(i)[2],
 												participantes.get(i)[3],participantes.get(i)[4],participantes.get(i)[5],participantes.get(i)[6],
-												participantes.get(i)[7],participantes.get(i)[8],participantes.get(i)[9]));
+												participantes.get(i)[7],participantes.get(i)[8],participantes.get(i)[9], participantes.get(i)[10]));
 											}
 											else{
 												atletasSinTiempo.add(new Atleta(participantes.get(i)[0],participantes.get(i)[1],participantes.get(i)[2],
 												participantes.get(i)[3],participantes.get(i)[4],participantes.get(i)[5],participantes.get(i)[6],
-												participantes.get(i)[7],participantes.get(i)[8],participantes.get(i)[9]));
+												participantes.get(i)[7],participantes.get(i)[8],participantes.get(i)[9], participantes.get(i)[10]));
 											}
 										}
 									}						
@@ -1052,6 +1052,7 @@ public class VentanaPrincipal {
 			modelAtletas = new MyTableModel();
 			modelAtletas.addColumn("DNI");
 			modelAtletas.addColumn("Nombre");
+			modelAtletas.addColumn("Categoria");
 			modelAtletas.addColumn("Sexo");
 			modelAtletas.addColumn("Fecha de inscripci\u00F3n");
 			modelAtletas.addColumn("Estado");
@@ -1071,7 +1072,7 @@ public class VentanaPrincipal {
 					atletas = DataBaseManager.listarAtletas(carreraSeleccionada);
 					lblCarreraSeleccionada.setText(carreraSeleccionada + " seleccionada");
 					removeModelContent(modelAtletas);
-					String[] cabeceras = { "DNI", "Nombre", "Sexo", "Fecha de Inscripci\u00F3n", "Estado", "Dorsal" };
+					String[] cabeceras = { "DNI", "Nombre","Categoria","Sexo", "Fecha de Inscripci\u00F3n", "Estado", "Dorsal" };
 					modelAtletas.addRow(cabeceras);
 					if(atletas.size()>1)
 					{
@@ -1152,7 +1153,7 @@ public class VentanaPrincipal {
 			});
 		}
 		return btnAtletas;
-	}
+	} 
 	private JButton getBtnAsignarDorsal() {
 		if (btnAsignarDorsal == null) {
 			btnAsignarDorsal = new JButton("Asignar Dorsal");
