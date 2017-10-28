@@ -167,7 +167,7 @@ public class DataBaseManager
 		}
 		
 		/*
-		 * Devuelve un array de arrays con los datos de todos los atletas en la base de datos. No muy Ãºtil.
+		 * Devuelve un array de arrays con los datos de todos los atletas en la base de datos. No muy �til.
 		 */
 		
 		public static ArrayList<String[]> getAtletas() throws SQLException
@@ -195,45 +195,26 @@ public class DataBaseManager
 		}
 		
 		/*
-		 * Para un atleta pasado como parÃ¡metro (dni) confirma si estÃ¡ o no registrado en cierta carrera(pasada como parÃ¡metro)
+		 * Para un atleta pasado como par�metro (dni) confirma si est� o no registrado en cierta carrera(pasada como par�metro)
 		 */
-		public static boolean atletaEstaEnCarrera(String dniAtleta, String fk_carrera) throws SQLException {
-			Connection con = getConnection();
+		public static boolean atletaEstaEnCarrera(String dniAtleta, String fk_carrera) throws SQLException 
+		{
 			
-			PreparedStatement ps = con.prepareStatement("select dni,fk_carrera from atleta where dni = ? and fk_carrera = ?");
+			boolean coincide = false;
+			Connection con = getConnection();
+			PreparedStatement ps = con.prepareStatement("select dni from atleta where DNI = ? and fk_carrera = ?");
 			ps.setString(1, dniAtleta);
 			ps.setString(2, fk_carrera);
-			
 			ResultSet rs = ps.executeQuery();
-			if(rs.getRow() == 0) {
-				rs.close();
-				ps.close();
-				con.close();	
-				return false;
-				
+			while(rs.next())
+			{
+				coincide = rs.getString("DNI").equals(dniAtleta);
 			}
-			else {
-				rs.close();
-				ps.close();
-				con.close();
-				return true;
+			return coincide;
 				
-			}
-//			String dni = rs.getString("DNI");
-//			
-//			String fk_carrera1 = rs.getString("fk_carrera");
-			
-			
-			
-//			if ((!dni.isEmpty() && fk_carrera1.isEmpty()) || (dni.equals(null) && fk_carrera1.equals(null))) {
-//				
-//			}
-//			else {
-//				
-//			}
 		}
 			
-		public static boolean a�adirCiertoAtleta(Atleta atleta) throws SQLException {
+		public static boolean anadirCiertoAtleta(Atleta atleta) throws SQLException {
 			Connection con = getConnection();
 			String dni = atleta.getDni();
 			String nombre = atleta.getNombre();
@@ -266,7 +247,7 @@ public class DataBaseManager
 				
 		}
 		
-		public static void a�adirTiempoAtleta(String carrera, String tiempo, String dni) throws SQLException {
+		public static void anadirTiempoAtleta(String carrera, String tiempo, String dni) throws SQLException {
 			Connection con = getConnection();
 			
 			PreparedStatement ps = con.prepareStatement("UPDATE ATLETA SET tiempo = ? WHERE dni = ? and fk_carrera = ?");
@@ -299,9 +280,9 @@ public class DataBaseManager
 			return dnis;
 		}
 		
-		/*
-		 * Lista atletas segÃºn una carrera pasada como parÃ¡metro
-		 */
+		
+		 /* Lista atletas seg�n una carrera pasada como par�metro*/
+
 		public static ArrayList<String[]> listarAtletas(String fk_carrera) throws SQLException {
 			ArrayList<String[]> c = new ArrayList<String[]>();
 			Connection con = getConnection();
@@ -384,7 +365,7 @@ public class DataBaseManager
 			return nextOne;
 		}
 		
-		public static void a�adirDorsalCorredor(String dni, String carrera, String dorsal) throws SQLException
+		public static void anadirDorsalCorredor(String dni, String carrera, String dorsal) throws SQLException
 		{
 			Connection con = getConnection();
 			PreparedStatement ps = con.prepareStatement("update atleta set dorsal = ? where dni = ? and fk_carrera = ?");
@@ -420,54 +401,5 @@ public class DataBaseManager
 			
 			return results;
 		}
-	
-		public static String comprobarAtletaPagado(String dni, String carrera) throws SQLException
-		{
-			String estado = "vacio";
-			Connection con = getConnection();
-			String texto = "select estado as estado "
-					+ "from atleta  "
-					+ "where dni = ? and fk_carrera = ?";
-			PreparedStatement st = con.prepareStatement(texto);
-			st.setString(1, dni);
-			st.setString(2, carrera);
-			ResultSet rs = st.executeQuery();
-			while(rs.next())
-			{
-				String result = new String();
-				result = rs.getString("estado");
-				if(result.equals("pagado")) {
-					estado = "pagado";
-				}
-			}
-			return estado;
-		}
-		
-<<<<<<< HEAD
-		public static boolean comprobarAtletaPagado(String dni, String carrera) throws SQLException
-		{
-			boolean pagado = false;
-			Connection con = getConnection();
-			String texto = "select estado as estado "
-					+ "from atleta  "
-					+ "where dni = ? and fk_carrera = ?";
-			PreparedStatement st = con.prepareStatement(texto);
-			st.setString(1, dni);
-			st.setString(2, carrera);
-			ResultSet rs = st.executeQuery();
-			while(rs.next())
-			{
-				String result = new String();
-				result = rs.getString("estado");
-				if(result.equals("pagado")) {
-					pagado = true;
-				}
-			}
-			return pagado;
-		}
 		
 }
-=======
-}
-
->>>>>>> branch 'master' of https://github.com/Fireruner/IPSL4-4

@@ -17,20 +17,15 @@ import src.Atleta;
 import src.DataBaseManager;
 import src.GestorComprobaciones;
 import src.MyTableModel;
-
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.event.ActionEvent;
-
 import javax.swing.JPanel;
-
 import java.awt.GridLayout;
-
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -39,17 +34,13 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.awt.Font;
-
-//import net.miginfocom.swing.MigLayout;
-
-import java.awt.Desktop;
+import net.miginfocom.swing.MigLayout;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.FlowLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
-import java.awt.Desktop;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -182,12 +173,12 @@ public class VentanaPrincipal {
 			pnControles = new JPanel();
 			pnControles.setBounds(357, 11, 292, 469);
 			pnControles.setLayout(new GridLayout(0, 1, 0, 0));
-			pnControles.add(getBtnRegistrarCorredor());
-			pnControles.add(getBtnPagos());
-			pnControles.add(getBtnClasificacion());
-			pnControles.add(getBtnRegistrarTiempos());
 			pnControles.add(getBtnAtletas());
+			pnControles.add(getBtnClasificacion());
+			pnControles.add(getBtnPagos());
 			pnControles.add(getBtnAsignarDorsales());
+			pnControles.add(getBtnRegistrarCorredor());
+			pnControles.add(getBtnRegistrarTiempos());
 		}
 		return pnControles;
 	}
@@ -197,9 +188,24 @@ public class VentanaPrincipal {
 		if(pnClasificacion == null)
 		{
 			pnClasificacion = new JPanel();
-			pnClasificacion.setLayout(new BorderLayout(0, 0));
-			pnClasificacion.add(getPanelDatos(), BorderLayout.CENTER);
-			pnClasificacion.add(getPanelFiltroCarrera(), BorderLayout.WEST);
+			GridBagLayout gbl_pnClasificacion = new GridBagLayout();
+			gbl_pnClasificacion.columnWidths = new int[]{202, 738, 0};
+			gbl_pnClasificacion.rowHeights = new int[]{477, 0};
+			gbl_pnClasificacion.columnWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
+			gbl_pnClasificacion.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+			pnClasificacion.setLayout(gbl_pnClasificacion);
+			GridBagConstraints gbc_panelFiltroCarrera = new GridBagConstraints();
+			gbc_panelFiltroCarrera.anchor = GridBagConstraints.WEST;
+			gbc_panelFiltroCarrera.fill = GridBagConstraints.VERTICAL;
+			gbc_panelFiltroCarrera.insets = new Insets(0, 0, 0, 5);
+			gbc_panelFiltroCarrera.gridx = 0;
+			gbc_panelFiltroCarrera.gridy = 0;
+			pnClasificacion.add(getPanelFiltroCarrera(), gbc_panelFiltroCarrera);
+			GridBagConstraints gbc_panelDatos = new GridBagConstraints();
+			gbc_panelDatos.fill = GridBagConstraints.BOTH;
+			gbc_panelDatos.gridx = 1;
+			gbc_panelDatos.gridy = 0;
+			pnClasificacion.add(getPanelDatos(), gbc_panelDatos);
 		}
 		return pnClasificacion;
 	}
@@ -246,7 +252,7 @@ public class VentanaPrincipal {
 					actualizarTablaPagos((String)comboCarreras.getSelectedItem());
 				}
 			});
-			btnActualizar.setBounds(483, 134, 156, 23);
+			btnActualizar.setBounds(649, 135, 156, 23);
 		}
 		return btnActualizar;
 	}
@@ -273,7 +279,7 @@ public class VentanaPrincipal {
 			modelPagos.addColumn("DNI");
 			modelPagos.addColumn("Plazo");
 			tablePagos = new JTable(modelPagos);
-			tablePagos.setBounds(10, 11, 463, 432);
+			tablePagos.setBounds(10, 11, 629, 432);
 		}
 		return tablePagos;
 	}
@@ -376,7 +382,7 @@ public class VentanaPrincipal {
 						JOptionPane.showMessageDialog(null, "Para realizar el pago debe primero seleccionar un atleta que no haya pagado.");
 				}
 			});
-			btnPagar.setBounds(483, 178, 156, 23);
+			btnPagar.setBounds(649, 179, 156, 23);
 		}
 		return btnPagar;
 	}
@@ -426,7 +432,7 @@ public class VentanaPrincipal {
 			if (tablaResultados == null) {
 				MyTableModel model = new MyTableModel();
 				model.addColumn("DNI");
-				model.addColumn("PosiciÃƒÂ³n");
+				model.addColumn("PosiciÃ³n");
 				model.addColumn("Sexo");	
 				model.addColumn("Dorsal");
 				model.addColumn("Nombre");
@@ -459,157 +465,105 @@ public class VentanaPrincipal {
 		}
 		
 		//BOTON ENCARGADO DE MOSTRAR LOS RESULTADOS DE CIERTA CARRERA ESCRITA EN EL JTEXTFIELD EN LA JTABLE
-		private JButton getBtnMostrarResultados() {
-			if (btnMostrarResultados == null) {
-				btnMostrarResultados = new JButton("Mostrar resultados");
-				btnMostrarResultados.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-						String carrera = (String) comboClasificacion.getSelectedItem();
-						List<String[]> participantes;
-						List<Atleta> atletasConTiempo = new ArrayList<Atleta>();
-						List<Atleta> atletasSinTiempo = new ArrayList<Atleta>();	//ya que el order by coloca primero a los sin tiempo
-						
-						
-						try{
-							
-							MyTableModel model = (MyTableModel) tablaResultados.getModel();
-							participantes = DataBaseManager.getCorredores();
+				private JButton getBtnMostrarResultados() {
+					if (btnMostrarResultados == null) {
+						btnMostrarResultados = new JButton("Mostrar resultados");
+						btnMostrarResultados.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent arg0) {
+								String carrera = (String) comboClasificacion.getSelectedItem();
+								List<String[]> participantes;
+								List<Atleta> atletasConTiempo = new ArrayList<Atleta>();
+								List<Atleta> atletasSinTiempo = new ArrayList<Atleta>();	//ya que el order by coloca primero a los sin tiempo
 								
-<<<<<<< HEAD
-							if(participantes.size()!=0) {
-							for(int i = 0; i<participantes.size();i++){
-								if(participantes.get(i)[5].equals(carrera)) {
-									if(participantes.get(i)[8] != null){
-										atletasConTiempo.add(new Atleta(participantes.get(i)[0],participantes.get(i)[1],participantes.get(i)[2],
-										participantes.get(i)[3],participantes.get(i)[4],participantes.get(i)[5],participantes.get(i)[6],
-										participantes.get(i)[7],participantes.get(i)[8],participantes.get(i)[9]));
-=======
-							if(0<participantes.size()) {
-								for(int i = 0; i<participantes.size();i++){
-									if(participantes.get(i)[5].equals(carrera)) {
-										if(participantes.get(i)[8] != null){
-											atletasConTiempo.add(new Atleta(participantes.get(i)[0],participantes.get(i)[1],participantes.get(i)[2],
-													participantes.get(i)[3],participantes.get(i)[4],participantes.get(i)[5],participantes.get(i)[6],
-													participantes.get(i)[7],participantes.get(i)[8],participantes.get(i)[9]));
+								
+								try{
+									MyTableModel model = (MyTableModel) tablaResultados.getModel();
+									participantes = DataBaseManager.getCorredores();
+									
+									for(int i = 0; i<participantes.size();i++){
+										if(participantes.get(i)[5].equals(carrera)) {
+											if(participantes.get(i)[8] != null){
+												atletasConTiempo.add(new Atleta(participantes.get(i)[0],participantes.get(i)[1],participantes.get(i)[2],
+												participantes.get(i)[3],participantes.get(i)[4],participantes.get(i)[5],participantes.get(i)[6],
+												participantes.get(i)[7],participantes.get(i)[8],participantes.get(i)[9]));
+											}
+											else{
+												atletasSinTiempo.add(new Atleta(participantes.get(i)[0],participantes.get(i)[1],participantes.get(i)[2],
+												participantes.get(i)[3],participantes.get(i)[4],participantes.get(i)[5],participantes.get(i)[6],
+												participantes.get(i)[7],participantes.get(i)[8],participantes.get(i)[9]));
+											}
+										}
+									}						
+									
+									//Si hay datos en la tabla, los borra
+									removeModelContent((MyTableModel)tablaResultados.getModel());
+									
+									
+									
+									int contadorPosM = 1;	//contador para las posiciones masculinas
+									int contadorPosF = 1;	//contador para las posiciones femeninas
+									for(int i = 0; i<atletasConTiempo.size(); i++){	//AnADIMOS PRIMERO LOS QUE TIENEN TIEMPO
+										
+										if(atletasConTiempo.get(i).getSexo().equals(m)) {
+											Object[] temp = {atletasConTiempo.get(i).getDni() ,contadorPosM, atletasConTiempo.get(i).getSexo(), 
+													atletasConTiempo.get(i).getDorsal(), atletasConTiempo.get(i).getNombre(), atletasConTiempo.get(i).getApellidos(),
+													atletasConTiempo.get(i).getFechaDeNacimiento(), atletasConTiempo.get(i).getFecha_inscripcion(), 
+													atletasConTiempo.get(i).getTiempo()};
+											
+											atletasConTiempo.get(i).setPosicion(String.valueOf(contadorPosM));
+											model.addRow(temp);
+											contadorPosM++;		
 										}
 										else{
-											atletasSinTiempo.add(new Atleta(participantes.get(i)[0],participantes.get(i)[1],participantes.get(i)[2],
-											participantes.get(i)[3],participantes.get(i)[4],participantes.get(i)[5],participantes.get(i)[6],
-											participantes.get(i)[7],participantes.get(i)[8],participantes.get(i)[9]));
+											Object[] temp = {atletasConTiempo.get(i).getDni() ,contadorPosF, atletasConTiempo.get(i).getSexo(), 
+													atletasConTiempo.get(i).getDorsal(), atletasConTiempo.get(i).getNombre(), atletasConTiempo.get(i).getApellidos(),
+													atletasConTiempo.get(i).getFechaDeNacimiento(), atletasConTiempo.get(i).getFecha_inscripcion(), 
+													atletasConTiempo.get(i).getTiempo()};
+											
+											atletasConTiempo.get(i).setPosicion(String.valueOf(contadorPosF));
+											model.addRow(temp);
+											contadorPosF++;	
 										}
 									}
-								}						
-							
-								//Si hay datos en la tabla, los borra
-								removeModelContent((MyTableModel)tablaResultados.getModel());
-							
-							
-							
-								int contadorPosM = 1;	//contador para las posiciones masculinas
-								int contadorPosF = 1;	//contador para las posiciones femeninas
-								for(int i = 0; i<atletasConTiempo.size(); i++){	//ANNADIMOS PRIMERO LOS QUE TIENEN TIEMPO
-								
-									if(atletasConTiempo.get(i).getSexo().equals(m)) {
-										Object[] temp = {atletasConTiempo.get(i).getDni() ,contadorPosM, atletasConTiempo.get(i).getSexo(), 
-												atletasConTiempo.get(i).getDorsal(), atletasConTiempo.get(i).getNombre(), atletasConTiempo.get(i).getApellidos(),
-												atletasConTiempo.get(i).getFechaDeNacimiento(), atletasConTiempo.get(i).getFecha_inscripcion(), 
-												atletasConTiempo.get(i).getTiempo()};
-									
-										atletasConTiempo.get(i).setPosicion(String.valueOf(contadorPosM));
-										model.addRow(temp);
-										contadorPosM++;		
->>>>>>> branch 'master' of https://github.com/Fireruner/IPSL4-4
-									}
-									else{
-										Object[] temp = {atletasConTiempo.get(i).getDni() ,contadorPosF, atletasConTiempo.get(i).getSexo(), 
-												atletasConTiempo.get(i).getDorsal(), atletasConTiempo.get(i).getNombre(), atletasConTiempo.get(i).getApellidos(),
-												atletasConTiempo.get(i).getFechaDeNacimiento(), atletasConTiempo.get(i).getFecha_inscripcion(), 
-												atletasConTiempo.get(i).getTiempo()};
-										
-										atletasConTiempo.get(i).setPosicion(String.valueOf(contadorPosF));
-										model.addRow(temp);
-										contadorPosF++;	
-									}
-								}	
 
-								for(int i = 0; i<atletasSinTiempo.size(); i++){	//Y LUEGO LOS QUE NO
-									if(atletasSinTiempo.get(i).getSexo().equals(m)) {
-										Object[] temp = {atletasSinTiempo.get(i).getDni() ,contadorPosM, atletasSinTiempo.get(i).getSexo(), 
-												atletasSinTiempo.get(i).getDorsal(), atletasSinTiempo.get(i).getNombre(), atletasSinTiempo.get(i).getApellidos(),
-												atletasSinTiempo.get(i).getFechaDeNacimiento(), atletasSinTiempo.get(i).getFecha_inscripcion(), 
-												"---"};
-									
-										atletasSinTiempo.get(i).setPosicion(String.valueOf(contadorPosF));
-										model.addRow(temp);
-										contadorPosM++;
+									for(int i = 0; i<atletasSinTiempo.size(); i++){	//Y LUEGO LOS QUE NO
+										if(atletasSinTiempo.get(i).getSexo().equals(m)) {
+											Object[] temp = {atletasSinTiempo.get(i).getDni() ,contadorPosM, atletasSinTiempo.get(i).getSexo(), 
+													atletasSinTiempo.get(i).getDorsal(), atletasSinTiempo.get(i).getNombre(), atletasSinTiempo.get(i).getApellidos(),
+													atletasSinTiempo.get(i).getFechaDeNacimiento(), atletasSinTiempo.get(i).getFecha_inscripcion(), 
+													"---"};
+											
+											atletasSinTiempo.get(i).setPosicion(String.valueOf(contadorPosF));
+											model.addRow(temp);
+											contadorPosM++;
+										}
+										else{
+											Object[] temp = {atletasSinTiempo.get(i).getDni() ,contadorPosF, atletasSinTiempo.get(i).getSexo(), 
+													atletasSinTiempo.get(i).getDorsal(), atletasSinTiempo.get(i).getNombre(), atletasSinTiempo.get(i).getApellidos(),
+													atletasSinTiempo.get(i).getFechaDeNacimiento(), atletasSinTiempo.get(i).getFecha_inscripcion(), 
+													atletasSinTiempo.get(i).getTiempo()};
+											
+											atletasSinTiempo.get(i).setPosicion(String.valueOf(contadorPosF));
+											model.addRow(temp);
+											contadorPosF++;
+										}
 									}
-									else{
-										Object[] temp = {atletasSinTiempo.get(i).getDni() ,contadorPosF, atletasSinTiempo.get(i).getSexo(), 
-												atletasSinTiempo.get(i).getDorsal(), atletasSinTiempo.get(i).getNombre(), atletasSinTiempo.get(i).getApellidos(),
-												atletasSinTiempo.get(i).getFechaDeNacimiento(), atletasSinTiempo.get(i).getFecha_inscripcion(), 
-												"---"};
 									
-										atletasSinTiempo.get(i).setPosicion(String.valueOf(contadorPosF));
-										model.addRow(temp);
-										contadorPosF++;
-									}
+									tablaResultados.setModel(model);
 								}
 								
-								tablaResultados.setModel(model);
-							}
-<<<<<<< HEAD
-
-							for(int i = 0; i<atletasSinTiempo.size(); i++){	//Y LUEGO LOS QUE NO
-								if(atletasSinTiempo.get(i).getSexo().equals(m)) {
-									Object[] temp = {atletasSinTiempo.get(i).getDni() ,contadorPosM, atletasSinTiempo.get(i).getSexo(), 
-											atletasSinTiempo.get(i).getDorsal(), atletasSinTiempo.get(i).getNombre(), atletasSinTiempo.get(i).getApellidos(),
-											atletasSinTiempo.get(i).getFechaDeNacimiento(), atletasSinTiempo.get(i).getFecha_inscripcion(), 
-											"---"};
-									
-									atletasSinTiempo.get(i).setPosicion(String.valueOf(contadorPosF));
-									model.addRow(temp);
-									contadorPosM++;
+								catch (SQLException ex){
+									JOptionPane.showMessageDialog(null, "Error en atleta");
+									System.err.println("Error en atleta");
+									ex.printStackTrace();
 								}
-								else{
-									Object[] temp = {atletasSinTiempo.get(i).getDni() ,contadorPosF, atletasSinTiempo.get(i).getSexo(), 
-											atletasSinTiempo.get(i).getDorsal(), atletasSinTiempo.get(i).getNombre(), atletasSinTiempo.get(i).getApellidos(),
-											atletasSinTiempo.get(i).getFechaDeNacimiento(), atletasSinTiempo.get(i).getFecha_inscripcion(), 
-											"---"};
-									
-									atletasSinTiempo.get(i).setPosicion(String.valueOf(contadorPosF));
-									model.addRow(temp);
-									contadorPosF++;
-								}
-=======
-							else {
-								MyTableModel m = new MyTableModel();
-								tablaResultados.setModel(m);
->>>>>>> branch 'master' of https://github.com/Fireruner/IPSL4-4
+								
+								
 							}
-<<<<<<< HEAD
-							tablaResultados.setModel(model);
-							}
-							else {
-								MyTableModel m = new MyTableModel();
-								tablaResultados.setModel(m);
-							}
-=======
->>>>>>> branch 'master' of https://github.com/Fireruner/IPSL4-4
-						}
-						
-						catch (SQLException ex){
-							JOptionPane.showMessageDialog(null, "Error en atleta");
-							System.err.println("Error en atleta");
-							ex.printStackTrace();
-						}
-						
-						
+						});
 					}
-				});
-			}
-			return btnMostrarResultados;
-		}
-		
+					return btnMostrarResultados;
+				}		
 		
 		
 		
@@ -635,7 +589,7 @@ public class VentanaPrincipal {
 				lblNombreDeCarrera = new JLabel("Nombre de la carrera a filtrar:");
 				lblNombreDeCarrera.setHorizontalAlignment(SwingConstants.CENTER);
 				lblNombreDeCarrera.setVerticalAlignment(SwingConstants.BOTTOM);
-				lblNombreDeCarrera.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 18));
+				lblNombreDeCarrera.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 15));
 			}
 			return lblNombreDeCarrera;
 		}
@@ -657,7 +611,7 @@ public class VentanaPrincipal {
 		
 		
 		/*
-		 * A PARTIR DE AQUI TODO LO RELACIONADO CON EL TÃ?TULO: "RESULTADOS" Y LAS COLUMNAS DE LA JTABLE 
+		 * A PARTIR DE AQUI TODO LO RELACIONADO CON EL TÍTULO: "RESULTADOS" Y LAS COLUMNAS DE LA JTABLE 
 		 */
 			
 		
@@ -712,7 +666,7 @@ public class VentanaPrincipal {
 		}
 		private JLabel getLblCPosicion() {
 			if (lblCPosicion == null) {
-				lblCPosicion = new JLabel("PosiciÃ³n");
+				lblCPosicion = new JLabel("Posici\u00F3n");
 				lblCPosicion.setFont(new Font("Tahoma", Font.PLAIN, 14));
 				lblCPosicion.setHorizontalAlignment(SwingConstants.CENTER);
 			}
@@ -760,7 +714,7 @@ public class VentanaPrincipal {
 		}
 		private JLabel getLblCFInscripcion() {
 			if (lblCFInscripcion == null) {
-				lblCFInscripcion = new JLabel("F. InscripciÃ³n");
+				lblCFInscripcion = new JLabel("F. Inscripci\u00F3n");
 				lblCFInscripcion.setHorizontalAlignment(SwingConstants.CENTER);
 				lblCFInscripcion.setFont(new Font("Tahoma", Font.PLAIN, 14));
 			}
@@ -776,7 +730,7 @@ public class VentanaPrincipal {
 		}
 	private JButton getBtnClasificacion() {
 		if (btnClasificacion == null) {
-			btnClasificacion = new JButton("ClasificaciÃ³n");
+			btnClasificacion = new JButton("Clasificaci\u00F3n");
 			btnClasificacion.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) 
 				{
@@ -811,7 +765,7 @@ public class VentanaPrincipal {
 					card.show(frame.getContentPane(), "panelTitulo");
 				}
 			});
-			btMenu.setBounds(483, 212, 156, 23);
+			btMenu.setBounds(649, 213, 156, 23);
 		}
 		return btMenu;
 	}
@@ -822,7 +776,6 @@ public class VentanaPrincipal {
 				public void actionPerformed(ActionEvent e) 
 				{
 					VentanaDatosAtleta ventanaRegistro = new VentanaDatosAtleta();
-					ventanaRegistro.setAlwaysOnTop(true);
 					ventanaRegistro.setVisible(true);
 				}
 			});
@@ -927,7 +880,7 @@ public class VentanaPrincipal {
 					try {
 						cargaContenido(archivo);
 						if(sinFallosFormato && sinFallosDni && sinFallosNombreCarrera && sinFallosEstructura) {
-							JOptionPane.showMessageDialog(null, "OperaciÃ³n realizada con Ã©xito.");
+							JOptionPane.showMessageDialog(null, "Operaci\u00F3n realizada con \u00E9xito.");
 							btnCargar.setEnabled(false);
 							archivo = null;
 						}
@@ -970,20 +923,15 @@ public class VentanaPrincipal {
 		return btnVolverAlMen;
 	}
 	
-	//METODO QUE CARGA EL CONTENIDO EN LA BBDD, SI ALGUN DATO ESTA MAL NO LO CARGA, NO IMPLICA QUE NO CARGUE LA TOTALIDAD DEL FICHERO, SOLO AQUELLOS DATOS QUE TENGAN EL FORMATO CORRECTO
-<<<<<<< HEAD
 	void cargaContenido(File archivo) throws FileNotFoundException, IOException, SQLException {
 	      boolean errorFormato = false;
 	      boolean errorPresencia = false;
 	      boolean errorNombreCarrera = false;
-	      boolean errorEstructura = false;
-	      boolean errorPago = false;
-	      ArrayList<String> datosIncorrectos = new ArrayList<String>();
 	      
 	      String carrera = archivo.getName();
 	      String nombreCarrera = obtenNombreCarrera(carrera);
 	      
-	      if(!gc.comprobadorCarrera(nombreCarrera)) {	//si la carrera no existe error carrera
+	      if(!gc.comprobadorCarrera(nombreCarrera)) {
 	    	  errorNombreCarrera = true;
 	      }
 	      
@@ -993,269 +941,84 @@ public class VentanaPrincipal {
 	      BufferedReader b = new BufferedReader(f);
 	      
 	      while((cadena = b.readLine())!=null) {
-	          boolean comprobadorTiempo = false;
-	          boolean comprobadorDNI = false;
-	          boolean comprobadorPago = false;
-	          String[] partes = cadena.split(" ");	//dividimos las partes en tiempo y dni respectivamente
+	          String[] partes = cadena.split(" ");	//dividimos las partes
 	          if(partes.length==2) {
-	        	  if(partes[0].equals("---"))
-	        		  if(gc.comprobadorPresencia(partes[1],nombreCarrera)&&"pagado".equals(DataBaseManager.comprobarAtletaPagado(partes[1],nombreCarrera))) {     	//sin tiempo?
-	        			  DataBaseManager.añadirTiempoAtleta(nombreCarrera, partes[0], partes[1]);						//buscamos su dni en la bbdd y le asignamos su tiempo null
+	        	  if(partes[0].equals("---")) {     	//sin tiempo?
+	        		  DataBaseManager.anadirTiempoAtleta(nombreCarrera, partes[0], partes[1]);						//buscamos su dni en la bbdd y le asignamos su tiempo null
+	        	  }
+	        	  else {								//con tiempo?
+	        		  if(gc.comprobadorTiempos(partes[0])) { //si el tiempo es valido buscamos su dni en la bbdd y le asignamos su tiempo
+	        			  DataBaseManager.anadirTiempoAtleta(nombreCarrera, partes[0], partes[1]);
 	        		  }
-	        	  else	{			//con tiempo        			  
-	        		  if(gc.comprobadorTiempos(partes[0])&&gc.comprobadorPresencia(partes[1],nombreCarrera)&&"pagado".equals(DataBaseManager.comprobarAtletaPagado(partes[1],nombreCarrera))) { //si el tiempo es valido buscamos su dni en la bbdd y le asignamos su tiempo
-	        			  DataBaseManager.añadirTiempoAtleta(nombreCarrera, partes[0], partes[1]);
+	        		  else {
+	        			  errorFormato = true;
 	        		  }
 	        	  }
-	        	  System.out.println("pagado".equals(DataBaseManager.comprobarAtletaPagado(partes[1],nombreCarrera)) + "   " + DataBaseManager.comprobarAtletaPagado(partes[1],nombreCarrera));
-	        	  
-	          	//Lo que conseguimos así es que añada los corredores cuyo formato es correcto, los que tengan un formato incorrecto han de ser revisados por el cliente
+	          	//Lo que conseguimos así es que anada los corredores cuyo formato es correcto, los que tengan un formato incorrecto han de ser revisados por el cliente
 	          
-	          	//Distintas comprobaciones con respecto a cada linea, los comprobadores se usan a la hora de imprimir los fallos en el fichero de fallos, los errores para la ventana emergente
+	          	//Vamos a comprobar tambien que el corredor esté en la carrera, si no está lo daremos a conocer:
 	          	if(!gc.comprobadorPresencia(partes[1],nombreCarrera)) {
-	  			  	comprobadorDNI = true;
 	          		errorPresencia = true;
-	          	}
-	          	else {
-	          		if(!"pagado".equals(DataBaseManager.comprobarAtletaPagado(partes[1],nombreCarrera))) {
-	          			comprobadorPago = true;
-	          			errorPago = true;
-	          		}
-	          	}
-	          	if(!gc.comprobadorTiempos(partes[0])&&!partes[0].equals("---")) {
-	  			    comprobadorTiempo = true;        			  
-	  			    errorFormato = true;
 	          	}
 	          }
 	          else {
-	        	 //aqui no hace falta que añada datos incorrectos, si la estructura del fichero esta mal no debe añadir cada linea al fichero de salida
-	        	 errorEstructura = true; 
-	          }      
-	          
-	          //Comprobamos los distintos errores
-	          if(comprobadorTiempo&&!comprobadorDNI&&!comprobadorPago) {
-	        	  datosIncorrectos.add(cadena + "   El formato de tiempo es incorrecto");
+	        	 errorFormato = true; 
 	          }
-	          else if(!comprobadorTiempo&&comprobadorDNI&&!comprobadorPago) {
-	        	  datosIncorrectos.add(cadena + "   El corredor no está en la base de datos");
-	          }
-	          else if(!comprobadorTiempo&&!comprobadorDNI&&comprobadorPago) {
-	        	  datosIncorrectos.add(cadena + "   El corredor no ha pagado para competir en esta carrera");
-	          }
-			  else if(comprobadorTiempo&&comprobadorDNI&&!comprobadorPago) {
-				  datosIncorrectos.add(cadena + "   El corredor no está en la base de datos y el formato de tiempo es incorrecto");
-			  }
-			  else if(comprobadorTiempo&&!comprobadorDNI&&comprobadorPago) {
-				  datosIncorrectos.add(cadena + "   El formato de tiempo es incorrecto y el corredor no ha pagado para competir en esta carrera");
-			  }
-			  else if(!comprobadorTiempo&&comprobadorDNI&&comprobadorPago) {
-				  datosIncorrectos.add(cadena + "   El corredor no está en la base de datos y el corredor no ha pagado para competir en esta carrera");
-			  }
-			  else if(comprobadorTiempo&&comprobadorDNI&&comprobadorPago) {
-				  datosIncorrectos.add(cadena + "   El formato de tiempo es incorrecto, el corredor no está en la base de datos y no ha pagado para competir en esta carrera");
-			  }
 	      }
-	      
 	      if(errorNombreCarrera) {
 	    	  JOptionPane.showMessageDialog(null, "La carrera referente al nombre del fichero no existe en la base de datos.");
-	    	  sinFallosNombreCarrera = false;
+        	  sinFallosNombreCarrera = false;
 	      }
 	      else {
 	    	  if(errorFormato) {
-	    		  JOptionPane.showMessageDialog(null, "Algunos tiempos no han sido añadidos a la base de datos. Por favor, compruebe el fichero de tiempos.");
+	    		  JOptionPane.showMessageDialog(null, "Algunos tiempos no han sido anadidos a la base de datos. Por favor, compruebe el fichero de tiempos.");
 	    		  sinFallosFormato=false;
 	    	  }
 	    	  if(errorPresencia) {
-	    		  JOptionPane.showMessageDialog(null, "Alguno de los corredores del fichero no se encuentra en esta carrera, por tanto no ha sido añadido.");
+	    		  JOptionPane.showMessageDialog(null, "Alguno de los corredores del fichero no se encuentra en ésta carrera, por tanto no ha sido anadido.");
 	    		  sinFallosDni = false;
 	    	  }
-	    	  if(errorEstructura) {
-	    		  JOptionPane.showMessageDialog(null, "Los datos del fichero poseen una estructura incorrecta.");
-	    		  sinFallosEstructura = false;
-	    	  }
-	    	  if(errorPago) {
-	    		  JOptionPane.showMessageDialog(null, "Alguno de los corredores no ha sido añadido debido a que no ha pagado la carrera.");
-=======
-		void cargaContenido(File archivo) throws FileNotFoundException, IOException, SQLException {
-	      boolean errorFormato = false;
-	      boolean errorPresencia = false;
-	      boolean errorNombreCarrera = false;
-	      boolean errorEstructura = false;
-	      boolean errorPago = false;
-	      ArrayList<String> datosIncorrectos = new ArrayList<String>();
-	      
-	      String carrera = archivo.getName();
-	      String nombreCarrera = obtenNombreCarrera(carrera);
-	      
-	      if(!gc.comprobadorCarrera(nombreCarrera)) {	//si la carrera no existe error carrera
-	    	  errorNombreCarrera = true;
 	      }
 	      
-	      
-		  String cadena;							//ESTRUCTURA DEL FICHERO: TIEMPO DNI
-	      FileReader f = new FileReader(archivo);
-	      BufferedReader b = new BufferedReader(f);
-	      
-	      while((cadena = b.readLine())!=null) {
-	          boolean comprobadorTiempo = false;
-	          boolean comprobadorDNI = false;
-	          boolean comprobadorPago = false;
-	          String[] partes = cadena.split(" ");	//dividimos las partes en tiempo y dni respectivamente
-	          if(partes.length==2) {
-	           	  if(partes[0].equals("---")) {
-	        		  if(gc.comprobadorPresencia(partes[1],nombreCarrera)&&"pagado".equals(DataBaseManager.comprobarAtletaPagado(partes[1],nombreCarrera))) {     	//sin tiempo?
-	        			  DataBaseManager.añadirTiempoAtleta(nombreCarrera, partes[0], partes[1]);						//buscamos su dni en la bbdd y le asignamos su tiempo null
-	        		  }
-	           	  }
-	        	  else	{		
-	        		  //con tiempo        			  
-	        		  if(gc.comprobadorTiempos(partes[0])&&gc.comprobadorPresencia(partes[1],nombreCarrera)&&"pagado".equals(DataBaseManager.comprobarAtletaPagado(partes[1],nombreCarrera))) { //si el tiempo es valido buscamos su dni en la bbdd y le asignamos su tiempo
-	        			  DataBaseManager.añadirTiempoAtleta(nombreCarrera, partes[0], partes[1]);
-	        		  }
-	        	  }
-	        	  
-	          	//Lo que conseguimos asi es que aÃ±ada los corredores cuyo formato es correcto, los que tengan un formato incorrecto han de ser revisados por el cliente
-	          
-	          	//Distintas comprobaciones con respecto a cada linea, los comprobadores se usan a la hora de imprimir los fallos en el fichero de fallos, los errores para la ventana emergente
-	          	if(!gc.comprobadorPresencia(partes[1],nombreCarrera)) {
-	  			  	comprobadorDNI = true;
-	          		errorPresencia = true;
-	          	}
-	          	else {
-	          		if(!"pagado".equals(DataBaseManager.comprobarAtletaPagado(partes[1],nombreCarrera))) {
-	          			comprobadorPago = true;
-	          			errorPago = true;
-	          		}
-	          	}
-	          	if(!gc.comprobadorTiempos(partes[0])&&!partes[0].equals("---")) {
-	  			    comprobadorTiempo = true;        			  
-	  			    errorFormato = true;
-	          	}
-	          }
-	          
-	          else {
-	        	 //aqui no hace falta que aÃ±ada datos incorrectos, si la estructura del fichero esta mal no debe aÃ±adir cada linea al fichero de salida
-	        	 errorEstructura = true; 
-	          }      
-	          
-	          //Comprobamos los distintos errores
-	          if(comprobadorTiempo&&!comprobadorDNI&&!comprobadorPago) {
-	        	  datosIncorrectos.add(cadena + "   El formato de tiempo es incorrecto");
-	          }
-	          else if(!comprobadorTiempo&&comprobadorDNI&&!comprobadorPago) {
-	        	  datosIncorrectos.add(cadena + "   El corredor no estÃ¡ en la base de datos");
-	          }
-	          else if(!comprobadorTiempo&&!comprobadorDNI&&comprobadorPago) {
-	        	  datosIncorrectos.add(cadena + "   El corredor no ha pagado para competir en esta carrera");
-	          }
-			  else if(comprobadorTiempo&&comprobadorDNI&&!comprobadorPago) {
-				  datosIncorrectos.add(cadena + "   El corredor no estÃ¡ en la base de datos y el formato de tiempo es incorrecto");
-			  }
-			  else if(comprobadorTiempo&&!comprobadorDNI&&comprobadorPago) {
-				  datosIncorrectos.add(cadena + "   El formato de tiempo es incorrecto y el corredor no ha pagado para competir en esta carrera");
-			  }
-			  else if(!comprobadorTiempo&&comprobadorDNI&&comprobadorPago) {
-				  datosIncorrectos.add(cadena + "   El corredor no estÃ¡ en la base de datos y el corredor no ha pagado para competir en esta carrera");
-			  }
-			  else if(comprobadorTiempo&&comprobadorDNI&&comprobadorPago) {
-				  datosIncorrectos.add(cadena + "   El formato de tiempo es incorrecto, el corredor no estÃ¡ en la base de datos y no ha pagado para competir en esta carrera");
-			  }
-	      }
-	      
-	      if(errorNombreCarrera) {
-	    	  JOptionPane.showMessageDialog(null, "La carrera referente al nombre del fichero no existe en la base de datos.");
-	    	  sinFallosNombreCarrera = false;
-	      }
-	      else {
-	    	  if(errorFormato) {
-	    		  JOptionPane.showMessageDialog(null, "Algunos tiempos no han sido aÃ±adidos a la base de datos. Por favor, compruebe el fichero de tiempos.");
-	    		  sinFallosFormato=false;
-	    	  }
-	    	  if(errorPresencia) {
-	    		  JOptionPane.showMessageDialog(null, "Alguno de los corredores del fichero no se encuentra en esta carrera, por tanto no ha sido aÃ±adido.");
-	    		  sinFallosDni = false;
-	    	  }
-	    	  if(errorEstructura) {
-	    		  JOptionPane.showMessageDialog(null, "Los datos del fichero poseen una estructura incorrecta.");
-	    		  sinFallosEstructura = false;
-	    	  }
-	    	  if(errorPago) {
-	    		  JOptionPane.showMessageDialog(null, "Alguno de los corredores no ha sido aÃ±adido debido a que no ha pagado la carrera.");
->>>>>>> branch 'master' of https://github.com/Fireruner/IPSL4-4
-	    		  sinFallosEstructura = false;
-	    	  }
-	      }   
 	      b.close();
-	      String fichero = generaFicheroFallos(datosIncorrectos, nombreCarrera);
-	      if(!fichero.equals("Se ha producido un error")) {
-	    	  //abre el fichero
-	    	  abrirarchivo("./"+fichero);
-	      }
-	      lblCarreraElegida.setText("Carrera elegida:");
 	}
-
-	public void abrirarchivo(String archivo){
-
-		     try {
-
-		            File objetofile = new File (archivo);
-		            Desktop.getDesktop().open(objetofile);
-
-		     }catch (IOException ex) {
-
-		            System.out.println(ex);
-		     }
-		}
-
-	private String generaFicheroFallos(ArrayList<String> datos, String nombreCarrera) {
-		 int idFallo = (int) (Math.random()*9999999 + 10000);
-		 boolean fallo = true;
-		 String nombreFichero = "Fallo_"+idFallo+"_"+nombreCarrera+".txt";
-		 FileWriter fichero = null;
-	     PrintWriter pw = null;
-	     if(datos.size()>0) {
-	    	 try
-	    	 {
-	    		 fichero = new FileWriter("./"+nombreFichero);
-	    		 pw = new PrintWriter(fichero);
-	    		 pw.println("El fichero de la carrera " + nombreCarrera + " contiene datos que no se han podido introducir.");
-	    		 pw.println("Datos que no han podido ser introducidos en la base de datos:");
-	    		 for (int i = 0; i < datos.size(); i++)
-	    			 pw.println("    "+datos.get(i));
-	    	 } catch (Exception e) {
-	    		 e.printStackTrace();
-	    	 } finally {
-	    		 try {
-	    			 // Nuevamente aprovechamos el finally para 
-	    			 // asegurarnos que se cierra el fichero.
-	    			 if (null != fichero) {
-	    				 fichero.close();
-	    				 fallo = false;
-	    			 }
-	    		 } catch (Exception e2) {
-	    			 e2.printStackTrace();
-	    		 }
-	    	 }
-	     }
-	     if(!fallo)
-	    	 return nombreFichero;
-	     else {
-	    	 return "Se ha producido un error";
-	     }
-		}
 
 	private String obtenNombreCarrera(String carrera) {
 	int caracteresBorrar = 4; //la extension .txt
 	return carrera.substring(0, carrera.length()-caracteresBorrar);
 	}
-<<<<<<< HEAD
 
-=======
-	
->>>>>>> branch 'master' of https://github.com/Fireruner/IPSL4-4
+
+	private void generaFicheroFallos(ArrayList<String> datos, String nombreCarrera) {
+	 int idFallo = (int) (Math.random()*9999999 + 10000);
+	 FileWriter fichero = null;
+     PrintWriter pw = null;
+     if(datos.size()>0) {
+    	 try
+    	 {
+    		 fichero = new FileWriter("./Fallo_"+idFallo+"_"+nombreCarrera+".txt");
+    		 pw = new PrintWriter(fichero);
+    		 pw.println("El fichero de la carrera " + nombreCarrera + " contiene datos que no se han podido introducir.");
+    		 pw.println("Datos que no han podido ser introducidos en la base de datos:");
+    		 for (int i = 0; i < datos.size(); i++)
+    			 pw.println("    "+datos.get(i));
+    	 } catch (Exception e) {
+    		 e.printStackTrace();
+    	 } finally {
+    		 try {
+    			 // Nuevamente aprovechamos el finally para 
+    			 // asegurarnos que se cierra el fichero.
+    			 if (null != fichero)
+    				 fichero.close();
+    		 } catch (Exception e2) {
+    			 e2.printStackTrace();
+    		 }
+    	 }
+     }
+	}
 	private JButton getBtnAsignarDorsales() {
 		if (btnAsignarDorsales == null) {
-			btnAsignarDorsales = new JButton("Asignar dorsales");
+			btnAsignarDorsales = new JButton("Generar Dorsales Automáticamente");
 			btnAsignarDorsales.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e)
 				{
@@ -1290,11 +1053,11 @@ public class VentanaPrincipal {
 			modelAtletas.addColumn("DNI");
 			modelAtletas.addColumn("Nombre");
 			modelAtletas.addColumn("Sexo");
-			modelAtletas.addColumn("Fecha de inscripciÃ³n");
+			modelAtletas.addColumn("Fecha de inscripci\u00F3n");
 			modelAtletas.addColumn("Estado");
 			modelAtletas.addColumn("Dorsal");
 			tableAtletas = new JTable(modelAtletas);
-			tableAtletas.setBounds(10, 11, 461, 328);
+			tableAtletas.setBounds(10, 11, 580, 328);
 		}
 		return tableAtletas;
 	}
@@ -1308,7 +1071,7 @@ public class VentanaPrincipal {
 					atletas = DataBaseManager.listarAtletas(carreraSeleccionada);
 					lblCarreraSeleccionada.setText(carreraSeleccionada + " seleccionada");
 					removeModelContent(modelAtletas);
-					String[] cabeceras = { "DNI", "Nombre", "Sexo", "Fecha de InscripciÃ³n", "Estado", "Dorsal" };
+					String[] cabeceras = { "DNI", "Nombre", "Sexo", "Fecha de Inscripci\u00F3n", "Estado", "Dorsal" };
 					modelAtletas.addRow(cabeceras);
 					if(atletas.size()>1)
 					{
@@ -1344,14 +1107,14 @@ public class VentanaPrincipal {
 					actualizarTablaAtletas();
 				}
 			});
-			btnMostrar.setBounds(686, 60, 89, 23);
+			btnMostrar.setBounds(805, 60, 89, 23);
 		}
 		return btnMostrar;
 	}
 
 	private JButton getBtnMenu() {
 		if (btnMenu == null) {
-			btnMenu = new JButton("MenÃº");
+			btnMenu = new JButton("Menú");
 			btnMenu.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) 
 				{
@@ -1363,16 +1126,16 @@ public class VentanaPrincipal {
 				}
 			});
 			btnMenu.setMnemonic('U');
-			btnMenu.setBounds(481, 316, 145, 23);
+			btnMenu.setBounds(600, 316, 145, 23);
 		}
 		return btnMenu;
 	}
 
 	private JLabel getLblListarAtletasSegn() {
 		if (lblListarAtletasSegn == null) {
-			lblListarAtletasSegn = new JLabel("Listar atletas segÃºn la siguiente carrera: ");
+			lblListarAtletasSegn = new JLabel("Listar atletas seg\u00FAn la siguiente carrera: ");
 			lblListarAtletasSegn.setDisplayedMnemonic('L');
-			lblListarAtletasSegn.setBounds(481, 35, 294, 14);
+			lblListarAtletasSegn.setBounds(600, 35, 294, 14);
 		}
 		return lblListarAtletasSegn;
 	}
@@ -1411,8 +1174,8 @@ public class VentanaPrincipal {
 								{
 									int siguienteDorsal = DataBaseManager.getSiguienteDorsalDisponible(carrera);
 									dorsal  = ""+siguienteDorsal;
-									DataBaseManager.añadirDorsalCorredor(dni, carrera, dorsal);
-									JOptionPane.showMessageDialog(null, "Dorsal "+dorsal+" aÃ±adido al corredor "+dni+" para la carrera "+carrera);
+									DataBaseManager.anadirDorsalCorredor(dni, carrera, dorsal);
+									JOptionPane.showMessageDialog(null, "Dorsal "+dorsal+" anadido al corredor "+dni+" para la carrera "+carrera);
 								} 
 								catch (SQLException e1) {
 									JOptionPane.showMessageDialog(null, "No se han podido realizar los cambios!");
@@ -1421,7 +1184,7 @@ public class VentanaPrincipal {
 								
 							}
 							else
-								JOptionPane.showMessageDialog(null, "No puedes asignar dorsal a un corredor que aÃºn no ha pagado.");
+								JOptionPane.showMessageDialog(null, "No puedes asignar dorsal a un corredor que a\u00FAn no ha pagado.");
 						}
 						else
 						{
@@ -1430,11 +1193,11 @@ public class VentanaPrincipal {
 					}
 					else
 					{
-						JOptionPane.showMessageDialog(null, "Para ejecutar esta opciÃ³n debe seleccionar el atleta al que quiere asignar un dorsal.");
+						JOptionPane.showMessageDialog(null, "Para ejecutar esta opción debe seleccionar el atleta al que quiere asignar un dorsal.");
 					}
 				}
 			});
-			btnAsignarDorsal.setBounds(479, 117, 147, 23);
+			btnAsignarDorsal.setBounds(598, 117, 147, 23);
 		}
 		return btnAsignarDorsal;
 	}
@@ -1443,7 +1206,7 @@ public class VentanaPrincipal {
 			lblCarreraSeleccionada = new JLabel("Ninguna Carrera Seleccionada");
 			lblCarreraSeleccionada.setFont(new Font("Tahoma", Font.BOLD, 11));
 			lblCarreraSeleccionada.setHorizontalAlignment(SwingConstants.CENTER);
-			lblCarreraSeleccionada.setBounds(10, 350, 461, 23);
+			lblCarreraSeleccionada.setBounds(10, 350, 580, 23);
 		}
 		return lblCarreraSeleccionada;
 	}
@@ -1451,7 +1214,7 @@ public class VentanaPrincipal {
 	private JComboBox getComboBox() {
 		if (comboBox == null) {
 			comboBox = new JComboBox();
-			comboBox.setBounds(481, 61, 195, 20);
+			comboBox.setBounds(600, 61, 195, 20);
 			try {
 				ArrayList<String> carreras = DataBaseManager.getCarreras();
 				for (String carrera : carreras)
@@ -1470,7 +1233,7 @@ public class VentanaPrincipal {
 	private JComboBox getComboCarreras() {
 		if (comboCarreras == null) {
 			comboCarreras = new JComboBox();
-			comboCarreras.setBounds(481, 61, 195, 20);
+			comboCarreras.setBounds(647, 62, 195, 20);
 			try {
 				ArrayList<String> carreras = DataBaseManager.getCarreras();
 				for (String carrera : carreras)
