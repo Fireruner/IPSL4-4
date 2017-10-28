@@ -32,8 +32,8 @@ import java.awt.event.ActionEvent;
 
 public class VentanaDatosAtleta extends JDialog {
 
-	private final static int AÑOS = 90;
-	private final static int AÑO_INICIAL = 2016;
+	private final static int AnOS = 90;
+	private final static int AnO_INICIAL = 2016;
 
 	private JLabel lblNombre;
 	private JTextField txtfldNombre;
@@ -46,7 +46,7 @@ public class VentanaDatosAtleta extends JDialog {
 	private JPanel pnFecha;
 	private JComboBox<Integer> cbxDia;
 	private JComboBox<String> cbxMes;
-	private JComboBox<Integer> cbxAño;
+	private JComboBox<Integer> cbxAno;
 	private JButton btnAceptar;
 	private JButton btnCancelar;
 	private JLabel lblCarrera;
@@ -170,7 +170,7 @@ public class VentanaDatosAtleta extends JDialog {
 			pnFecha.setLayout(null);
 			pnFecha.add(getCbxDia());
 			pnFecha.add(getCbxMes());
-			pnFecha.add(getCbxAño());
+			pnFecha.add(getCbxAno());
 		}
 		return pnFecha;
 	}
@@ -200,18 +200,18 @@ public class VentanaDatosAtleta extends JDialog {
 		return cbxMes;
 	}
 
-	private JComboBox<Integer> getCbxAño() {
-		if (cbxAño == null) {
-			cbxAño = new JComboBox<Integer>();
-			String[] años = new String[AÑOS];
-			for (int i = AÑO_INICIAL; i > AÑO_INICIAL - AÑOS; i--) {
-				años[AÑO_INICIAL - i] = String.valueOf(i);
+	private JComboBox<Integer> getCbxAno() {
+		if (cbxAno == null) {
+			cbxAno = new JComboBox<Integer>();
+			String[] anos = new String[AnOS];
+			for (int i = AnO_INICIAL; i > AnO_INICIAL - AnOS; i--) {
+				anos[AnO_INICIAL - i] = String.valueOf(i);
 			}
-			cbxAño.setModel(new DefaultComboBoxModel(años));
-			cbxAño.setBackground(Color.WHITE);
-			cbxAño.setBounds(146, 29, 73, 20);
+			cbxAno.setModel(new DefaultComboBoxModel(anos));
+			cbxAno.setBackground(Color.WHITE);
+			cbxAno.setBounds(146, 29, 73, 20);
 		}
-		return cbxAño;
+		return cbxAno;
 	}
 
 	private JButton getBtnAceptar() {
@@ -239,7 +239,7 @@ public class VentanaDatosAtleta extends JDialog {
 							Atleta atleta = new Atleta(txtfldDNI.getText(), txtfldNombre.getText(),
 									txtfldApellidos.getText(), comprobarSexo(), comprobarFechaNacimiento(),
 									carrera, comprobarFechaInscripcion(), "inscrito", null, null);
-							DataBaseManager.añadirCiertoAtleta(atleta);
+							DataBaseManager.anadirCiertoAtleta(atleta);
 							atleta.imprimirResguardo();
 							dispose();
 						}
@@ -308,11 +308,11 @@ public class VentanaDatosAtleta extends JDialog {
 	}
 
 	private LocalDate comprobarFechaNacimiento() {
-		int año = Integer.valueOf(cbxAño.getSelectedItem().toString());
+		int ano = Integer.valueOf(cbxAno.getSelectedItem().toString());
 		int dia = Integer.valueOf(cbxDia.getSelectedItem().toString());
 		int mes = Integer.valueOf(cbxMes.getSelectedItem().toString());
 
-		LocalDate fechaDeNacimiento = LocalDate.of(año, mes, dia);
+		LocalDate fechaDeNacimiento = LocalDate.of(ano, mes, dia);
 		return fechaDeNacimiento;
 
 	}

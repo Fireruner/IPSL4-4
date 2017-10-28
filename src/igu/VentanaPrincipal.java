@@ -487,7 +487,7 @@ public class VentanaPrincipal {
 									
 									int contadorPosM = 1;	//contador para las posiciones masculinas
 									int contadorPosF = 1;	//contador para las posiciones femeninas
-									for(int i = 0; i<atletasConTiempo.size(); i++){	//AÑADIMOS PRIMERO LOS QUE TIENEN TIEMPO
+									for(int i = 0; i<atletasConTiempo.size(); i++){	//AnADIMOS PRIMERO LOS QUE TIENEN TIEMPO
 										
 										if(atletasConTiempo.get(i).getSexo().equals(m)) {
 											Object[] temp = {atletasConTiempo.get(i).getDni() ,contadorPosM, atletasConTiempo.get(i).getSexo(), 
@@ -930,17 +930,17 @@ public class VentanaPrincipal {
 	          String[] partes = cadena.split(" ");	//dividimos las partes
 	          if(partes.length==2) {
 	        	  if(partes[0].equals("---")) {     	//sin tiempo?
-	        		  DataBaseManager.añadirTiempoAtleta(nombreCarrera, partes[0], partes[1]);						//buscamos su dni en la bbdd y le asignamos su tiempo null
+	        		  DataBaseManager.anadirTiempoAtleta(nombreCarrera, partes[0], partes[1]);						//buscamos su dni en la bbdd y le asignamos su tiempo null
 	        	  }
 	        	  else {								//con tiempo?
 	        		  if(gc.comprobadorTiempos(partes[0])) { //si el tiempo es valido buscamos su dni en la bbdd y le asignamos su tiempo
-	        			  DataBaseManager.añadirTiempoAtleta(nombreCarrera, partes[0], partes[1]);
+	        			  DataBaseManager.anadirTiempoAtleta(nombreCarrera, partes[0], partes[1]);
 	        		  }
 	        		  else {
 	        			  errorFormato = true;
 	        		  }
 	        	  }
-	          	//Lo que conseguimos así es que añada los corredores cuyo formato es correcto, los que tengan un formato incorrecto han de ser revisados por el cliente
+	          	//Lo que conseguimos así es que anada los corredores cuyo formato es correcto, los que tengan un formato incorrecto han de ser revisados por el cliente
 	          
 	          	//Vamos a comprobar tambien que el corredor esté en la carrera, si no está lo daremos a conocer:
 	          	if(!gc.comprobadorPresencia(partes[1],nombreCarrera)) {
@@ -957,11 +957,11 @@ public class VentanaPrincipal {
 	      }
 	      else {
 	    	  if(errorFormato) {
-	    		  JOptionPane.showMessageDialog(null, "Algunos tiempos no han sido añadidos a la base de datos. Por favor, compruebe el fichero de tiempos.");
+	    		  JOptionPane.showMessageDialog(null, "Algunos tiempos no han sido anadidos a la base de datos. Por favor, compruebe el fichero de tiempos.");
 	    		  sinFallosFormato=false;
 	    	  }
 	    	  if(errorPresencia) {
-	    		  JOptionPane.showMessageDialog(null, "Alguno de los corredores del fichero no se encuentra en ésta carrera, por tanto no ha sido añadido.");
+	    		  JOptionPane.showMessageDialog(null, "Alguno de los corredores del fichero no se encuentra en ésta carrera, por tanto no ha sido anadido.");
 	    		  sinFallosDni = false;
 	    	  }
 	      }
@@ -1160,8 +1160,8 @@ public class VentanaPrincipal {
 								{
 									int siguienteDorsal = DataBaseManager.getSiguienteDorsalDisponible(carrera);
 									dorsal  = ""+siguienteDorsal;
-									DataBaseManager.añadirDorsalCorredor(dni, carrera, dorsal);
-									JOptionPane.showMessageDialog(null, "Dorsal "+dorsal+" añadido al corredor "+dni+" para la carrera "+carrera);
+									DataBaseManager.anadirDorsalCorredor(dni, carrera, dorsal);
+									JOptionPane.showMessageDialog(null, "Dorsal "+dorsal+" anadido al corredor "+dni+" para la carrera "+carrera);
 								} 
 								catch (SQLException e1) {
 									JOptionPane.showMessageDialog(null, "No se han podido realizar los cambios!");
