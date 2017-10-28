@@ -167,15 +167,7 @@ public class DataBaseManager
 		}
 		
 		/*
-<<<<<<< HEAD
-<<<<<<< HEAD
-		 * Devuelve un array de arrays con los datos de todos los atletas en la base de datos. No muy útil.
-=======
-		 * Devuelve un array de arrays con los datos de todos los atletas en la base de datos. No muy Ãºtil.
->>>>>>> parent of ae76061... Problemas encoding resueltos
-=======
-		 * Devuelve un array de arrays con los datos de todos los atletas en la base de datos. No muy útil.
->>>>>>> parent of a81ee71... AÃ±adido el metodo comprobarAtletaPagado
+		 * Devuelve un array de arrays con los datos de todos los atletas en la base de datos. No muy ï¿½til.
 		 */
 		
 		public static ArrayList<String[]> getAtletas() throws SQLException
@@ -203,53 +195,26 @@ public class DataBaseManager
 		}
 		
 		/*
-<<<<<<< HEAD
-<<<<<<< HEAD
-		 * Para un atleta pasado como parámetro (dni) confirma si está o no registrado en cierta carrera(pasada como parámetro)
-=======
-		 * Para un atleta pasado como parÃ¡metro (dni) confirma si estÃ¡ o no registrado en cierta carrera(pasada como parÃ¡metro)
->>>>>>> parent of ae76061... Problemas encoding resueltos
-=======
-		 * Para un atleta pasado como parámetro (dni) confirma si está o no registrado en cierta carrera(pasada como parámetro)
->>>>>>> parent of a81ee71... AÃ±adido el metodo comprobarAtletaPagado
+		 * Para un atleta pasado como parï¿½metro (dni) confirma si estï¿½ o no registrado en cierta carrera(pasada como parï¿½metro)
 		 */
-		public static boolean atletaEstaEnCarrera(String dniAtleta, String fk_carrera) throws SQLException {
-			Connection con = getConnection();
+		public static boolean atletaEstaEnCarrera(String dniAtleta, String fk_carrera) throws SQLException 
+		{
 			
-			PreparedStatement ps = con.prepareStatement("select dni,fk_carrera from atleta where dni = ? and fk_carrera = ?");
+			boolean coincide = false;
+			Connection con = getConnection();
+			PreparedStatement ps = con.prepareStatement("select dni from atleta where DNI = ? and fk_carrera = ?");
 			ps.setString(1, dniAtleta);
 			ps.setString(2, fk_carrera);
-			
 			ResultSet rs = ps.executeQuery();
-			if(rs.getRow() == 0) {
-				rs.close();
-				ps.close();
-				con.close();	
-				return false;
-				
+			while(rs.next())
+			{
+				coincide = rs.getString("DNI").equals(dniAtleta);
 			}
-			else {
-				rs.close();
-				ps.close();
-				con.close();
-				return true;
+			return coincide;
 				
-			}
-//			String dni = rs.getString("DNI");
-//			
-//			String fk_carrera1 = rs.getString("fk_carrera");
-			
-			
-			
-//			if ((!dni.isEmpty() && fk_carrera1.isEmpty()) || (dni.equals(null) && fk_carrera1.equals(null))) {
-//				
-//			}
-//			else {
-//				
-//			}
 		}
 			
-		public static boolean añadirCiertoAtleta(Atleta atleta) throws SQLException {
+		public static boolean anadirCiertoAtleta(Atleta atleta) throws SQLException {
 			Connection con = getConnection();
 			String dni = atleta.getDni();
 			String nombre = atleta.getNombre();
@@ -282,7 +247,7 @@ public class DataBaseManager
 				
 		}
 		
-		public static void añadirTiempoAtleta(String carrera, String tiempo, String dni) throws SQLException {
+		public static void anadirTiempoAtleta(String carrera, String tiempo, String dni) throws SQLException {
 			Connection con = getConnection();
 			
 			PreparedStatement ps = con.prepareStatement("UPDATE ATLETA SET tiempo = ? WHERE dni = ? and fk_carrera = ?");
@@ -315,17 +280,9 @@ public class DataBaseManager
 			return dnis;
 		}
 		
-		/*
-<<<<<<< HEAD
-<<<<<<< HEAD
-		 * Lista atletas según una carrera pasada como parámetro
-=======
-		 * Lista atletas segÃºn una carrera pasada como parÃ¡metro
->>>>>>> parent of ae76061... Problemas encoding resueltos
-=======
-		 * Lista atletas según una carrera pasada como parámetro
->>>>>>> parent of a81ee71... AÃ±adido el metodo comprobarAtletaPagado
-		 */
+		
+		 /* Lista atletas segï¿½n una carrera pasada como parï¿½metro*/
+
 		public static ArrayList<String[]> listarAtletas(String fk_carrera) throws SQLException {
 			ArrayList<String[]> c = new ArrayList<String[]>();
 			Connection con = getConnection();
@@ -408,7 +365,7 @@ public class DataBaseManager
 			return nextOne;
 		}
 		
-		public static void añadirDorsalCorredor(String dni, String carrera, String dorsal) throws SQLException
+		public static void anadirDorsalCorredor(String dni, String carrera, String dorsal) throws SQLException
 		{
 			Connection con = getConnection();
 			PreparedStatement ps = con.prepareStatement("update atleta set dorsal = ? where dni = ? and fk_carrera = ?");
