@@ -221,6 +221,16 @@ public class VentanaDatosAtleta extends JDialog {
 			btnAceptar.setBounds(333, 237, 89, 23);
 			btnAceptar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
+					
+					String campoNombre = txtfldNombre.getText();
+					String campoApellido = txtfldApellidos.getText();
+					String campoDNI = txtfldDNI.getText();
+					
+					if(campoNombre.equals("") || campoApellido.equals("") || campoDNI.equals(""))
+					{
+						JOptionPane.showMessageDialog(null, "Debe introducir todos los campos para hacer el registro!");
+						return;
+					}
 
 					boolean valido;
 					
@@ -228,7 +238,7 @@ public class VentanaDatosAtleta extends JDialog {
 					
 					try {
 						
-						valido = DataBaseManager.atletaEstaEnCarrera(txtfldDNI.getText(), carrera);
+						valido = DataBaseManager.atletaEstaEnCarrera(txtfldDNI.getText().toUpperCase(), carrera);
 						if (valido) {
 
 							JOptionPane.showMessageDialog(null, "El atleta ya est\u00E1 inscrito en la carrera");
@@ -236,7 +246,7 @@ public class VentanaDatosAtleta extends JDialog {
 
 						else {
 
-							Atleta atleta = new Atleta(txtfldDNI.getText(), txtfldNombre.getText(),
+							Atleta atleta = new Atleta(txtfldDNI.getText().toUpperCase(), txtfldNombre.getText(),
 									txtfldApellidos.getText(), comprobarSexo(), comprobarFechaNacimiento(),
 									carrera, comprobarFechaInscripcion(), "inscrito", null, null);
 							DataBaseManager.anadirCiertoAtleta(atleta);

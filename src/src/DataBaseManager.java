@@ -202,13 +202,13 @@ public class DataBaseManager
 			
 			boolean coincide = false;
 			Connection con = getConnection();
-			PreparedStatement ps = con.prepareStatement("select ? from atleta where fk_carrera = ?");
+			PreparedStatement ps = con.prepareStatement("select dni from atleta where DNI = ? and fk_carrera = ?");
 			ps.setString(1, dniAtleta);
-			ps.setString(1, fk_carrera);
+			ps.setString(2, fk_carrera);
 			ResultSet rs = ps.executeQuery();
 			while(rs.next())
 			{
-				coincide = rs.getString("nombre").equals(dniAtleta);
+				coincide = rs.getString("DNI").equals(dniAtleta);
 			}
 			return coincide;
 				

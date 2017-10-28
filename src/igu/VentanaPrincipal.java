@@ -173,12 +173,12 @@ public class VentanaPrincipal {
 			pnControles = new JPanel();
 			pnControles.setBounds(357, 11, 292, 469);
 			pnControles.setLayout(new GridLayout(0, 1, 0, 0));
-			pnControles.add(getBtnRegistrarCorredor());
-			pnControles.add(getBtnPagos());
-			pnControles.add(getBtnClasificacion());
-			pnControles.add(getBtnRegistrarTiempos());
 			pnControles.add(getBtnAtletas());
+			pnControles.add(getBtnClasificacion());
+			pnControles.add(getBtnPagos());
 			pnControles.add(getBtnAsignarDorsales());
+			pnControles.add(getBtnRegistrarCorredor());
+			pnControles.add(getBtnRegistrarTiempos());
 		}
 		return pnControles;
 	}
@@ -188,9 +188,24 @@ public class VentanaPrincipal {
 		if(pnClasificacion == null)
 		{
 			pnClasificacion = new JPanel();
-			pnClasificacion.setLayout(new BorderLayout(0, 0));
-			pnClasificacion.add(getPanelDatos(), BorderLayout.CENTER);
-			pnClasificacion.add(getPanelFiltroCarrera(), BorderLayout.WEST);
+			GridBagLayout gbl_pnClasificacion = new GridBagLayout();
+			gbl_pnClasificacion.columnWidths = new int[]{202, 738, 0};
+			gbl_pnClasificacion.rowHeights = new int[]{477, 0};
+			gbl_pnClasificacion.columnWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
+			gbl_pnClasificacion.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+			pnClasificacion.setLayout(gbl_pnClasificacion);
+			GridBagConstraints gbc_panelFiltroCarrera = new GridBagConstraints();
+			gbc_panelFiltroCarrera.anchor = GridBagConstraints.WEST;
+			gbc_panelFiltroCarrera.fill = GridBagConstraints.VERTICAL;
+			gbc_panelFiltroCarrera.insets = new Insets(0, 0, 0, 5);
+			gbc_panelFiltroCarrera.gridx = 0;
+			gbc_panelFiltroCarrera.gridy = 0;
+			pnClasificacion.add(getPanelFiltroCarrera(), gbc_panelFiltroCarrera);
+			GridBagConstraints gbc_panelDatos = new GridBagConstraints();
+			gbc_panelDatos.fill = GridBagConstraints.BOTH;
+			gbc_panelDatos.gridx = 1;
+			gbc_panelDatos.gridy = 0;
+			pnClasificacion.add(getPanelDatos(), gbc_panelDatos);
 		}
 		return pnClasificacion;
 	}
@@ -237,7 +252,7 @@ public class VentanaPrincipal {
 					actualizarTablaPagos((String)comboCarreras.getSelectedItem());
 				}
 			});
-			btnActualizar.setBounds(483, 134, 156, 23);
+			btnActualizar.setBounds(649, 135, 156, 23);
 		}
 		return btnActualizar;
 	}
@@ -264,7 +279,7 @@ public class VentanaPrincipal {
 			modelPagos.addColumn("DNI");
 			modelPagos.addColumn("Plazo");
 			tablePagos = new JTable(modelPagos);
-			tablePagos.setBounds(10, 11, 463, 432);
+			tablePagos.setBounds(10, 11, 629, 432);
 		}
 		return tablePagos;
 	}
@@ -367,7 +382,7 @@ public class VentanaPrincipal {
 						JOptionPane.showMessageDialog(null, "Para realizar el pago debe primero seleccionar un atleta que no haya pagado.");
 				}
 			});
-			btnPagar.setBounds(483, 178, 156, 23);
+			btnPagar.setBounds(649, 179, 156, 23);
 		}
 		return btnPagar;
 	}
@@ -574,7 +589,7 @@ public class VentanaPrincipal {
 				lblNombreDeCarrera = new JLabel("Nombre de la carrera a filtrar:");
 				lblNombreDeCarrera.setHorizontalAlignment(SwingConstants.CENTER);
 				lblNombreDeCarrera.setVerticalAlignment(SwingConstants.BOTTOM);
-				lblNombreDeCarrera.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 18));
+				lblNombreDeCarrera.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 15));
 			}
 			return lblNombreDeCarrera;
 		}
@@ -750,7 +765,7 @@ public class VentanaPrincipal {
 					card.show(frame.getContentPane(), "panelTitulo");
 				}
 			});
-			btMenu.setBounds(483, 212, 156, 23);
+			btMenu.setBounds(649, 213, 156, 23);
 		}
 		return btMenu;
 	}
@@ -761,7 +776,6 @@ public class VentanaPrincipal {
 				public void actionPerformed(ActionEvent e) 
 				{
 					VentanaDatosAtleta ventanaRegistro = new VentanaDatosAtleta();
-					ventanaRegistro.setAlwaysOnTop(true);
 					ventanaRegistro.setVisible(true);
 				}
 			});
@@ -1004,7 +1018,7 @@ public class VentanaPrincipal {
 	}
 	private JButton getBtnAsignarDorsales() {
 		if (btnAsignarDorsales == null) {
-			btnAsignarDorsales = new JButton("Asignar dorsales");
+			btnAsignarDorsales = new JButton("Generar Dorsales Automáticamente");
 			btnAsignarDorsales.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e)
 				{
@@ -1043,7 +1057,7 @@ public class VentanaPrincipal {
 			modelAtletas.addColumn("Estado");
 			modelAtletas.addColumn("Dorsal");
 			tableAtletas = new JTable(modelAtletas);
-			tableAtletas.setBounds(10, 11, 461, 328);
+			tableAtletas.setBounds(10, 11, 580, 328);
 		}
 		return tableAtletas;
 	}
@@ -1093,7 +1107,7 @@ public class VentanaPrincipal {
 					actualizarTablaAtletas();
 				}
 			});
-			btnMostrar.setBounds(686, 60, 89, 23);
+			btnMostrar.setBounds(805, 60, 89, 23);
 		}
 		return btnMostrar;
 	}
@@ -1112,7 +1126,7 @@ public class VentanaPrincipal {
 				}
 			});
 			btnMenu.setMnemonic('U');
-			btnMenu.setBounds(481, 316, 145, 23);
+			btnMenu.setBounds(600, 316, 145, 23);
 		}
 		return btnMenu;
 	}
@@ -1121,7 +1135,7 @@ public class VentanaPrincipal {
 		if (lblListarAtletasSegn == null) {
 			lblListarAtletasSegn = new JLabel("Listar atletas seg\u00FAn la siguiente carrera: ");
 			lblListarAtletasSegn.setDisplayedMnemonic('L');
-			lblListarAtletasSegn.setBounds(481, 35, 294, 14);
+			lblListarAtletasSegn.setBounds(600, 35, 294, 14);
 		}
 		return lblListarAtletasSegn;
 	}
@@ -1183,7 +1197,7 @@ public class VentanaPrincipal {
 					}
 				}
 			});
-			btnAsignarDorsal.setBounds(479, 117, 147, 23);
+			btnAsignarDorsal.setBounds(598, 117, 147, 23);
 		}
 		return btnAsignarDorsal;
 	}
@@ -1192,7 +1206,7 @@ public class VentanaPrincipal {
 			lblCarreraSeleccionada = new JLabel("Ninguna Carrera Seleccionada");
 			lblCarreraSeleccionada.setFont(new Font("Tahoma", Font.BOLD, 11));
 			lblCarreraSeleccionada.setHorizontalAlignment(SwingConstants.CENTER);
-			lblCarreraSeleccionada.setBounds(10, 350, 461, 23);
+			lblCarreraSeleccionada.setBounds(10, 350, 580, 23);
 		}
 		return lblCarreraSeleccionada;
 	}
@@ -1200,7 +1214,7 @@ public class VentanaPrincipal {
 	private JComboBox getComboBox() {
 		if (comboBox == null) {
 			comboBox = new JComboBox();
-			comboBox.setBounds(481, 61, 195, 20);
+			comboBox.setBounds(600, 61, 195, 20);
 			try {
 				ArrayList<String> carreras = DataBaseManager.getCarreras();
 				for (String carrera : carreras)
@@ -1219,7 +1233,7 @@ public class VentanaPrincipal {
 	private JComboBox getComboCarreras() {
 		if (comboCarreras == null) {
 			comboCarreras = new JComboBox();
-			comboCarreras.setBounds(481, 61, 195, 20);
+			comboCarreras.setBounds(647, 62, 195, 20);
 			try {
 				ArrayList<String> carreras = DataBaseManager.getCarreras();
 				for (String carrera : carreras)
