@@ -432,7 +432,7 @@ public class VentanaPrincipal {
 			if (tablaResultados == null) {
 				MyTableModel model = new MyTableModel();
 				model.addColumn("DNI");
-				model.addColumn("Posici√É¬≥n");
+				model.addColumn("Posici√≥n");
 				model.addColumn("Sexo");	
 				model.addColumn("Dorsal");
 				model.addColumn("Nombre");
@@ -611,7 +611,7 @@ public class VentanaPrincipal {
 		
 		
 		/*
-		 * A PARTIR DE AQUI TODO LO RELACIONADO CON EL T√çTULO: "RESULTADOS" Y LAS COLUMNAS DE LA JTABLE 
+		 * A PARTIR DE AQUI TODO LO RELACIONADO CON EL TÕTULO: "RESULTADOS" Y LAS COLUMNAS DE LA JTABLE 
 		 */
 			
 		
@@ -954,9 +954,9 @@ public class VentanaPrincipal {
 	        			  errorFormato = true;
 	        		  }
 	        	  }
-	          	//Lo que conseguimos as√≠ es que anada los corredores cuyo formato es correcto, los que tengan un formato incorrecto han de ser revisados por el cliente
+	          	//Lo que conseguimos asÌ es que anada los corredores cuyo formato es correcto, los que tengan un formato incorrecto han de ser revisados por el cliente
 	          
-	          	//Vamos a comprobar tambien que el corredor est√© en la carrera, si no est√° lo daremos a conocer:
+	          	//Vamos a comprobar tambien que el corredor estÈ en la carrera, si no est· lo daremos a conocer:
 	          	if(!gc.comprobadorPresencia(partes[1],nombreCarrera)) {
 	          		errorPresencia = true;
 	          	}
@@ -975,7 +975,7 @@ public class VentanaPrincipal {
 	    		  sinFallosFormato=false;
 	    	  }
 	    	  if(errorPresencia) {
-	    		  JOptionPane.showMessageDialog(null, "Alguno de los corredores del fichero no se encuentra en √©sta carrera, por tanto no ha sido anadido.");
+	    		  JOptionPane.showMessageDialog(null, "Alguno de los corredores del fichero no se encuentra en Èsta carrera, por tanto no ha sido anadido.");
 	    		  sinFallosDni = false;
 	    	  }
 	      }
@@ -1018,7 +1018,7 @@ public class VentanaPrincipal {
 	}
 	private JButton getBtnAsignarDorsales() {
 		if (btnAsignarDorsales == null) {
-			btnAsignarDorsales = new JButton("Generar Dorsales Autom√°ticamente");
+			btnAsignarDorsales = new JButton("Generar Dorsales Autom·ticamente");
 			btnAsignarDorsales.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e)
 				{
@@ -1114,7 +1114,7 @@ public class VentanaPrincipal {
 
 	private JButton getBtnMenu() {
 		if (btnMenu == null) {
-			btnMenu = new JButton("Men√∫");
+			btnMenu = new JButton("Men˙");
 			btnMenu.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) 
 				{
@@ -1166,34 +1166,35 @@ public class VentanaPrincipal {
 						String dorsal = (String)tableAtletas.getValueAt(row, 5);
 						String carrera = carreraSeleccionada;
 						String estado = (String)tableAtletas.getValueAt(row, 4);
-						if(dorsal.equals("No asignado"))
+						
+						if(estado.equals("pagado"))
 						{
-							if(estado.equals("pagado"))
+							try 
 							{
-								try 
+								
+								String siguienteDorsal = JOptionPane.showInputDialog(null, "Indique el dorsal que quiere asignar");
+								while(DataBaseManager.existeDorsal(carrera, siguienteDorsal))
 								{
-									int siguienteDorsal = DataBaseManager.getSiguienteDorsalDisponible(carrera);
-									dorsal  = ""+siguienteDorsal;
-									DataBaseManager.anadirDorsalCorredor(dni, carrera, dorsal);
-									JOptionPane.showMessageDialog(null, "Dorsal "+dorsal+" anadido al corredor "+dni+" para la carrera "+carrera);
-								} 
-								catch (SQLException e1) {
-									JOptionPane.showMessageDialog(null, "No se han podido realizar los cambios!");
-									e1.printStackTrace();
+									
+									siguienteDorsal = JOptionPane.showInputDialog(null, "Ese dorsal ya esta en uso! Indique el dorsal que quiere asignar");
 								}
 								
+								DataBaseManager.anadirDorsalCorredor(dni, carrera, siguienteDorsal);
+								JOptionPane.showMessageDialog(null, "Dorsal "+siguienteDorsal+" anadido al corredor "+dni+" para la carrera "+carrera);
+								actualizarTablaAtletas();
+							} 
+							catch (SQLException e1) {
+								JOptionPane.showMessageDialog(null, "No se han podido realizar los cambios!");
+								e1.printStackTrace();
 							}
-							else
-								JOptionPane.showMessageDialog(null, "No puedes asignar dorsal a un corredor que a\u00FAn no ha pagado.");
+							
 						}
 						else
-						{
-							JOptionPane.showMessageDialog(null, "No puedes asignar dorsal a un corredor que ya tiene un dorsal asignado");
-						}
+							JOptionPane.showMessageDialog(null, "No puedes asignar dorsal a un corredor que a\u00FAn no ha pagado.");						
 					}
 					else
 					{
-						JOptionPane.showMessageDialog(null, "Para ejecutar esta opci√≥n debe seleccionar el atleta al que quiere asignar un dorsal.");
+						JOptionPane.showMessageDialog(null, "Para ejecutar esta opciÛn debe seleccionar el atleta al que quiere asignar un dorsal.");
 					}
 				}
 			});
