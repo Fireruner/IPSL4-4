@@ -10,10 +10,7 @@ public class PruebasDataBase {
 	
 	private static String CONNECTION_STRING = "jdbc:hsqldb:hsql://localhost/labdb";
 	private static String PASSWORD = "";
-	private static String USERNAME = "SA";
-
-	
-	
+	private static String USERNAME = "SA";	
 	
 	public static void main(String[] args) throws SQLException {
 		
@@ -25,7 +22,9 @@ public class PruebasDataBase {
 		//getAtletasFueraPlazoPago();
 		//existeCarrera("Iron Man");//true true
 		//existeCarrera("IronMan");//false
-		System.out.print(getSiguienteDorsalDisponible("Iron Man"));
+		//System.out.print(getSiguienteDorsalDisponible("Iron Man"));
+		System.out.println(DataBaseManager.existeDorsal("Iron Man", "14"));
+		System.out.println(DataBaseManager.existeDorsal("Iron Man", "18"));
 	}
 	
 	public static int getSiguienteDorsalDisponible(String carrera) throws SQLException

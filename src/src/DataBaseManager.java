@@ -343,8 +343,8 @@ public class DataBaseManager
 			PreparedStatement ps = con.prepareStatement("select dorsal from atleta where fk_carrera = ? order by dorsal asc");
 			ps.setString(1, carrera);
 			ResultSet rs = ps.executeQuery();
-			boolean haLlegadoADiez = false;
-			int nextOne = 1;
+			boolean haLlegadoADiez = true;
+			int nextOne = 11;
 			while(rs.next()) 
 			{
 				if(rs.getString("dorsal") != null)
@@ -400,6 +400,22 @@ public class DataBaseManager
 			con.close();
 			
 			return results;
+		}
+		
+		//Comprueba si un dorsal esta ocupado en una carrera
+		public static boolean existeDorsal(String carrera, String dorsal) throws SQLException
+		{
+			boolean coincide = false;
+			Connection con = getConnection();
+			PreparedStatement ps = con.prepareStatement("select dni from atleta where dorsal = ? and fk_carrera = ?");
+			ps.setString(1, dorsal);
+			ps.setString(2, carrera);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next())
+			{
+				coincide = rs.getString("DNI") != null;
+			}
+			return coincide;
 		}
 		
 }

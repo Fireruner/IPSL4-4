@@ -1166,30 +1166,31 @@ public class VentanaPrincipal {
 						String dorsal = (String)tableAtletas.getValueAt(row, 5);
 						String carrera = carreraSeleccionada;
 						String estado = (String)tableAtletas.getValueAt(row, 4);
-						if(dorsal.equals("No asignado"))
+						
+						if(estado.equals("pagado"))
 						{
-							if(estado.equals("pagado"))
+							try 
 							{
-								try 
+								
+								String siguienteDorsal = JOptionPane.showInputDialog(null, "Indique el dorsal que quiere asignar");
+								while(DataBaseManager.existeDorsal(carrera, siguienteDorsal))
 								{
-									int siguienteDorsal = DataBaseManager.getSiguienteDorsalDisponible(carrera);
-									dorsal  = ""+siguienteDorsal;
-									DataBaseManager.anadirDorsalCorredor(dni, carrera, dorsal);
-									JOptionPane.showMessageDialog(null, "Dorsal "+dorsal+" anadido al corredor "+dni+" para la carrera "+carrera);
-								} 
-								catch (SQLException e1) {
-									JOptionPane.showMessageDialog(null, "No se han podido realizar los cambios!");
-									e1.printStackTrace();
+									
+									siguienteDorsal = JOptionPane.showInputDialog(null, "Ese dorsal ya esta en uso! Indique el dorsal que quiere asignar");
 								}
 								
+								DataBaseManager.anadirDorsalCorredor(dni, carrera, siguienteDorsal);
+								JOptionPane.showMessageDialog(null, "Dorsal "+siguienteDorsal+" anadido al corredor "+dni+" para la carrera "+carrera);
+								actualizarTablaAtletas();
+							} 
+							catch (SQLException e1) {
+								JOptionPane.showMessageDialog(null, "No se han podido realizar los cambios!");
+								e1.printStackTrace();
 							}
-							else
-								JOptionPane.showMessageDialog(null, "No puedes asignar dorsal a un corredor que a\u00FAn no ha pagado.");
+							
 						}
 						else
-						{
-							JOptionPane.showMessageDialog(null, "No puedes asignar dorsal a un corredor que ya tiene un dorsal asignado");
-						}
+							JOptionPane.showMessageDialog(null, "No puedes asignar dorsal a un corredor que a\u00FAn no ha pagado.");						
 					}
 					else
 					{
