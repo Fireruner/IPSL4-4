@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -125,17 +126,18 @@ public class DataBaseManager
 			ResultSet rs = st.executeQuery(texto);
 			while(rs.next())
 			{
-				String[] result = new String[10];
+				String[] result = new String[11];
 				result[0] = rs.getString("DNI");	
 				result[1] = rs.getString("NOMBRE");
 				result[2] = rs.getString("APELLIDOS");
-				result[3] = rs.getString("SEXO");
-				result[4] = rs.getString("FECHA_NACIMIENTO");
-				result[5] = rs.getString("FK_CARRERA");
-				result[6] = rs.getString("FECHA_INSCRIPCION");
-				result[7] = rs.getString("ESTADO");
-				result[8] = rs.getString("TIEMPO");
-				result[9] = rs.getString("DORSAL");
+				result[3] = rs.getString("CATEGORIA");
+				result[4] = rs.getString("SEXO");
+				result[5] = rs.getString("FECHA_NACIMIENTO");
+				result[6] = rs.getString("FK_CARRERA");
+				result[7] = rs.getString("FECHA_INSCRIPCION");
+				result[8] = rs.getString("ESTADO");
+				result[9] = rs.getString("TIEMPO");
+				result[10] = rs.getString("DORSAL");
 				results.add(result);
 			}
 			rs.close();
@@ -195,7 +197,7 @@ public class DataBaseManager
 		}
 		
 		/*
-		 * Para un atleta pasado como parï¿½metro (dni) confirma si estï¿½ o no registrado en cierta carrera(pasada como parï¿½metro)
+		 * Para un atleta pasado como parámetro (dni) confirma si estï¿½ o no registrado en cierta carrera(pasada como parámetro)
 		 */
 		public static boolean atletaEstaEnCarrera(String dniAtleta, String fk_carrera) throws SQLException 
 		{
@@ -286,18 +288,19 @@ public class DataBaseManager
 		public static ArrayList<String[]> listarAtletas(String fk_carrera) throws SQLException {
 			ArrayList<String[]> c = new ArrayList<String[]>();
 			Connection con = getConnection();
-			PreparedStatement ps = con.prepareStatement("select dni, nombre, sexo, fecha_inscripcion, estado, dorsal"
+			PreparedStatement ps = con.prepareStatement("select dni, nombre, categoria, sexo, fecha_inscripcion, estado, dorsal"
 					+ " from atleta where fk_carrera= ? order by fecha_inscripcion, estado");
 			ps.setString(1, fk_carrera);
 			ResultSet rs = ps.executeQuery();
 			while(rs.next()) {
-				String[] a = new String[6];
+				String[] a = new String[7];
 				a[0] = rs.getString("dni");
 				a[1] = rs.getString("nombre");
-				a[2] = rs.getString("sexo");
-				a[3] = rs.getString("fecha_inscripcion");
-				a[4] = rs.getString("estado");
-				a[5] = rs.getString("dorsal");
+				a[2] = rs.getString("categoria");
+				a[3] = rs.getString("sexo");
+				a[4] = rs.getString("fecha_inscripcion");
+				a[5] = rs.getString("estado");
+				a[6] = rs.getString("dorsal");
 				c.add(a);
 				
 			}
@@ -400,6 +403,34 @@ public class DataBaseManager
 			con.close();
 			
 			return results;
+		}
+		public static ArrayList<Carrera> getCarrerasEnteras() throws SQLException{
+			ArrayList<Carrera> carreras = new ArrayList<Carrera>();
+			String nombre;
+			int plazas;
+			LocalDate fecha_celebracion;
+			String estado;
+			int precio;
+			int porcentaje_devolucion;
+			Connection con = getConnection();
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery("select * from carrera");
+			
+			while(rs.next()) {
+				nombre = rs.getString("Nombre");
+				plazas = rs.getInt("plazas_disponibles");
+				fecha_celebracion = LocalDate.parse(rs.getString("fecha_celebracion"));
+				estado = rs.getString("Estado");
+				precio = rs.getInt("Precio");
+				porcentaje_devolucion = rs.getInt("Porcentaje_devolucion");
+				carreras.add(new Carrera(nombre,plazas,fecha_celebracion, estado, precio, porcentaje_devolucion));				
+			}
+			rs.close();
+			st.close();
+			con.close();
+			return carreras;
+			
+			
 		}
 		
 		//Comprueba si un dorsal esta ocupado en una carrera
