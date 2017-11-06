@@ -1,8 +1,8 @@
-insert into carrera values ('Sanita Marca Running');
-insert into carrera values ('San Silvestre');
-insert into carrera values ('Iron Man');
-insert into carrera values ('Viesgo Night Race');
-insert into carrera values ('Media Maratón Avilés');
+insert into carrera values ('Sanita Marca Running', 67, DATE '2017-11-05', 'cerrada', 10, 50);
+insert into carrera values ('San Silvestre', 100, DATE '2017-10-04', 'creada', 9, null);
+insert into carrera values ('Iron Man', 0, DATE '2016-11-05', 'finalizada', 10, 100);
+insert into carrera values ('Viesgo Night Race', 300, DATE '1998-03-22', 'inscripcion_abierta', 9, null);
+insert into carrera values ('Media Maratón Avilés', 999, DATE '2014-04-22', 'inscripcion_cerrada', 10, null);
 
 insert into atleta values ('71736779D', 'Daniel', 'Fuego San Francisco', 'Infantil', 'masculino', DATE '1997-03-05', 'Viesgo Night Race', DATE '2017-10-23', 'inscrito', null, null); 
 insert into atleta values ('32513564A', 'José', 'Martínez Pérez', 'Senior', 'masculino', DATE '1979-08-22', 'San Silvestre', DATE '2017-10-17', 'inscrito', null, null);
@@ -17,7 +17,7 @@ insert into atleta values ('65324789G', 'Montserrat', 'Campuzano Perales', 'Cade
 insert into atleta values ('21458547H', 'Juana', 'Oregón Montes','Junior', 'femenino', DATE '1997-02-19', 'San Silvestre', DATE '2017-10-21', 'inscrito', null, null);
 insert into atleta values ('74585214D', 'Eduardo', 'Belenguer Lasa','Junior', 'masculino', DATE '1983-07-23', 'Sanita Marca Running', DATE '2017-10-22', 'inscrito', null, null);
 insert into atleta values ('65893256L', 'Josefina', 'Trujillo Pardo','Junior', 'femenino', DATE '1998-03-21', 'Sanita Marca Running', DATE '2017-10-23', 'inscrito', null, null);
-insert into atleta values ('54783256A', 'Milagros', 'Verde Nuño','Cadete', 'femenino', , DATE '1981-06-21', 'Viesgo Night Race', DATE '2017-10-22', 'inscrito', null, null); 
+insert into atleta values ('54783256A', 'Milagros', 'Verde Nuño','Cadete', 'femenino', DATE '1981-06-21', 'Viesgo Night Race', DATE '2017-10-22', 'inscrito', null, null); 
 insert into atleta values ('87651234N', 'Félix', 'Ortiz Ezquerro','Senior', 'masculino', DATE '1982-10-30', 'Iron Man', DATE '2017-10-15', 'inscrito', null, null);
 insert into atleta values ('45612321S', 'Eva Maria', 'Hortelano Andrés','Infantil', 'femenino', DATE '1986-06-21', 'Iron Man', DATE '2017-10-23', 'inscrito', null, null); 
 insert into atleta values ('78659856X', 'Ramon', 'Cardoso Azorin','Infantil', 'masculino', DATE '1967-09-12', 'Sanita Marca Running', DATE '2017-10-22', 'inscrito', null, null);

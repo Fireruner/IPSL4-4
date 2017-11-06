@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -196,7 +197,7 @@ public class DataBaseManager
 		}
 		
 		/*
-		 * Para un atleta pasado como parï¿½metro (dni) confirma si estï¿½ o no registrado en cierta carrera(pasada como parï¿½metro)
+		 * Para un atleta pasado como parámetro (dni) confirma si estï¿½ o no registrado en cierta carrera(pasada como parámetro)
 		 */
 		public static boolean atletaEstaEnCarrera(String dniAtleta, String fk_carrera) throws SQLException 
 		{
@@ -402,6 +403,34 @@ public class DataBaseManager
 			con.close();
 			
 			return results;
+		}
+		public static ArrayList<Carrera> getCarrerasEnteras() throws SQLException{
+			ArrayList<Carrera> carreras = new ArrayList<Carrera>();
+			String nombre;
+			int plazas;
+			LocalDate fecha_celebracion;
+			String estado;
+			int precio;
+			int porcentaje_devolucion;
+			Connection con = getConnection();
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery("select * from carrera");
+			
+			while(rs.next()) {
+				nombre = rs.getString("Nombre");
+				plazas = rs.getInt("plazas_disponibles");
+				fecha_celebracion = LocalDate.parse(rs.getString("fecha_celebracion"));
+				estado = rs.getString("Estado");
+				precio = rs.getInt("Precio");
+				porcentaje_devolucion = rs.getInt("Porcentaje_devolucion");
+				carreras.add(new Carrera(nombre,plazas,fecha_celebracion, estado, precio, porcentaje_devolucion));				
+			}
+			rs.close();
+			st.close();
+			con.close();
+			return carreras;
+			
+			
 		}
 		
 }
