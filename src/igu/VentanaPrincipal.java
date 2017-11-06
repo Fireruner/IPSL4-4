@@ -1289,7 +1289,7 @@ public class VentanaPrincipal {
 
 		// getComponent(9) es el día 1.
 		ArrayList<Carrera> carreras = DataBaseManager.getCarrerasEnteras();
-		int dia, mes, año;
+		int dia, mes, anno;
 
 		Component[] botones = (calendar.getDayChooser().getDayPanel().getComponents());
 		for (Component component : botones) {
@@ -1298,7 +1298,7 @@ public class VentanaPrincipal {
 		for (Carrera carrera : carreras) {
 			dia = carrera.getFechaCelebracion().getDayOfMonth();
 			mes = carrera.getFechaCelebracion().getMonthValue();
-			año = carrera.getFechaCelebracion().getYear();
+			anno = carrera.getFechaCelebracion().getYear();
 
 			int i = calendar.getDayChooser().getDayPanel().getComponentCount() - 1;
 
@@ -1311,7 +1311,7 @@ public class VentanaPrincipal {
 				i--;
 			}
 
-			if (calendar.getYearChooser().getYear() == año && calendar.getMonthChooser().getMonth() + 1 == mes) {
+			if (calendar.getYearChooser().getYear() == anno && calendar.getMonthChooser().getMonth() + 1 == mes) {
 				calendar.getDayChooser().getDayPanel().getComponent(i).setBackground(Color.green);
 				((JButton) calendar.getDayChooser().getDayPanel().getComponent(i))
 						.setText(dia + " " + carrera.getNombre() + " " + carrera.getEstado());
