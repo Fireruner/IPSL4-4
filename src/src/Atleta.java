@@ -7,16 +7,17 @@ import java.time.LocalDate;
 
 public class Atleta{
 
-	private String sexo, nombre, dni, apellidos, estado, tiempo,fk_carrera, dorsal, posicion;
+	private String sexo, nombre, dni, apellidos, estado, tiempo,fk_carrera, dorsal, posicion, categoria;
 	LocalDate fechaDeNacimiento;
 	LocalDate fecha_inscripcion;
 
 	public Atleta(String dni, String nombre, String apellidos, String sexo, LocalDate fechaDeNacimiento,
-			String fk_carrera, LocalDate fecha_inscripcion, String estado, String tiempo, String dorsal) {
+			String fk_carrera, LocalDate fecha_inscripcion, String estado, String tiempo, String dorsal, String categoria) {
 		this.sexo = sexo;
 		this.nombre = nombre;
 		this.tiempo = tiempo;
 		this.apellidos = apellidos;
+		this.categoria = categoria;
 		this.dni = dni;
 		this.estado = estado;
 		this.dorsal = dorsal;
@@ -26,13 +27,14 @@ public class Atleta{
 	}
 	
 	public Atleta(String dni, String nombre, String apellidos, String sexo, String fechaDeNacimiento,
-			String fk_carrera, String fecha_inscripcion, String estado, String tiempo, String dorsal) {
+			String fk_carrera, String fecha_inscripcion, String estado, String tiempo, String dorsal, String categoria) {
 		this.sexo = sexo;
 		this.nombre = nombre;
 		this.tiempo = tiempo;
 		this.apellidos = apellidos;
 		this.dni = dni;
 		this.estado = estado;
+		this.categoria = categoria;
 		this.dorsal = dorsal;
 		this.fk_carrera = fk_carrera;
 		this.fecha_inscripcion = LocalDate.parse(fecha_inscripcion);
@@ -73,6 +75,13 @@ public class Atleta{
 
 	public String getDni() {
 		return dni;
+	}
+	public String getCategoria() {
+		return categoria;
+	}
+	
+	private void setCategoria(String categoria) {
+		this.categoria = categoria;
 	}
 	
 	public String getApellidos() {
