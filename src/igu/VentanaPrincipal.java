@@ -128,6 +128,7 @@ public class VentanaPrincipal {
 		private JComboBox comboBox;
 		private JComboBox comboClasificacion;
 		private JComboBox comboCarreras;
+		private JButton btnNuevaCarrera;
 	
 
 	/**
@@ -176,6 +177,7 @@ public class VentanaPrincipal {
 			pnControles.add(getBtnAtletas());
 			pnControles.add(getBtnClasificacion());
 			pnControles.add(getBtnPagos());
+			pnControles.add(getBtnNuevaCarrera());
 			pnControles.add(getBtnAsignarDorsales());
 			pnControles.add(getBtnRegistrarCorredor());
 			pnControles.add(getBtnRegistrarTiempos());
@@ -1266,5 +1268,18 @@ public class VentanaPrincipal {
 			}
 		}
 		return comboClasificacion;
+	}
+	private JButton getBtnNuevaCarrera() {
+		if (btnNuevaCarrera == null) {
+			btnNuevaCarrera = new JButton("Crear nueva competici\u00F3n");
+			btnNuevaCarrera.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) 
+				{
+					DialogCarrera carrera = new DialogCarrera();
+					carrera.setVisible(true);
+				}
+			});
+		}
+		return btnNuevaCarrera;
 	}
 }

@@ -418,4 +418,9 @@ public class DataBaseManager
 			return coincide;
 		}
 		
+		public static void anadirCarrera(Carrera carrera)
+		{
+			
+		}
+		
 }
