@@ -4,7 +4,22 @@
 Create table Carrera
 (
 	nombre varchar(20) not null,
-	constraint pk_nombre primary key (nombre)
+	plazas_disponibles int  not null,
+	fecha_celebracion date not null,
+	estado varchar(50) not null,
+	precio int not null,
+	porcentaje_devolucion int,
+	constraint pk_nombre primary key (nombre), 
+	constraint ck_estado1 check (estado in('creada','inscripcion_abierta', 'inscripcion_cerrada', 'finalizada', 'clasificada', 'cerrada'))
+)
+
+/* Tabla club, añade los campos que vayas a necesitar */
+Create table Club
+(
+	nombreClub varchar(50),
+	fk_carrera_club varchar(20) not null,
+	constraint pk_club primary key (nombreClub),
+	constraint fk_carrera_club foreign key (fk_carrera_club) references carrera (nombre)
 )
 
 /* Tabla atleta, añade los campos que vayas a necesitar */
@@ -13,6 +28,7 @@ Create table Atleta
 	DNI varchar(9) not null,
 	Nombre varchar(50) not null,
 	Apellidos varchar(100),
+	categoria varchar(50),
 	sexo varchar(20) not null,
 	fecha_nacimiento date not null,
 	fk_carrera varchar(20) not null,
@@ -20,8 +36,10 @@ Create table Atleta
 	estado varchar(20) not null,
 	dorsal varchar(20),
 	tiempo varchar(10),
+	fk_club varchar(50),
 	constraint pk_atleta primary key (DNI, fk_carrera),
 	constraint fk_carrera foreign key (fk_carrera) references carrera (nombre),
+	constraint fk_club foreign key (fk_club) references club (nombreClub),
 	constraint ck_sexo check (sexo in('masculino', 'femenino')),
 	constraint ck_estado check (estado in('inscrito', 'pagado'))
 );
