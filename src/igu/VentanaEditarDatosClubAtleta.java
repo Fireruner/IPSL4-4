@@ -1,36 +1,31 @@
 package igu;
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import java.awt.Color;
+import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.ZoneId;
+
+import javax.swing.ButtonGroup;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
 import src.Atleta;
 import src.DataBaseManager;
+import src.MiembrosClub;
 
-import javax.swing.JRadioButton;
-import javax.swing.ButtonGroup;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JComboBox;
-import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.util.Date;
-import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.awt.event.ActionEvent;
-
-public class VentanaDatosAtleta extends JDialog {
+public class VentanaEditarDatosClubAtleta extends JDialog{
 
 	private final static int AnOS = 90;
 	private final static int AnO_INICIAL = 2016;
@@ -47,19 +42,23 @@ public class VentanaDatosAtleta extends JDialog {
 	private JComboBox<Integer> cbxDia;
 	private JComboBox<String> cbxMes;
 	private JComboBox<Integer> cbxAno;
+	private JButton btnAnnadir;
 	private JButton btnAceptar;
-	private JButton btnCancelar;
-	private JLabel lblCarrera;
 	private JLabel lblApellidos;
 	private JTextField txtfldApellidos;
-	private JComboBox<String> comboCarreras;
-
+	private JButton btnEditar;
+	
+	private String carrera; 
+	private String dni = ""; 
+	private String nombre = ""; 
+	private String apellidos = "";
+	private String club;
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 		try {
-			VentanaDatosAtleta dialog = new VentanaDatosAtleta();
+			VentanaEditarDatosClubAtleta dialog = new VentanaEditarDatosClubAtleta("club", "carrera", "", "", "");
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -68,10 +67,10 @@ public class VentanaDatosAtleta extends JDialog {
 	}
 
 	/**
-	 * Create the dialog.
+	 * Create the application.
 	 */
-	public VentanaDatosAtleta() {
-		setTitle("Gesti\u00F3n de carreras - Datos del corredor");
+	public VentanaEditarDatosClubAtleta(String club, String carrera, String dni, String nombre, String apellidos) {
+		setTitle("Gesti\u00F3n de carreras - Datos del corredor del club: " + club);
 		getContentPane().setBackground(Color.WHITE);
 		getContentPane().setLayout(null);
 		getContentPane().add(getLblNombre());
@@ -80,21 +79,23 @@ public class VentanaDatosAtleta extends JDialog {
 		getContentPane().add(getTxtfldDNI());
 		getContentPane().add(getPnSexo());
 		getContentPane().add(getPanel_1());
-		getContentPane().add(getBtnAceptar());
-		getContentPane().add(getBtnCancelar());
-		getContentPane().add(getLblCarrera());
+		getContentPane().add(getBtnEditar());
 		getContentPane().add(getLblApellidos());
 		getContentPane().add(getTxtfldApellidos());
-		getContentPane().add(getComboCarreras());
-		setBounds(100, 100, 591, 335);
-	}
-
+		this.carrera = carrera;
+		this.club = club;
+		this.dni = dni;
+		this.nombre = nombre;
+		this.apellidos = apellidos;
+		setBounds(100, 100, 591, 230);
+	}	
+	
 	private JLabel getLblNombre() {
 		if (lblNombre == null) {
 			lblNombre = new JLabel("Nombre: ");
 			lblNombre.setLabelFor(getTxtfldNombre());
 			lblNombre.setDisplayedMnemonic('N');
-			lblNombre.setBounds(27, 44, 65, 14);
+			lblNombre.setBounds(24, 16, 65, 14);
 		}
 		return lblNombre;
 	}
@@ -102,8 +103,11 @@ public class VentanaDatosAtleta extends JDialog {
 	private JTextField getTxtfldNombre() {
 		if (txtfldNombre == null) {
 			txtfldNombre = new JTextField();
-			txtfldNombre.setBounds(85, 41, 164, 20);
+			txtfldNombre.setBounds(85, 13, 164, 20);
 			txtfldNombre.setColumns(10);
+			if(!nombre.equals("")) {
+				txtfldNombre.setText(nombre);
+			}
 		}
 		return txtfldNombre;
 	}
@@ -113,7 +117,7 @@ public class VentanaDatosAtleta extends JDialog {
 			lblDni = new JLabel("DNI: ");
 			lblDni.setLabelFor(lblDni);
 			lblDni.setDisplayedMnemonic('D');
-			lblDni.setBounds(27, 135, 46, 14);
+			lblDni.setBounds(24, 104, 46, 14);
 		}
 		return lblDni;
 	}
@@ -121,8 +125,11 @@ public class VentanaDatosAtleta extends JDialog {
 	private JTextField getTxtfldDNI() {
 		if (txtfldDNI == null) {
 			txtfldDNI = new JTextField();
-			txtfldDNI.setBounds(85, 132, 164, 20);
+			txtfldDNI.setBounds(85, 101, 164, 20);
 			txtfldDNI.setColumns(10);
+			if(!dni.equals("")) {
+				txtfldDNI.setText(dni);
+			}
 		}
 		return txtfldDNI;
 	}
@@ -132,7 +139,7 @@ public class VentanaDatosAtleta extends JDialog {
 			pnSexo = new JPanel();
 			pnSexo.setBorder(new TitledBorder(null, "Sexo", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 			pnSexo.setBackground(Color.WHITE);
-			pnSexo.setBounds(251, 44, 215, 74);
+			pnSexo.setBounds(285, 104, 215, 74);
 			pnSexo.setLayout(null);
 			pnSexo.add(getRdbtnHombre());
 			pnSexo.add(getRdbtnMujer());
@@ -166,7 +173,7 @@ public class VentanaDatosAtleta extends JDialog {
 			pnFecha.setBorder(
 					new TitledBorder(null, "Fecha de nacimiento", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 			pnFecha.setBackground(Color.WHITE);
-			pnFecha.setBounds(27, 211, 246, 74);
+			pnFecha.setBounds(275, 16, 246, 74);
 			pnFecha.setLayout(null);
 			pnFecha.add(getCbxDia());
 			pnFecha.add(getCbxMes());
@@ -214,12 +221,11 @@ public class VentanaDatosAtleta extends JDialog {
 		return cbxAno;
 	}
 
-	private JButton getBtnAceptar() {
-		if (btnAceptar == null) {
-			btnAceptar = new JButton("Aceptar");
-			btnAceptar.setMnemonic('A');
-			btnAceptar.setBounds(333, 237, 89, 23);
-			btnAceptar.addActionListener(new ActionListener() {
+	private JButton getBtnAnnadir() {
+		if (btnAnnadir == null) {
+			btnAnnadir = new JButton("A\u00F1adir");
+			btnAnnadir.setBounds(333, 237, 89, 23);
+			btnAnnadir.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					
 					String campoNombre = txtfldNombre.getText();
@@ -234,29 +240,24 @@ public class VentanaDatosAtleta extends JDialog {
 
 					boolean valido;
 					
-					String carrera = (String)comboCarreras.getSelectedItem();;
-					
 					try {
 						
-						valido = DataBaseManager.atletaEstaEnCarrera(txtfldDNI.getText().toUpperCase(), carrera);
+						valido = DataBaseManager.atletaEstaEnCarrera(txtfldDNI.getText().toUpperCase(), carrera); 
 						if (valido) {
 
 							JOptionPane.showMessageDialog(null, "El atleta ya est\u00E1 inscrito en la carrera");
 						}
 
 						else {
-
 							Atleta atleta = new Atleta(txtfldDNI.getText().toUpperCase(), txtfldNombre.getText(),
 									txtfldApellidos.getText(), comprobarSexo(), comprobarFechaNacimiento(),
-									carrera, comprobarFechaInscripcion(), "inscrito", null, null, null, null);
-							DataBaseManager.anadirCiertoAtleta(atleta);
-							atleta.imprimirResguardo();
-							dispose();
+									carrera, comprobarFechaInscripcion(), "inscrito", null, null, null, club);
+							MiembrosClub.getl().add(atleta);
+							txtfldNombre.setText("");
+							txtfldApellidos.setText("");
+							txtfldDNI.setText("");
 						}
 					} catch (SQLException e) {
-
-						e.printStackTrace();
-					} catch (IOException e) {
 
 						e.printStackTrace();
 					}
@@ -265,35 +266,26 @@ public class VentanaDatosAtleta extends JDialog {
 			});
 
 		}
-		return btnAceptar;
+		return btnAnnadir;
 	}
 
-	private JButton getBtnCancelar() {
-		if (btnCancelar == null) {
-			btnCancelar = new JButton("Cancelar");
-			btnCancelar.addActionListener(new ActionListener() {
+	private JButton getBtnAceptar() {
+		if (btnAceptar == null) {
+			btnAceptar = new JButton("Aceptar");
+			btnAceptar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					dispose();
 				}
 			});
-			btnCancelar.setMnemonic('C');
-			btnCancelar.setBounds(444, 237, 89, 23);
+			btnAceptar.setBounds(444, 237, 89, 23);
 		}
-		return btnCancelar;
-	}
-
-	private JLabel getLblCarrera() {
-		if (lblCarrera == null) {
-			lblCarrera = new JLabel("Carrera:");
-			lblCarrera.setBounds(27, 174, 65, 14);
-		}
-		return lblCarrera;
+		return btnAceptar;
 	}
 
 	private JLabel getLblApellidos() {
 		if (lblApellidos == null) {
 			lblApellidos = new JLabel("Apellidos: ");
-			lblApellidos.setBounds(27, 92, 76, 14);
+			lblApellidos.setBounds(24, 62, 76, 14);
 		}
 		return lblApellidos;
 	}
@@ -301,8 +293,11 @@ public class VentanaDatosAtleta extends JDialog {
 	private JTextField getTxtfldApellidos() {
 		if (txtfldApellidos == null) {
 			txtfldApellidos = new JTextField();
-			txtfldApellidos.setBounds(85, 89, 164, 20);
+			txtfldApellidos.setBounds(85, 59, 164, 20);
 			txtfldApellidos.setColumns(10);
+			if(!apellidos.equals("")) {
+				txtfldApellidos.setText(apellidos);
+			}
 		}
 		return txtfldApellidos;
 	}
@@ -336,22 +331,27 @@ public class VentanaDatosAtleta extends JDialog {
 		LocalDate fechaDeInscripcion = LocalDate.now(ZoneId.of("UTC"));
 		return fechaDeInscripcion;
 	}
-	private JComboBox getComboCarreras() {
-		if (comboCarreras == null) {
-			comboCarreras = new JComboBox();
-			comboCarreras.setBounds(85, 163, 164, 37);
-			try {
-				ArrayList<String> carreras = DataBaseManager.getCarreras();
-				for (String carrera : carreras)
-				{
-					comboCarreras.addItem(carrera);
+	
+	private JButton getBtnEditar() {
+		if (btnEditar == null) {
+			btnEditar = new JButton("Aceptar y editar");
+			btnEditar.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					for(int i = 0; i<MiembrosClub.getl().size(); i++) {
+						if(MiembrosClub.getl().get(i).getDni().equals(dni)) {
+							MiembrosClub.getl().get(i).setDni(txtfldDNI.getText().toUpperCase());
+							MiembrosClub.getl().get(i).setNombre(txtfldNombre.getText());
+							MiembrosClub.getl().get(i).setApellidos(txtfldApellidos.getText());
+							MiembrosClub.getl().get(i).setSexo(comprobarSexo());
+							MiembrosClub.getl().get(i).setFechaDeNacimiento(comprobarFechaNacimiento());
+						}
+					}
+					dispose();
 				}
-			} catch (SQLException e) 
-			{
-				JOptionPane.showMessageDialog(null, "Error accediendo a la base de datos" + " recuperacionCarreras");
-				e.printStackTrace();
-			}
+			});
+			btnEditar.setBounds(85, 144, 142, 23);
 		}
-		return comboCarreras;
+		return btnEditar;
 	}
 }
+
