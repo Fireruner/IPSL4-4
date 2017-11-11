@@ -622,7 +622,7 @@ public class VentanaPrincipal {
 	}
 
 	/*
-	 * A PARTIR DE AQUI TODO LO RELACIONADO CON EL TÍTULO: "RESULTADOS" Y LAS
+	 * A PARTIR DE AQUI TODO LO RELACIONADO CON EL TÃ�TULO: "RESULTADOS" Y LAS
 	 * COLUMNAS DE LA JTABLE
 	 */
 
@@ -982,7 +982,7 @@ public class VentanaPrincipal {
 	        		  }
 	        	  }
 	        	  
-	          	//Lo que conseguimos asi es que añada los corredores cuyo formato es correcto, los que tengan un formato incorrecto han de ser revisados por el cliente
+	          	//Lo que conseguimos asi es que aÃ±ada los corredores cuyo formato es correcto, los que tengan un formato incorrecto han de ser revisados por el cliente
 	          
 	          	//Distintas comprobaciones con respecto a cada linea, los comprobadores se usan a la hora de imprimir los fallos en el fichero de fallos, los errores para la ventana emergente
 	          	if(!gc.comprobadorPresencia(partes[1],nombreCarrera)) {
@@ -1002,7 +1002,7 @@ public class VentanaPrincipal {
 	          }
 	          
 	          else {
-	        	 //aqui no hace falta que añada datos incorrectos, si la estructura del fichero esta mal no debe añadir cada linea al fichero de salida
+	        	 //aqui no hace falta que aÃ±ada datos incorrectos, si la estructura del fichero esta mal no debe aÃ±adir cada linea al fichero de salida
 	        	 errorEstructura = true; 
 	          }      
 	          
@@ -1011,22 +1011,22 @@ public class VentanaPrincipal {
 	        	  datosIncorrectos.add(cadena + "   El formato de tiempo es incorrecto");
 	          }
 	          else if(!comprobadorTiempo&&comprobadorDNI&&!comprobadorPago) {
-	        	  datosIncorrectos.add(cadena + "   El corredor no está en la base de datos");
+	        	  datosIncorrectos.add(cadena + "   El corredor no estÃ¡ en la base de datos");
 	          }
 	          else if(!comprobadorTiempo&&!comprobadorDNI&&comprobadorPago) {
 	        	  datosIncorrectos.add(cadena + "   El corredor no ha pagado para competir en esta carrera");
 	          }
 			  else if(comprobadorTiempo&&comprobadorDNI&&!comprobadorPago) {
-				  datosIncorrectos.add(cadena + "   El corredor no está en la base de datos y el formato de tiempo es incorrecto");
+				  datosIncorrectos.add(cadena + "   El corredor no estÃ¡ en la base de datos y el formato de tiempo es incorrecto");
 			  }
 			  else if(comprobadorTiempo&&!comprobadorDNI&&comprobadorPago) {
 				  datosIncorrectos.add(cadena + "   El formato de tiempo es incorrecto y el corredor no ha pagado para competir en esta carrera");
 			  }
 			  else if(!comprobadorTiempo&&comprobadorDNI&&comprobadorPago) {
-				  datosIncorrectos.add(cadena + "   El corredor no está en la base de datos y el corredor no ha pagado para competir en esta carrera");
+				  datosIncorrectos.add(cadena + "   El corredor no estÃ¡ en la base de datos y el corredor no ha pagado para competir en esta carrera");
 			  }
 			  else if(comprobadorTiempo&&comprobadorDNI&&comprobadorPago) {
-				  datosIncorrectos.add(cadena + "   El formato de tiempo es incorrecto, el corredor no está en la base de datos y no ha pagado para competir en esta carrera");
+				  datosIncorrectos.add(cadena + "   El formato de tiempo es incorrecto, el corredor no estÃ¡ en la base de datos y no ha pagado para competir en esta carrera");
 			  }
 	      }
 	      
@@ -1036,11 +1036,11 @@ public class VentanaPrincipal {
 	      }
 	      else {
 	    	  if(errorFormato) {
-	    		  JOptionPane.showMessageDialog(null, "Algunos tiempos no han sido añadidos a la base de datos. Por favor, compruebe el fichero de tiempos.");
+	    		  JOptionPane.showMessageDialog(null, "Algunos tiempos no han sido aÃ±adidos a la base de datos. Por favor, compruebe el fichero de tiempos.");
 	    		  sinFallosFormato=false;
 	    	  }
 	    	  if(errorPresencia) {
-	    		  JOptionPane.showMessageDialog(null, "Alguno de los corredores del fichero no se encuentra en esta carrera, por tanto no ha sido añadido.");
+	    		  JOptionPane.showMessageDialog(null, "Alguno de los corredores del fichero no se encuentra en esta carrera, por tanto no ha sido aÃ±adido.");
 	    		  sinFallosDni = false;
 	    	  }
 	    	  if(errorEstructura) {
@@ -1048,7 +1048,7 @@ public class VentanaPrincipal {
 	    		  sinFallosEstructura = false;
 	    	  }
 	    	  if(errorPago) {
-	    		  JOptionPane.showMessageDialog(null, "Alguno de los corredores no ha sido añadido debido a que no ha pagado la carrera.");
+	    		  JOptionPane.showMessageDialog(null, "Alguno de los corredores no ha sido aÃ±adido debido a que no ha pagado la carrera.");
 	    		  sinFallosEstructura = false;
 	    	  }
 	      }   
@@ -1205,7 +1205,7 @@ public class VentanaPrincipal {
 
 	private JButton getBtnMenu() {
 		if (btnMenu == null) {
-			btnMenu = new JButton("Menú");
+			btnMenu = new JButton("MenÃº");
 			btnMenu.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					removeModelContent(modelAtletas);
@@ -1285,7 +1285,7 @@ public class VentanaPrincipal {
 					}
 					else
 					{
-						JOptionPane.showMessageDialog(null, "Para ejecutar esta opción debe seleccionar el atleta al que quiere asignar un dorsal.");
+						JOptionPane.showMessageDialog(null, "Para ejecutar esta opciÃ³n debe seleccionar el atleta al que quiere asignar un dorsal.");
 					}
 				}
 			});
@@ -1370,13 +1370,18 @@ public class VentanaPrincipal {
 
 	private void pintarPanelCalendario() throws SQLException {
 
-		// getComponent(9) es el día 1.
+		
 		ArrayList<Carrera> carreras = DataBaseManager.getCarrerasEnteras();
 		int dia, mes, anno;
 
 		Component[] botones = (calendar.getDayChooser().getDayPanel().getComponents());
 		for (Component component : botones) {
-			((JButton) component).removeActionListener(pA);
+			ActionListener[] a = ((JButton) component).getActionListeners();
+			for(ActionListener b : a) {
+				if(!b.equals(pA)) {
+				((JButton) component).removeActionListener(b);
+				}
+			}
 		}
 		for (Carrera carrera : carreras) {
 			dia = carrera.getFechaCelebracion().getDayOfMonth();
@@ -1458,7 +1463,7 @@ public class VentanaPrincipal {
 	}
 	private JButton getBtnMenuCalendario() {
 		if (btnMenuCalendario == null) {
-			btnMenuCalendario = new JButton("Menú");
+			btnMenuCalendario = new JButton("MenÃº");
 			btnMenuCalendario.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					CardLayout card = (CardLayout) frame.getContentPane().getLayout();
