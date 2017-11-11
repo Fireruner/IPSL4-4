@@ -126,18 +126,19 @@ public class DataBaseManager
 			ResultSet rs = st.executeQuery(texto);
 			while(rs.next())
 			{
-				String[] result = new String[11];
+				String[] result = new String[12];
 				result[0] = rs.getString("DNI");	
 				result[1] = rs.getString("NOMBRE");
 				result[2] = rs.getString("APELLIDOS");
-				result[3] = rs.getString("SEXO");
-				result[4] = rs.getString("FECHA_NACIMIENTO");
-				result[5] = rs.getString("FK_CARRERA");
-				result[6] = rs.getString("FECHA_INSCRIPCION");
-				result[7] = rs.getString("ESTADO");
-				result[8] = rs.getString("TIEMPO");
-				result[9] = rs.getString("DORSAL");
-				result[10] = rs.getString("CATEGORIA");
+				result[3] = rs.getString("CATEGORIA");
+				result[4] = rs.getString("SEXO");
+				result[5] = rs.getString("FECHA_NACIMIENTO");
+				result[6] = rs.getString("FK_CARRERA");
+				result[7] = rs.getString("FECHA_INSCRIPCION");
+				result[8] = rs.getString("ESTADO");
+				result[9] = rs.getString("TIEMPO");
+				result[10] = rs.getString("DORSAL");
+				result[11] = rs.getString("FK_CLUB");
 				results.add(result);
 			}
 			rs.close();
@@ -222,24 +223,28 @@ public class DataBaseManager
 			String nombre = atleta.getNombre();
 			String apellidos = atleta.getApellidos();
 			String sexo = atleta.getSexo();
+			String categoria = atleta.getCategoria();
 			java.sql.Date fechaDeNacimiento = java.sql.Date.valueOf(atleta.getFechaDeNacimiento());
 			String fk_carrera = atleta.getFk_carrera();
 			java.sql.Date fecha_inscripcion = java.sql.Date.valueOf(atleta.getFecha_inscripcion());
 			String estado = atleta.getEstado();
 			String tiempo = atleta.getTiempo();
 			String dorsal = atleta.getDorsal();
+			String club = atleta.getClub();
 			
-			PreparedStatement ps = con.prepareStatement("insert into atleta values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");
+			PreparedStatement ps = con.prepareStatement("insert into atleta values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");
 			ps.setString(1, dni);
 			ps.setString(2, nombre);
 			ps.setString(3, apellidos);
-			ps.setString(4, sexo);
-			ps.setDate(5, fechaDeNacimiento);
-			ps.setString(6, fk_carrera);
-			ps.setDate(7, fecha_inscripcion);
-			ps.setString(8, estado);
-			ps.setString(9 , dorsal);
-			ps.setString(10, tiempo);
+			ps.setString(4, categoria);
+			ps.setString(5, sexo);
+			ps.setDate(6, fechaDeNacimiento);
+			ps.setString(7, fk_carrera);
+			ps.setDate(8, fecha_inscripcion);
+			ps.setString(9, estado);
+			ps.setString(10 , dorsal);
+			ps.setString(11, tiempo);
+			ps.setString(12, club);
 			
 			if(ps.executeUpdate() == 1) {
 				return true;
@@ -332,7 +337,7 @@ public class DataBaseManager
 			PreparedStatement ps = con.prepareStatement("update atleta set dorsal = ? where dni = ? and fk_carrera = ?");
 			for (String[] a : atletas)
 			{
-				ps.setString(1, a[5]);
+				ps.setString(1, a[6]);
 				ps.setString(2, a[0]);
 				ps.setString(3, carrera);
 				ps.executeUpdate();
@@ -346,8 +351,8 @@ public class DataBaseManager
 			PreparedStatement ps = con.prepareStatement("select dorsal from atleta where fk_carrera = ? order by dorsal asc");
 			ps.setString(1, carrera);
 			ResultSet rs = ps.executeQuery();
-			boolean haLlegadoADiez = false;
-			int nextOne = 1;
+			boolean haLlegadoADiez = true;
+			int nextOne = 11;
 			while(rs.next()) 
 			{
 				if(rs.getString("dorsal") != null)
@@ -429,8 +434,78 @@ public class DataBaseManager
 			st.close();
 			con.close();
 			return carreras;
+		}
+		
+		public static String comprobarAtletaPagado(String dni, String carrera) throws SQLException
+		{
+			String estado = "vacio";
+			Connection con = getConnection();
+			String texto = "select estado as estado "
+					+ "from atleta  "
+					+ "where dni = ? and fk_carrera = ?";
+			PreparedStatement st = con.prepareStatement(texto);
+			st.setString(1, dni);
+			st.setString(2, carrera);
+			ResultSet rs = st.executeQuery();
+			while(rs.next())
+			{
+				String result = new String();
+				result = rs.getString("estado");
+				if(result.equals("pagado")) {
+					estado = "pagado";
+		 		}
+		 	}
+		 	return estado;
+		 }
+		
+		public static boolean anadirCiertoClub(Club club, String nombreCarrera) throws SQLException {
+			Connection con = getConnection();
+			String nombre = club.getNombre();
+			ArrayList<Atleta> atletas = club.getParticipantes();
 			
+			PreparedStatement ps = con.prepareStatement("insert into club values (?, ?) ");
+			ps.setString(1, nombre);
+			ps.setString(2, nombreCarrera);
+			
+			
+			if(ps.executeUpdate() == 1) {
+				return true;
+			}
+			else
+				return false;
 			
 		}
 		
+		public static ArrayList<String> getClubs() throws SQLException
+		{
+			ArrayList<String> clubs = new ArrayList<String>();
+			
+			Connection con = getConnection();
+			Statement st = con.createStatement();
+			String texto = "select nombreclub from club";
+			ResultSet rs = st.executeQuery(texto);
+			while(rs.next())
+			{
+				String result = rs.getString(1);
+				clubs.add(result);
+			}
+			rs.close();
+			st.close();
+			con.close();
+			
+			return clubs;
+		}
+		
+		public static boolean existeDorsal(String carrera, String dorsal) throws SQLException{
+			boolean coincide = false;
+			Connection con = getConnection();
+			PreparedStatement ps = con.prepareStatement("select dni from atleta where dorsal = ? and fk_carrera = ?");
+			ps.setString(1, dorsal);
+			ps.setString(2, carrera);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				coincide = rs.getString("DNI") != null;
+			}
+			return coincide;
+		}
 }

@@ -77,14 +77,27 @@ public class DialogDorsales extends JDialog {
 							if(DataBaseManager.existeCarrera(carrera))
 							{
 								ArrayList<String[]> atletas =DataBaseManager.listarAtletas(carrera);
-								int contador = 11;
+								int contador = DataBaseManager.getSiguienteDorsalDisponible(carrera);;
+								int noPagado = 0;
+								String atletasSinPago = "";
 								for(String[] a: atletas)
 								{
-									a[5] = ""+ contador;
-									contador++;
+									if(a[5].equals("pagado")) {
+										if(a[6] == null) {
+											a[6] = ""+ contador;
+											contador++;
+										}
+									}
+									else {
+										atletasSinPago += a[0] +"\n";
+										noPagado++;
+									}
 								}
 								DataBaseManager.actualizarDorsales(atletas, carrera);
-								JOptionPane.showMessageDialog(null, "Dorsales generados correctamente!");
+								if(atletasSinPago.equals(""))
+									JOptionPane.showMessageDialog(null, "Dorsales generados correctamente!");
+								else
+									JOptionPane.showMessageDialog(null, "No se han podido asignar dorsales a los siguientes "+noPagado+" corredores\npor no haber pagado:\n"+atletasSinPago);
 								dispose();
 							}
 							else
