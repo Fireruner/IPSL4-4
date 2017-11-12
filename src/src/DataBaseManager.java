@@ -508,4 +508,39 @@ public class DataBaseManager
 			}
 			return coincide;
 		}
+		public static int getPorcentajeDevolucion(String carrera) throws SQLException{
+			Connection con = getConnection();
+			PreparedStatement ps = con.prepareStatement("select porcentaje_devolucion from Carrera where nombre = ?");
+			ps.setString(1, carrera);
+			ResultSet rs = ps.executeQuery();
+			int porcentajeDevolucion = 0;
+			while(rs.next()) {
+			porcentajeDevolucion = rs.getInt("porcentaje_devolucion");
+			}
+			return porcentajeDevolucion;
+			
+		}
+		
+		public static int getPrecioCarrera(String carrera) throws SQLException{
+			Connection con = getConnection();
+			PreparedStatement ps = con.prepareStatement("select precio from Carrera where nombre = ?");
+			ps.setString(1, carrera);
+			ResultSet rs = ps.executeQuery();
+			int precio = 0;
+			while(rs.next()) {
+			precio = rs.getInt("precio");
+			}
+			return precio;
+		}
+		
+		public static void borrarAtleta(String carrera, String dni) throws SQLException{
+			Connection con = getConnection();
+			PreparedStatement ps = con.prepareStatement("delete from atleta where dni = ? and fk_carrera = ? ");
+			ps.setString(1, dni);
+			ps.setString(2, carrera);
+			ps.executeUpdate();
+		}
+		
+		
+		
 }
