@@ -1381,7 +1381,13 @@ public class VentanaPrincipal {
 				if(!b.equals(pA)) {
 				((JButton) component).removeActionListener(b);
 				}
+				if(((JButton) component).getText().contains(" ")) {
+					int numero = Integer.parseInt(((JButton) component).getText().substring(0, 1));
+				((JButton) component).setText(String.valueOf(numero));
+				}
 			}
+			
+			
 		}
 		for (Carrera carrera : carreras) {
 			dia = carrera.getFechaCelebracion().getDayOfMonth();
@@ -1393,10 +1399,14 @@ public class VentanaPrincipal {
 			while (((JButton) calendar.getDayChooser().getDayPanel().getComponent(i)).getText().equals("")) {
 				i--;
 			}
-
+			
+			
 			while (Integer
 					.parseInt(((JButton) calendar.getDayChooser().getDayPanel().getComponent(i)).getText()) != dia) {
+				
+				
 				i--;
+				
 			}
 
 			if (calendar.getYearChooser().getYear() == anno && calendar.getMonthChooser().getMonth() + 1 == mes) {
@@ -1476,4 +1486,12 @@ public class VentanaPrincipal {
 		}
 		return btnMenuCalendario;
 	}
+    private boolean esNumero(String cadena){
+    	try {
+    		Integer.parseInt(cadena);
+    		return true;
+    	} catch (NumberFormatException nfe){
+    		return false;
+    	}
+    }
 }
