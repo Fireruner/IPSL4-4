@@ -193,6 +193,7 @@ public class VentanaPrincipal {
 			pnControles.setBounds(357, 11, 292, 469);
 			pnControles.setLayout(new GridLayout(0, 1, 0, 0));
 			pnControles.add(getBtnAtletas());
+			pnControles.add(getBtnCalendario());
 			pnControles.add(getBtnClasificacion());
 			pnControles.add(getBtnPagos());
 			pnControles.add(getBtnNuevaCarrera());
@@ -200,7 +201,6 @@ public class VentanaPrincipal {
 			pnControles.add(getBtnClubs());
 			pnControles.add(getBtnRegistrarCorredor());
 			pnControles.add(getBtnRegistrarTiempos());
-			pnControles.add(getBtnCalendario());
 		}
 		return pnControles;
 	}
