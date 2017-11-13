@@ -8,7 +8,7 @@ Create table Carrera
 	fecha_celebracion date not null,
 	estado varchar(50) not null,
 	precio int not null,
-	porcentaje_devolucion int,
+	porcentaje_devolucion int not null,
 	constraint pk_nombre primary key (nombre), 
 	constraint ck_estado1 check (estado in('creada','inscripcion_abierta', 'inscripcion_cerrada', 'finalizada', 'clasificada', 'cerrada'))
 )

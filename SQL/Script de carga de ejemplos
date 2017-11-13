@@ -1,8 +1,8 @@
 insert into carrera values ('Sanita Marca Running', 67, DATE '2017-11-05', 'cerrada', 10, 50);
-insert into carrera values ('San Silvestre', 100, DATE '2017-10-04', 'creada', 9, null);
+insert into carrera values ('San Silvestre', 100, DATE '2017-10-04', 'creada', 9, 0);
 insert into carrera values ('Iron Man', 0, DATE '2016-11-05', 'finalizada', 10, 100);
-insert into carrera values ('Viesgo Night Race', 300, DATE '1998-03-22', 'inscripcion_abierta', 9, null);
-insert into carrera values ('Media Maratón Avilés', 999, DATE '2014-04-22', 'inscripcion_cerrada', 10, null);
+insert into carrera values ('Viesgo Night Race', 300, DATE '1998-03-22', 'inscripcion_abierta', 9, 0);
+insert into carrera values ('Media Maratón Avilés', 999, DATE '2014-04-22', 'inscripcion_cerrada', 10, 0);
 
 insert into club values ('Coyotes', 'Iron Man');
 insert into club values ('Lions', 'San Silvestre');
