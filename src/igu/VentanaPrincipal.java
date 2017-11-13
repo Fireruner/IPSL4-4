@@ -1529,6 +1529,7 @@ public class VentanaPrincipal {
 							if (estado.equals("pagado")) {
 								JOptionPane.showMessageDialog(null,
 										"Al atleta con dni" + dni + " " + "se le tendrá que devolver " + p * (pD / 100) + "€");
+								
 								try {
 									DataBaseManager.borrarAtleta(getComboBox().getSelectedItem().toString(), dni);
 								} catch (SQLException e1) {
@@ -1559,7 +1560,7 @@ public class VentanaPrincipal {
 					}
 				}
 			});
-			btnCancelar.setBounds(599, 157, 145, 23);
+			btnCancelar.setBounds(599, 157, 171, 23);
 		}
 		return btnCancelar;
 	}
