@@ -293,7 +293,7 @@ public class DataBaseManager
 		public static ArrayList<String[]> listarAtletas(String fk_carrera) throws SQLException {
 			ArrayList<String[]> c = new ArrayList<String[]>();
 			Connection con = getConnection();
-			PreparedStatement ps = con.prepareStatement("select dni, nombre, categoria, sexo, fecha_inscripcion, estado, dorsal"
+			PreparedStatement ps = con.prepareStatement("select dni, nombre, fk_categoria, sexo, fecha_inscripcion, estado, dorsal"
 					+ " from atleta where fk_carrera= ? order by fecha_inscripcion, estado");
 			ps.setString(1, fk_carrera);
 			ResultSet rs = ps.executeQuery();
@@ -301,7 +301,7 @@ public class DataBaseManager
 				String[] a = new String[7];
 				a[0] = rs.getString("dni");
 				a[1] = rs.getString("nombre");
-				a[2] = rs.getString("categoria");
+				a[2] = rs.getString("fk_categoria");
 				a[3] = rs.getString("sexo");
 				a[4] = rs.getString("fecha_inscripcion");
 				a[5] = rs.getString("estado");

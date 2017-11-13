@@ -630,7 +630,7 @@ public class VentanaPrincipal {
 	}
 
 	/*
-	 * A PARTIR DE AQUI TODO LO RELACIONADO CON EL TÃ�TULO: "RESULTADOS" Y LAS
+	 * A PARTIR DE AQUI TODO LO RELACIONADO CON EL TÃƒï¿½TULO: "RESULTADOS" Y LAS
 	 * COLUMNAS DE LA JTABLE
 	 */
 
@@ -1009,7 +1009,7 @@ public class VentanaPrincipal {
 					}
 				}
 
-				// Lo que conseguimos asi es que aÃ±ada los corredores cuyo formato es correcto,
+				// Lo que conseguimos asi es que aÃƒÂ±ada los corredores cuyo formato es correcto,
 				// los que tengan un formato incorrecto han de ser revisados por el cliente
 
 				// Distintas comprobaciones con respecto a cada linea, los comprobadores se usan
@@ -1031,8 +1031,8 @@ public class VentanaPrincipal {
 			}
 
 			else {
-				// aqui no hace falta que aÃ±ada datos incorrectos, si la estructura del fichero
-				// esta mal no debe aÃ±adir cada linea al fichero de salida
+				// aqui no hace falta que aÃƒÂ±ada datos incorrectos, si la estructura del fichero
+				// esta mal no debe aÃƒÂ±adir cada linea al fichero de salida
 				errorEstructura = true;
 			}
 
@@ -1205,6 +1205,8 @@ public class VentanaPrincipal {
 					for (String[] a : atletas) {
 						if (a[5] == null)
 							a[5] = "No asignado";
+						String[] temp = a[2].split("-");
+						a[2] = temp[0];
 						modelAtletas.addRow(a);
 					}
 				}
@@ -1237,7 +1239,7 @@ public class VentanaPrincipal {
 
 	private JButton getBtnMenu() {
 		if (btnMenu == null) {
-			btnMenu = new JButton("MenÃº");
+			btnMenu = new JButton("Menu");
 			btnMenu.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					removeModelContent(modelAtletas);
@@ -1515,7 +1517,7 @@ private JButton getBtnNuevaCarrera()
 
 	private JButton getBtnMenuCalendario() {
 		if (btnMenuCalendario == null) {
-			btnMenuCalendario = new JButton("MenÃº");
+			btnMenuCalendario = new JButton("MenÃƒÂº");
 			btnMenuCalendario.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					CardLayout card = (CardLayout) frame.getContentPane().getLayout();
@@ -1556,18 +1558,18 @@ private JButton getBtnNuevaCarrera()
 							String dni = (String) tableAtletas.getValueAt(fila, 0);
 							if (estado.equals("pagado")) {
 								JOptionPane.showMessageDialog(null,
-										"Al atleta con dni" + dni + " " + "se le tendrá que devolver " + p * (pD / 100) + "€");
+										"Al atleta con dni" + dni + " " + "se le tendrÃ¡ que devolver " + p * (pD / 100) + "â‚¬");
 								
 								try {
 									DataBaseManager.borrarAtleta(getComboBox().getSelectedItem().toString(), dni);
 								} catch (SQLException e1) {
 									JOptionPane.showMessageDialog(null,
-											"Ha habido algún problema mientras se borraba al atleta de la base de datos");
+											"Ha habido algÃºn problema mientras se borraba al atleta de la base de datos");
 									e1.printStackTrace();
 								}
 							} else {
 								JOptionPane.showMessageDialog(null, "El atleta con dni" + dni + " "
-										+ "figura como inscrito.\n" + "Se le devolver\u00E1 el precio \u00EDntegro, " + p + "€");
+										+ "figura como inscrito.\n" + "Se le devolver\u00E1 el precio \u00EDntegro, " + p + "â‚¬");
 								try {
 									DataBaseManager.borrarAtleta(getComboBox().getSelectedItem().toString(), dni);
 								} catch (SQLException e1) {
