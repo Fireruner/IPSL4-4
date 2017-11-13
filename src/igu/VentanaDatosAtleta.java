@@ -14,6 +14,7 @@ import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
 import src.Atleta;
+import src.Categoria;
 import src.DataBaseManager;
 
 import javax.swing.JRadioButton;
@@ -234,7 +235,7 @@ public class VentanaDatosAtleta extends JDialog {
 
 					boolean valido;
 					
-					String carrera = (String)comboCarreras.getSelectedItem();;
+					String carrera = (String)comboCarreras.getSelectedItem();
 					
 					try {
 						
@@ -248,7 +249,7 @@ public class VentanaDatosAtleta extends JDialog {
 
 							Atleta atleta = new Atleta(txtfldDNI.getText().toUpperCase(), txtfldNombre.getText(),
 									txtfldApellidos.getText(), comprobarSexo(), comprobarFechaNacimiento(),
-									carrera, comprobarFechaInscripcion(), "inscrito", null, null, null, null);
+									carrera, comprobarFechaInscripcion(), "inscrito", null, null, comprobarCategoria(), null);
 							DataBaseManager.anadirCiertoAtleta(atleta);
 							atleta.imprimirResguardo();
 							dispose();
@@ -336,6 +337,25 @@ public class VentanaDatosAtleta extends JDialog {
 		LocalDate fechaDeInscripcion = LocalDate.now(ZoneId.of("UTC"));
 		return fechaDeInscripcion;
 	}
+	
+	private String comprobarCategoria() throws SQLException {
+		LocalDate fechaDeInscripcion = LocalDate.now(ZoneId.of("UTC"));
+		int ano = Integer.valueOf(cbxAno.getSelectedItem().toString());
+		int annoActual = fechaDeInscripcion.getYear();
+		int edad = annoActual - ano;
+		
+		String carrera = (String)comboCarreras.getSelectedItem();
+		ArrayList<Categoria> categoriasCarrera = DataBaseManager.getCategoriasPorCarrera(carrera);
+		
+		String solucion = "";
+		for(int i = 0; i<categoriasCarrera.size(); i++) {
+			if(categoriasCarrera.get(i).getEdadM()>edad && categoriasCarrera.get(i).getEdadm()<edad) {
+				solucion = categoriasCarrera.get(i).getId();
+			}
+		}
+		return solucion;
+	}
+	
 	private JComboBox getComboCarreras() {
 		if (comboCarreras == null) {
 			comboCarreras = new JComboBox();
