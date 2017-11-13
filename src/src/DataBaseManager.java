@@ -418,4 +418,31 @@ public class DataBaseManager
 			return coincide;
 		}
 		
+		public static boolean anadirCarrera(Carrera carrera) throws SQLException
+		{
+			
+			Connection con = getConnection();
+			String nombre = carrera.getNombre();
+			int plazas = carrera.getPlazasDisponibles();
+			java.sql.Date fecha = java.sql.Date.valueOf(carrera.getFechaCelebracion());
+			String estado = carrera.getEstado();
+			int precio = carrera.getPrecio();
+			int porcentaje = carrera.getPorcentajeDevolucion();
+			
+			PreparedStatement ps = con.prepareStatement("insert into carrera values (?,?,?,?,?,?)");
+			ps.setString(1, nombre);
+			ps.setInt(2, plazas);
+			ps.setDate(3, fecha);
+			ps.setString(4, estado);
+			ps.setInt(5, precio);
+			ps.setInt(6, porcentaje);
+			
+			if(ps.executeUpdate() == 1) {
+				return true;
+			}
+			else
+				return false;
+			
+		}
+		
 }
