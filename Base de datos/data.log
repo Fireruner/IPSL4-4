@@ -1,16 +1,87 @@
-/*C30*/SET SCHEMA PUBLIC
+/*C10*/SET SCHEMA PUBLIC
 DISCONNECT
-/*C31*/SET SCHEMA PUBLIC
+/*C11*/SET SCHEMA PUBLIC
 DISCONNECT
-/*C32*/SET SCHEMA PUBLIC
+/*C12*/SET SCHEMA PUBLIC
 DISCONNECT
-/*C33*/SET SCHEMA PUBLIC
+/*C13*/SET SCHEMA PUBLIC
 DISCONNECT
-/*C34*/SET SCHEMA PUBLIC
+/*C14*/SET SCHEMA PUBLIC
 DISCONNECT
-/*C35*/SET SCHEMA PUBLIC
+/*C15*/SET SCHEMA PUBLIC
 DISCONNECT
-/*C36*/SET SCHEMA PUBLIC
+/*C16*/SET SCHEMA PUBLIC
 DISCONNECT
-/*C37*/SET SCHEMA PUBLIC
+/*C17*/SET SCHEMA PUBLIC
+drop table atleta
+drop table carrera
+Create table Carrera\u000a(\u000a\u0009nombre varchar(20) not null,\u000a\u0009plazas_disponibles int  not null,\u000a\u0009fecha_celebracion date not null,\u000a\u0009estado varchar(50) not null,\u000a\u0009precio int not null,\u000a\u0009porcentaje_devolucion int not null,\u000a\u0009constraint pk_nombre primary key (nombre), \u000a\u0009constraint ck_estado1 check (estado in('creada','inscripcion_abierta', 'inscripcion_cerrada', 'finalizada', 'clasificada', 'cerrada'))\u000a)\u000a\u000a\u000a
+Create table Club\u000a(\u000a\u0009nombreClub varchar(50),\u000a\u0009fk_carrera_club varchar(20) not null,\u000a\u0009constraint pk_club primary key (nombreClub),\u000a\u0009constraint fk_carrera_club foreign key (fk_carrera_club) references carrera (nombre)\u000a)\u000a\u000a\u000a
+Create table Atleta\u000a(\u000a\u0009DNI varchar(9) not null,\u000a\u0009Nombre varchar(50) not null,\u000a\u0009Apellidos varchar(100),\u000a\u0009categoria varchar(50),\u000a\u0009sexo varchar(20) not null,\u000a\u0009fecha_nacimiento date not null,\u000a\u0009fk_carrera varchar(20) not null,\u000a\u0009fecha_inscripcion date not null,\u000a\u0009estado varchar(20) not null,\u000a\u0009dorsal varchar(20),\u000a\u0009tiempo varchar(10),\u000a\u0009fk_club varchar(50),\u000a\u0009constraint pk_atleta primary key (DNI, fk_carrera),\u000a\u0009constraint fk_carrera foreign key (fk_carrera) references carrera (nombre),\u000a\u0009constraint fk_club foreign key (fk_club) references club (nombreClub),\u000a\u0009constraint ck_sexo check (sexo in('masculino', 'femenino')),\u000a\u0009constraint ck_estado check (estado in('inscrito', 'pagado'))\u000a)
+INSERT INTO CARRERA VALUES('Sanita Marca Running',67,'2017-11-05','cerrada',10,50)
+COMMIT
+INSERT INTO CARRERA VALUES('San Silvestre',100,'2017-10-04','creada',9,0)
+COMMIT
+INSERT INTO CARRERA VALUES('Iron Man',0,'2016-11-05','finalizada',10,100)
+COMMIT
+INSERT INTO CARRERA VALUES('Viesgo Night Race',300,'1998-03-22','inscripcion_abierta',9,0)
+COMMIT
+INSERT INTO CARRERA VALUES('Media Marat\u00f3n Avil\u00e9s',999,'2014-04-22','inscripcion_cerrada',10,0)
+COMMIT
+INSERT INTO CLUB VALUES('Coyotes','Iron Man')
+COMMIT
+INSERT INTO CLUB VALUES('Lions','San Silvestre')
+COMMIT
+INSERT INTO ATLETA VALUES('71736779D','Daniel','Fuego San Francisco','Infantil','masculino','1997-03-05','Viesgo Night Race','2017-10-23','inscrito',NULL,NULL,NULL)
+COMMIT
+INSERT INTO ATLETA VALUES('32513564A','Jos\u00e9','Mart\u00ednez P\u00e9rez','Senior','masculino','1979-08-22','San Silvestre','2017-10-17','inscrito',NULL,NULL,'Lions')
+COMMIT
+INSERT INTO ATLETA VALUES('72452614W','Carmen','Sirgo','Cadete','femenino','1999-06-16','Viesgo Night Race','2017-10-16','inscrito',NULL,NULL,NULL)
+COMMIT
+INSERT INTO ATLETA VALUES('45361345R','Pepa','Garcia Rodriguez','Senior','femenino','1983-08-24','Iron Man','2017-10-22','inscrito',NULL,NULL,'Coyotes')
+COMMIT
+INSERT INTO ATLETA VALUES('75896485G','Manuel','Moscarda G\u00f3mez','Infantil','masculino','1977-06-03','San Silvestre','2017-10-21','inscrito',NULL,NULL,'Lions')
+COMMIT
+INSERT INTO ATLETA VALUES('32525678T','Tom\u00e1s','Gutierrez Alonso','Benjamin','masculino','1977-02-01','Iron Man','2017-10-23','inscrito',NULL,NULL,'Coyotes')
+COMMIT
+INSERT INTO ATLETA VALUES('59475698G','\u00c1lvaro','Fernandez Alonso','Benjamin','masculino','1987-06-15','Iron Man','2017-10-21','inscrito',NULL,NULL,'Coyotes')
+COMMIT
+INSERT INTO ATLETA VALUES('74685245P','Alejandro','Barrera S\u00e1nchez','Infantil','masculino','1997-12-06','Viesgo Night Race','2017-10-15','inscrito',NULL,NULL,NULL)
+COMMIT
+INSERT INTO ATLETA VALUES('58469254K','Alfredo','Acevedo Monta\u00f1a','Senior','masculino','1992-11-25','San Silvestre','2017-10-15','inscrito',NULL,NULL,'Lions')
+COMMIT
+INSERT INTO ATLETA VALUES('65324789G','Montserrat','Campuzano Perales','Cadete','femenino','1947-12-30','Sanita Marca Running','2017-10-23','inscrito',NULL,NULL,NULL)
+COMMIT
+INSERT INTO ATLETA VALUES('21458547H','Juana','Oreg\u00f3n Montes','Junior','femenino','1997-02-19','San Silvestre','2017-10-21','inscrito',NULL,NULL,'Lions')
+COMMIT
+INSERT INTO ATLETA VALUES('74585214D','Eduardo','Belenguer Lasa','Junior','masculino','1983-07-23','Sanita Marca Running','2017-10-22','inscrito',NULL,NULL,NULL)
+COMMIT
+INSERT INTO ATLETA VALUES('65893256L','Josefina','Trujillo Pardo','Junior','femenino','1998-03-21','Sanita Marca Running','2017-10-23','inscrito',NULL,NULL,NULL)
+COMMIT
+INSERT INTO ATLETA VALUES('54783256A','Milagros','Verde Nu\u00f1o','Cadete','femenino','1981-06-21','Viesgo Night Race','2017-10-22','inscrito',NULL,NULL,NULL)
+COMMIT
+INSERT INTO ATLETA VALUES('87651234N','F\u00e9lix','Ortiz Ezquerro','Senior','masculino','1982-10-30','Iron Man','2017-10-15','inscrito',NULL,NULL,'Coyotes')
+COMMIT
+INSERT INTO ATLETA VALUES('45612321S','Eva Maria','Hortelano Andr\u00e9s','Infantil','femenino','1986-06-21','Iron Man','2017-10-23','inscrito',NULL,NULL,NULL)
+COMMIT
+INSERT INTO ATLETA VALUES('78659856X','Ramon','Cardoso Azorin','Infantil','masculino','1967-09-12','Sanita Marca Running','2017-10-22','inscrito',NULL,NULL,NULL)
+COMMIT
+INSERT INTO ATLETA VALUES('87412369G','Lidia','Enrique Llabres','Cadete','femenino','1989-07-30','Sanita Marca Running','2017-10-23','inscrito',NULL,NULL,NULL)
+COMMIT
+INSERT INTO ATLETA VALUES('74563218V','Ritchie','Espino Bataller','Benajamin','masculino','1997-08-07','Iron Man','2017-10-23','inscrito',NULL,NULL,NULL)
+COMMIT
+/*C18*/SET SCHEMA PUBLIC
 DISCONNECT
+/*C19*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C20*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C21*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C22*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C23*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C24*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C17*/DISCONNECT

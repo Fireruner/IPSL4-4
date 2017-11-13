@@ -7,36 +7,42 @@ import java.time.LocalDate;
 
 public class Atleta{
 
-	private String sexo, nombre, dni, apellidos, estado, tiempo,fk_carrera, dorsal, posicion;
+	private String sexo, nombre, dni, apellidos, estado, tiempo,fk_carrera, dorsal, posicion, categoria, club;
 	LocalDate fechaDeNacimiento;
 	LocalDate fecha_inscripcion;
 
 	public Atleta(String dni, String nombre, String apellidos, String sexo, LocalDate fechaDeNacimiento,
-			String fk_carrera, LocalDate fecha_inscripcion, String estado, String tiempo, String dorsal) {
+			String fk_carrera, LocalDate fecha_inscripcion, String estado, String tiempo, String dorsal, 
+			String categoria, String club) {
 		this.sexo = sexo;
 		this.nombre = nombre;
 		this.tiempo = tiempo;
 		this.apellidos = apellidos;
+		this.categoria = categoria;
 		this.dni = dni;
 		this.estado = estado;
 		this.dorsal = dorsal;
 		this.fk_carrera = fk_carrera;
 		this.fecha_inscripcion = fecha_inscripcion;
 		this.fechaDeNacimiento = fechaDeNacimiento;
+		this.club = club;
 	}
 	
 	public Atleta(String dni, String nombre, String apellidos, String sexo, String fechaDeNacimiento,
-			String fk_carrera, String fecha_inscripcion, String estado, String tiempo, String dorsal) {
+			String fk_carrera, String fecha_inscripcion, String estado, String tiempo, String dorsal, 
+			String categoria, String club) {
 		this.sexo = sexo;
 		this.nombre = nombre;
 		this.tiempo = tiempo;
 		this.apellidos = apellidos;
 		this.dni = dni;
 		this.estado = estado;
+		this.categoria = categoria;
 		this.dorsal = dorsal;
 		this.fk_carrera = fk_carrera;
 		this.fecha_inscripcion = LocalDate.parse(fecha_inscripcion);
 		this.fechaDeNacimiento = LocalDate.parse(fechaDeNacimiento);
+		this.club = club;
 	}
 	
 	public String getDorsal() {
@@ -74,6 +80,16 @@ public class Atleta{
 	public String getDni() {
 		return dni;
 	}
+	public String getCategoria() {
+		return categoria;
+	}
+	public String getClub() {
+		return club;
+	}
+	
+	private void setCategoria(String categoria) {
+		this.categoria = categoria;
+	}
 	
 	public String getApellidos() {
 		return apellidos;
@@ -83,6 +99,26 @@ public class Atleta{
 		return posicion;
 	}
 
+	public void setSexo(String sexo) {
+		this.sexo = sexo;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public void setDni(String dni) {
+		this.dni = dni;
+	}
+
+	public void setApellidos(String apellidos) {
+		this.apellidos = apellidos;
+	}
+
+	public void setFechaDeNacimiento(LocalDate fechaDeNacimiento) {
+		this.fechaDeNacimiento = fechaDeNacimiento;
+	}
+	
 	public void setPosicion(String posicion) {
 		this.posicion = posicion;
 	}

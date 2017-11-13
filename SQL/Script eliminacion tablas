@@ -1,3 +1,5 @@
 drop table atleta
 
 drop table carrera
+
+drop table club

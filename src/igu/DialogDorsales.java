@@ -77,21 +77,18 @@ public class DialogDorsales extends JDialog {
 							if(DataBaseManager.existeCarrera(carrera))
 							{
 								ArrayList<String[]> atletas =DataBaseManager.listarAtletas(carrera);
-								int contador = DataBaseManager.getSiguienteDorsalDisponible(carrera);
+								int contador = DataBaseManager.getSiguienteDorsalDisponible(carrera);;
 								int noPagado = 0;
 								String atletasSinPago = "";
 								for(String[] a: atletas)
 								{
-									if(a[4].equals("pagado"))
-									{
-										if(a[5] == null)
-										{
-											a[5] = ""+ contador;
+									if(a[5].equals("pagado")) {
+										if(a[6] == null) {
+											a[6] = ""+ contador;
 											contador++;
 										}
 									}
-									else
-									{
+									else {
 										atletasSinPago += a[0] +"\n";
 										noPagado++;
 									}
