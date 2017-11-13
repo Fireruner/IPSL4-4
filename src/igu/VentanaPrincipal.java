@@ -1040,21 +1040,21 @@ public class VentanaPrincipal {
 			if (comprobadorTiempo && !comprobadorDNI && !comprobadorPago) {
 				datosIncorrectos.add(cadena + "   El formato de tiempo es incorrecto");
 			} else if (!comprobadorTiempo && comprobadorDNI && !comprobadorPago) {
-				datosIncorrectos.add(cadena + "   El corredor no estÃ¡ en la base de datos");
+				datosIncorrectos.add(cadena + "   El corredor no esta en la base de datos");
 			} else if (!comprobadorTiempo && !comprobadorDNI && comprobadorPago) {
 				datosIncorrectos.add(cadena + "   El corredor no ha pagado para competir en esta carrera");
 			} else if (comprobadorTiempo && comprobadorDNI && !comprobadorPago) {
 				datosIncorrectos.add(
-						cadena + "   El corredor no estÃ¡ en la base de datos y el formato de tiempo es incorrecto");
+						cadena + "   El corredor no esta en la base de datos y el formato de tiempo es incorrecto");
 			} else if (comprobadorTiempo && !comprobadorDNI && comprobadorPago) {
 				datosIncorrectos.add(cadena
 						+ "   El formato de tiempo es incorrecto y el corredor no ha pagado para competir en esta carrera");
 			} else if (!comprobadorTiempo && comprobadorDNI && comprobadorPago) {
 				datosIncorrectos.add(cadena
-						+ "   El corredor no estÃ¡ en la base de datos y el corredor no ha pagado para competir en esta carrera");
+						+ "   El corredor no esta en la base de datos y el corredor no ha pagado para competir en esta carrera");
 			} else if (comprobadorTiempo && comprobadorDNI && comprobadorPago) {
 				datosIncorrectos.add(cadena
-						+ "   El formato de tiempo es incorrecto, el corredor no estÃ¡ en la base de datos y no ha pagado para competir en esta carrera");
+						+ "   El formato de tiempo es incorrecto, el corredor no esta en la base de datos y no ha pagado para competir en esta carrera");
 			}
 		}
 
@@ -1065,12 +1065,12 @@ public class VentanaPrincipal {
 		} else {
 			if (errorFormato) {
 				JOptionPane.showMessageDialog(null,
-						"Algunos tiempos no han sido aÃ±adidos a la base de datos. Por favor, compruebe el fichero de tiempos.");
+						"Algunos tiempos no han sido a\u00F1adidos a la base de datos. Por favor, compruebe el fichero de tiempos.");
 				sinFallosFormato = false;
 			}
 			if (errorPresencia) {
 				JOptionPane.showMessageDialog(null,
-						"Alguno de los corredores del fichero no se encuentra en esta carrera, por tanto no ha sido aÃ±adido.");
+						"Alguno de los corredores del fichero no se encuentra en esta carrera, por tanto no ha sido a\u00F1adido.");
 				sinFallosDni = false;
 			}
 			if (errorEstructura) {
@@ -1079,7 +1079,7 @@ public class VentanaPrincipal {
 			}
 			if (errorPago) {
 				JOptionPane.showMessageDialog(null,
-						"Alguno de los corredores no ha sido aÃ±adido debido a que no ha pagado la carrera.");
+						"Alguno de los corredores no ha sido a\u00F1adido debido a que no ha pagado la carrera.");
 				sinFallosEstructura = false;
 			}
 		}
@@ -1312,7 +1312,7 @@ public class VentanaPrincipal {
 									"No puedes asignar dorsal a un corredor que a\u00FAn no ha pagado.");
 					} else {
 						JOptionPane.showMessageDialog(null,
-								"Para ejecutar esta opciÃ³n debe seleccionar el atleta al que quiere asignar un dorsal.");
+								"Para ejecutar esta opci\u00F3n debe seleccionar el atleta al que quiere asignar un dorsal.");
 					}
 				}
 			});
@@ -1531,7 +1531,7 @@ private JButton getBtnNuevaCarrera()
 
 	private JButton getBtnCancelar() {
 		if (btnCancelar == null) {
-			btnCancelar = new JButton("Cancelar inscripción");
+			btnCancelar = new JButton("Cancelar inscripci\u00F3n");
 			btnCancelar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 
@@ -1567,24 +1567,24 @@ private JButton getBtnNuevaCarrera()
 								}
 							} else {
 								JOptionPane.showMessageDialog(null, "El atleta con dni" + dni + " "
-										+ "figura como inscrito.\n" + "Se le devolverá el precio íntegro, " + p + "€");
+										+ "figura como inscrito.\n" + "Se le devolver\u00E1 el precio \u00EDntegro, " + p + "€");
 								try {
 									DataBaseManager.borrarAtleta(getComboBox().getSelectedItem().toString(), dni);
 								} catch (SQLException e1) {
 									JOptionPane.showMessageDialog(null,
-											"Ha habido algún problema mientras se borraba al atleta de la base de datos");
+											"Ha habido alg\u00FAn problema mientras se borraba al atleta de la base de datos");
 									e1.printStackTrace();
 								}
 							}
 
 						} else {
 							JOptionPane.showMessageDialog(null,
-									"Para ejecutar esta opción debe seleccionar el atleta al que quiere asignar un dorsal.");
+									"Para ejecutar esta opci\u00F3n debe seleccionar el atleta al que quiere asignar un dorsal.");
 						}
 
 					} else {
 						JOptionPane.showMessageDialog(null,
-								"Debe introducir una carrera antes de cancelar la inscripción");
+								"Debe introducir una carrera antes de cancelar la inscripci\u00F3n");
 					}
 				}
 			});

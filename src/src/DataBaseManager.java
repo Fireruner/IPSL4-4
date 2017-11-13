@@ -130,7 +130,7 @@ public class DataBaseManager
 				result[0] = rs.getString("DNI");	
 				result[1] = rs.getString("NOMBRE");
 				result[2] = rs.getString("APELLIDOS");
-				result[3] = rs.getString("CATEGORIA");
+				result[3] = rs.getString("fk_categoria");
 				result[4] = rs.getString("SEXO");
 				result[5] = rs.getString("FECHA_NACIMIENTO");
 				result[6] = rs.getString("FK_CARRERA");
@@ -568,6 +568,46 @@ public class DataBaseManager
 			else
 				return false;
 			
+		}
+		
+		public static ArrayList<Categoria> getCategoriasPorCarrera(String nombreCarrera) throws SQLException{
+			ArrayList<Categoria> categorias = new ArrayList<Categoria>();
+			
+			Connection con = getConnection();
+			
+			PreparedStatement ps = con.prepareStatement("select * from categoria where fk_carrera_categ = ?");
+			ps.setString(1, nombreCarrera);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next())
+			{
+				String id = rs.getString(1);
+				String nombre = rs.getString(2);
+				String edadm = rs.getString(3);
+				String edadM = rs.getString(4);
+				categorias.add(new Categoria(id,nombre,Integer.parseInt(edadm),Integer.parseInt(edadM), nombreCarrera));
+			}
+			ps.close();
+			rs.close();
+			con.close();
+			
+			return categorias;
+		}
+		
+		public static boolean anadirCategoriaACarrera(Categoria categoria, String carrera) throws SQLException{
+			Connection con = getConnection();
+			
+			PreparedStatement ps = con.prepareStatement("insert into categoria values (?, ?, ?, ?, ?) ");
+			ps.setString(1, categoria.getId()+carrera);
+			ps.setString(2, categoria.getNombre());
+			ps.setInt(3, categoria.getEdadm());
+			ps.setInt(4, categoria.getEdadM());
+			ps.setString(5, carrera);
+			
+			if(ps.executeUpdate() == 1) {
+				return true;
+			}
+			else
+				return false;
 		}
 		
 }

@@ -9,8 +9,9 @@ package igu;
  import javax.swing.border.EmptyBorder;		
  import java.awt.GridBagLayout;		
  import net.miginfocom.swing.MigLayout;		
- import src.Carrera;		
- import src.DataBaseManager;		
+ import src.Carrera;
+import src.CategoriasCarrera;
+import src.DataBaseManager;		
  		
  import javax.swing.JLabel;		
  import javax.swing.JOptionPane;		
@@ -56,11 +57,11 @@ package igu;
  	 */		
  	public DialogCarrera() {		
  		setTitle("Registro nueva competicion");		
- 		setBounds(100, 100, 450, 300);		
+ 		setBounds(100, 100, 450, 329);		
  		getContentPane().setLayout(new BorderLayout());		
  		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));		
  		getContentPane().add(contentPanel, BorderLayout.CENTER);		
- 		contentPanel.setLayout(new MigLayout("", "[9.00][248.00,grow]", "[30.00][34.00][19.00][][28.00][][30.00]"));		
+ 		contentPanel.setLayout(new MigLayout("", "[9.00][248.00,grow]", "[30.00][34.00][19.00][][28.00][][30.00][]"));		
  		{		
  			JLabel lblNombre = new JLabel("Nombre:");		
  			contentPanel.add(lblNombre, "flowx,cell 1 0");		
@@ -142,6 +143,16 @@ package igu;
  			JLabel label = new JLabel("\u20AC");		
  			contentPanel.add(label, "cell 1 5,alignx right");		
  		}		
+ 		{
+ 			JButton btnCategoras = new JButton("Categor\u00EDas");
+ 			btnCategoras.addActionListener(new ActionListener() {
+ 				public void actionPerformed(ActionEvent arg0) {
+ 					EditorCategorias ec = new EditorCategorias(txtNombre.getText());
+ 					ec.setVisible(true);
+ 				}
+ 			});
+ 			contentPanel.add(btnCategoras, "cell 1 7");
+ 		}
  		{		
  			JPanel buttonPane = new JPanel();		
  			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));		
@@ -175,6 +186,9 @@ package igu;
  								{		
  									Carrera carrera = new Carrera(txtNombre.getText(), (int)spPlazas.getValue(), selectedDate,"creada", (int)spPrecio.getValue(), (int)spDevolucion.getValue());		
  									DataBaseManager.anadirCarrera(carrera);	
+ 									for(int i = 0; i<CategoriasCarrera.getl().size(); i++) {
+ 										DataBaseManager.anadirCategoriaACarrera(CategoriasCarrera.getl().get(i), carrera.getNombre());
+ 									}
  									JOptionPane.showMessageDialog(null, "Se ha registrado la carrera "+ carrera.getNombre() +" correctamente.");
  									dispose();
  								}		
