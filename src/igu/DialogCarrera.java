@@ -156,7 +156,16 @@ public class DialogCarrera extends JDialog {
 							if(!DataBaseManager.existeCarrera(txtNombre.getText()) && !txtNombre.getText().equals(""))
 							{
 								LocalDate actualDate = LocalDate.now();
-								LocalDate selectedDate = LocalDate.of((int)cbAno.getSelectedItem(),(int) cbMes.getSelectedItem(),(int) cbDia.getSelectedItem());
+								LocalDate selectedDate;
+								try
+								{
+									selectedDate = LocalDate.of((int)cbAno.getSelectedItem(),(int) cbMes.getSelectedItem(),(int) cbDia.getSelectedItem());
+								}
+								catch(Exception e)
+								{
+									JOptionPane.showMessageDialog(null, "El formato de la fecha es incorrecto!");
+									return;
+								}
 								if(selectedDate.isBefore(actualDate))
 								{
 									JOptionPane.showMessageDialog(null, "Fecha mal configurada.\nNo puede asignar una fecha en el pasado.");
@@ -186,6 +195,11 @@ public class DialogCarrera extends JDialog {
 			}
 			{
 				JButton cancelButton = new JButton("Cancel");
+				cancelButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						dispose();
+					}
+				});
 				cancelButton.setActionCommand("Cancel");
 				buttonPane.add(cancelButton);
 			}
