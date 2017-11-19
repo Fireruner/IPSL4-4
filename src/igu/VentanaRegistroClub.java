@@ -349,12 +349,17 @@ public class VentanaRegistroClub extends JDialog{
 			btnConfirmar.setBounds(100, 115, 96, 23);
 			btnConfirmar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					comboBox.setEnabled(false);
-					textField.setEnabled(false);
-					btnConfirmar.setEnabled(false);
-					btnReiniciar.setEnabled(true);
-					for(int i = 0; i< panelRCEditarDatos.getComponentCount(); i++) {
-						panelRCEditarDatos.getComponent(i).setEnabled(true);
+					if(!textField.getText().isEmpty()) {
+						comboBox.setEnabled(false);
+						textField.setEnabled(false);
+						btnConfirmar.setEnabled(false);
+						btnReiniciar.setEnabled(true);
+						for(int i = 0; i< panelRCEditarDatos.getComponentCount(); i++) {
+							panelRCEditarDatos.getComponent(i).setEnabled(true);
+						}
+					}
+					else {
+						JOptionPane.showMessageDialog(null, "El club ha de tener un nombre.");
 					}
 				}
 			});
@@ -371,8 +376,10 @@ public class VentanaRegistroClub extends JDialog{
 					m.addColumn("DNI");
 					m.addColumn("Categoria");
 					m.addColumn("Nombre");
+					
 					for(int i = 0; i<MiembrosClub.getl().size(); i++) {
-						m.addRow(new Object[] {MiembrosClub.getl().get(i).getDni(), "Categoria prueba", MiembrosClub.getl().get(i).getNombre()}); //CAMBIAR AL AÑADIR CATEGORIAS
+						String[] categoriaBuena = MiembrosClub.getl().get(i).getCategoria().split("-");
+						m.addRow(new Object[] {MiembrosClub.getl().get(i).getDni(), categoriaBuena[0], MiembrosClub.getl().get(i).getNombre()}); //CAMBIAR AL AÑADIR CATEGORIAS
 					}
 					tableClubInscritos.setModel(m);
 				}

@@ -584,7 +584,8 @@ public class DataBaseManager
 				String nombre = rs.getString(2);
 				String edadm = rs.getString(3);
 				String edadM = rs.getString(4);
-				categorias.add(new Categoria(id,nombre,Integer.parseInt(edadm),Integer.parseInt(edadM), nombreCarrera));
+				String sexo = rs.getString(5);
+				categorias.add(new Categoria(id,nombre,Integer.parseInt(edadm),Integer.parseInt(edadM), sexo, nombreCarrera));
 			}
 			ps.close();
 			rs.close();
@@ -596,12 +597,13 @@ public class DataBaseManager
 		public static boolean anadirCategoriaACarrera(Categoria categoria, String carrera) throws SQLException{
 			Connection con = getConnection();
 			
-			PreparedStatement ps = con.prepareStatement("insert into categoria values (?, ?, ?, ?, ?) ");
-			ps.setString(1, categoria.getId()+carrera);
+			PreparedStatement ps = con.prepareStatement("insert into categoria values (?, ?, ?, ?, ?, ?) ");
+			ps.setString(1, categoria.getId());
 			ps.setString(2, categoria.getNombre());
 			ps.setInt(3, categoria.getEdadm());
 			ps.setInt(4, categoria.getEdadM());
-			ps.setString(5, carrera);
+			ps.setString(5, categoria.getSexo());
+			ps.setString(6, carrera);
 			
 			if(ps.executeUpdate() == 1) {
 				return true;

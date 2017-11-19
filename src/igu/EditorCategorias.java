@@ -44,11 +44,22 @@ public class EditorCategorias extends JFrame {
 	private JTable table;
 	private JPanel panelBotones;
 	private JButton btnAceptar;
-	private JButton btnAnadir;
+	private JButton btnAnadirM;
 	private DefaultTableModel model;
+	private DefaultTableModel model_1;
 	private JButton btnOrdenar;
 	
 	private String carrera;
+	private JPanel panelDifSexos;
+	private JPanel panelDatosGen1;
+	private JTable table_1;
+	private JPanel panel;
+	private JLabel label;
+	private JLabel label_1;
+	private JLabel label_2;
+	private JLabel lblMasculino;
+	private JLabel lblFemenino;
+	private JButton btnAnadirF;
 
 	/**
 	 * Launch the application.
@@ -85,17 +96,19 @@ public class EditorCategorias extends JFrame {
 	private JPanel getPanelSup() {
 		if (panelSup == null) {
 			panelSup = new JPanel();
-			panelSup.setLayout(new GridLayout(2, 0, 0, 0));
+			panelSup.setLayout(new GridLayout(3, 0, 0, 0));
 			panelSup.add(getLblEditorDeCategoras());
-			panelSup.add(getPanelColumnas());
+			panelSup.add(getPanelDifSexos());
+			panelSup.add(getPanelDatosGen1());
 		}
 		return panelSup;
 	}
 	private JPanel getPanelTabla() {
 		if (panelTabla == null) {
 			panelTabla = new JPanel();
-			panelTabla.setLayout(new BorderLayout(0, 0));
+			panelTabla.setLayout(new GridLayout(0, 2, 5, 0));
 			panelTabla.add(getTable());
+			panelTabla.add(getTable_1());
 		}
 		return panelTabla;
 	}
@@ -120,8 +133,8 @@ public class EditorCategorias extends JFrame {
 			panelColumnas = new JPanel();
 			panelColumnas.setLayout(new GridLayout(0, 3, 0, 0));
 			panelColumnas.add(getLblNombre());
-			panelColumnas.add(getLblEdadMaxima());
 			panelColumnas.add(getLblEdadMinima());
+			panelColumnas.add(getLblEdadMaxima());
 		}
 		return panelColumnas;
 	}
@@ -168,7 +181,8 @@ public class EditorCategorias extends JFrame {
 			panelBotones = new JPanel();
 			panelBotones.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 			panelBotones.add(getBtnOrdenar());
-			panelBotones.add(getBtnAnadir());
+			panelBotones.add(getBtnAnadirM());
+			panelBotones.add(getBtnAnadirF());
 			panelBotones.add(getBtnAceptar());
 		}
 		return panelBotones;
@@ -190,26 +204,42 @@ public class EditorCategorias extends JFrame {
 		}
 		return btnAceptar;
 	}
-	private JButton getBtnAnadir() {
-		if (btnAnadir == null) {
-			btnAnadir = new JButton("A\u00F1adir");
-			btnAnadir.addActionListener(new ActionListener() {
+	private JButton getBtnAnadirM() {
+		if (btnAnadirM == null) {
+			btnAnadirM = new JButton("A\u00F1adir Masculino");
+			btnAnadirM.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					model.addRow(new Object[] {"",0,0});
 					table.setModel(model);
 				}
 			});
 		}
-		return btnAnadir;
+		return btnAnadirM;
 	}
 	
 	public boolean comprobadorEdadCategorias() {
-		ArrayList<Categoria> categorias = new ArrayList<Categoria>();
-		for(int i = 0; i<model.getRowCount(); i++) {
-			categorias.add(new Categoria(table.getValueAt(i, 0).toString() + "-" + carrera, table.getValueAt(i, 0).toString(), 
-					Integer.parseInt(table.getValueAt(i, 1).toString()), Integer.parseInt(table.getValueAt(i, 2).toString()), carrera));
+		ArrayList<Categoria> categoriasM = new ArrayList<Categoria>();
+		ArrayList<Categoria> categoriasF = new ArrayList<Categoria>();
+		for(int i = 0; i<table.getRowCount(); i++) {
+			categoriasM.add(new Categoria(table.getValueAt(i, 0).toString() + "-M-" + carrera, table.getValueAt(i, 0).toString()+ "-M", 
+					Integer.parseInt(table.getValueAt(i, 1).toString()), Integer.parseInt(table.getValueAt(i, 2).toString()), "masculino", 
+					carrera));
 		}
-		Collections.sort(categorias);
+		for(int i = 0; i<table_1.getRowCount(); i++) {
+			categoriasF.add(new Categoria(table_1.getValueAt(i, 0).toString() + "-F-" + carrera, table_1.getValueAt(i, 0).toString()+ "-F", 
+					Integer.parseInt(table_1.getValueAt(i, 1).toString()), Integer.parseInt(table_1.getValueAt(i, 2).toString()), "femenino",
+					carrera));
+		}
+		Collections.sort(categoriasM);
+		Collections.sort(categoriasF);
+		if(comprobacionLista(categoriasM, "m") &&
+				comprobacionLista(categoriasF, "f"))
+			return true;
+		else
+			return false;
+	}
+	
+	public boolean comprobacionLista(ArrayList<Categoria> categorias, String sexo) {
 		boolean solucionado = true;
 		for (int j = 0; j<categorias.size(); j++) {
 			if(j==0) {
@@ -233,11 +263,15 @@ public class EditorCategorias extends JFrame {
 				}
 			}
 		}
-		CategoriasCarrera.setl(categorias);
+		if(sexo.equals("m"))
+			CategoriasCarrera.setlm(categorias);
+		else {
+			CategoriasCarrera.setlf(categorias);
+		}
 		return solucionado;
 	}
 	
-	public void ordenarFilas() {
+	public void ordenarFilas(JTable table) {
 		for(int i = 0; i<table.getRowCount()-1; i++) {
 			 for(int j=0;j<table.getRowCount()-i-1;j++) {
 				 if(Integer.parseInt(table.getValueAt(i+1, 1).toString())<Integer.parseInt(table.getValueAt(i, 1).toString()))
@@ -261,10 +295,105 @@ public class EditorCategorias extends JFrame {
 			btnOrdenar = new JButton("Ordenar");
 			btnOrdenar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					ordenarFilas();
+					ordenarFilas(table);
+					ordenarFilas(table_1);
 				}
 			});
 		}
 		return btnOrdenar;
+	}
+	private JPanel getPanelDifSexos() {
+		if (panelDifSexos == null) {
+			panelDifSexos = new JPanel();
+			panelDifSexos.setLayout(new GridLayout(0, 2, 5, 0));
+			panelDifSexos.add(getLblMasculino());
+			panelDifSexos.add(getLblFemenino());
+		}
+		return panelDifSexos;
+	}
+	private JPanel getPanelDatosGen1() {
+		if (panelDatosGen1 == null) {
+			panelDatosGen1 = new JPanel();
+			panelDatosGen1.setLayout(new GridLayout(0, 2, 5, 0));
+			panelDatosGen1.add(getPanelColumnas());
+			panelDatosGen1.add(getPanel());
+		}
+		return panelDatosGen1;
+	}
+	private JTable getTable_1() {
+		if (table_1 == null) {
+			model_1 = new DefaultTableModel();
+			model_1.addColumn("nombre");
+			model_1.addColumn("edadm");
+			model_1.addColumn("edadM");
+			model_1.addRow(new Object[] {"Infantil", 3, 18});
+			model_1.addRow(new Object[] {"Junior", 19, 23});
+			model_1.addRow(new Object[] {"Senior", 24, 35});
+			model_1.addRow(new Object[] {"Master", 36, 125});
+			table_1 = new JTable(model_1);		
+		}
+		return table_1;
+	}
+	private JPanel getPanel() {
+		if (panel == null) {
+			panel = new JPanel();
+			panel.setLayout(new GridLayout(0, 3, 0, 0));
+			panel.add(getLabel());
+			panel.add(getLabel_1());
+			panel.add(getLabel_2());
+		}
+		return panel;
+	}
+	private JLabel getLabel() {
+		if (label == null) {
+			label = new JLabel("Nombre");
+			label.setHorizontalAlignment(SwingConstants.CENTER);
+			label.setFont(new Font("Tahoma", Font.BOLD, 14));
+		}
+		return label;
+	}
+	private JLabel getLabel_1() {
+		if (label_1 == null) {
+			label_1 = new JLabel("Edad minima");
+			label_1.setHorizontalAlignment(SwingConstants.CENTER);
+			label_1.setFont(new Font("Tahoma", Font.BOLD, 14));
+		}
+		return label_1;
+	}
+	private JLabel getLabel_2() {
+		if (label_2 == null) {
+			label_2 = new JLabel("Edad maxima");
+			label_2.setHorizontalAlignment(SwingConstants.CENTER);
+			label_2.setFont(new Font("Tahoma", Font.BOLD, 14));
+		}
+		return label_2;
+	}
+	private JLabel getLblMasculino() {
+		if (lblMasculino == null) {
+			lblMasculino = new JLabel("Masculino");
+			lblMasculino.setHorizontalAlignment(SwingConstants.CENTER);
+			lblMasculino.setFont(new Font("Tahoma", Font.BOLD, 17));
+		}
+		return lblMasculino;
+	}
+	private JLabel getLblFemenino() {
+		if (lblFemenino == null) {
+			lblFemenino = new JLabel("Femenino");
+			lblFemenino.setHorizontalAlignment(SwingConstants.CENTER);
+			lblFemenino.setFont(new Font("Tahoma", Font.BOLD, 17));
+		}
+		return lblFemenino;
+	}
+	private JButton getBtnAnadirF() {
+		if (btnAnadirF == null) {
+			btnAnadirF = new JButton("A\u00F1adir Femenino");
+			btnAnadirF.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					model_1.addRow(new Object[] {"",0,0});
+					table_1.setModel(model_1);
+				}
+			});
+		}
+		return btnAnadirF;
 	}
 }

@@ -343,13 +343,19 @@ public class VentanaDatosAtleta extends JDialog {
 		int ano = Integer.valueOf(cbxAno.getSelectedItem().toString());
 		int annoActual = fechaDeInscripcion.getYear();
 		int edad = annoActual - ano;
+		String sexo= "";
+		if(rdbtnHombre.isSelected())
+			sexo = "masculino";
+		else
+			sexo = "femenino";
 		
 		String carrera = (String)comboCarreras.getSelectedItem();
 		ArrayList<Categoria> categoriasCarrera = DataBaseManager.getCategoriasPorCarrera(carrera);
 		
 		String solucion = "";
 		for(int i = 0; i<categoriasCarrera.size(); i++) {
-			if(categoriasCarrera.get(i).getEdadM()>edad && categoriasCarrera.get(i).getEdadm()<edad) {
+			if(categoriasCarrera.get(i).getEdadM()>=edad && categoriasCarrera.get(i).getEdadm()<=edad 
+					&& categoriasCarrera.get(i).getSexo().equals(sexo)) {
 				solucion = categoriasCarrera.get(i).getId();
 			}
 		}

@@ -29,6 +29,7 @@ Create table Categoria
 	Nombre_cat varchar(50) not null,
 	edadmin int,
 	edadMax int,
+     sexo varchar(20) not null,
 	fk_carrera_categ varchar(20) not null,
 	constraint pk_categoria primary key (ID_CAT),
 	constraint fk_carrera_categ foreign key (fk_carrera_categ) references carrera (nombre)

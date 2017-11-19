@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
 
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
@@ -22,6 +23,7 @@ import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
 import src.Atleta;
+import src.Categoria;
 import src.DataBaseManager;
 import src.MiembrosClub;
 
@@ -251,7 +253,7 @@ public class VentanaEditarDatosClubAtleta extends JDialog{
 						else {
 							Atleta atleta = new Atleta(txtfldDNI.getText().toUpperCase(), txtfldNombre.getText(),
 									txtfldApellidos.getText(), comprobarSexo(), comprobarFechaNacimiento(),
-									carrera, comprobarFechaInscripcion(), "inscrito", null, null, null, club);
+									carrera, comprobarFechaInscripcion(), "inscrito", null, null, comprobarCategoria(), club);
 							MiembrosClub.getl().add(atleta);
 							txtfldNombre.setText("");
 							txtfldApellidos.setText("");
@@ -352,6 +354,29 @@ public class VentanaEditarDatosClubAtleta extends JDialog{
 			btnEditar.setBounds(85, 144, 142, 23);
 		}
 		return btnEditar;
+	}
+	
+	private String comprobarCategoria() throws SQLException {
+		LocalDate fechaDeInscripcion = LocalDate.now(ZoneId.of("UTC"));
+		int ano = Integer.valueOf(cbxAno.getSelectedItem().toString());
+		int annoActual = fechaDeInscripcion.getYear();
+		int edad = annoActual - ano;
+		String sexo= "";
+		if(rdbtnHombre.isSelected())
+			sexo = "masculino";
+		else
+			sexo = "femenino";
+
+		ArrayList<Categoria> categoriasCarrera = DataBaseManager.getCategoriasPorCarrera(carrera);
+		
+		String solucion = "";
+		for(int i = 0; i<categoriasCarrera.size(); i++) {
+			if(categoriasCarrera.get(i).getEdadM()>=edad && categoriasCarrera.get(i).getEdadm()<=edad 
+					&& categoriasCarrera.get(i).getSexo().equals(sexo)) {
+				solucion = categoriasCarrera.get(i).getId();
+			}
+		}
+		return solucion;
 	}
 }
 

@@ -523,10 +523,10 @@ public class VentanaPrincipal {
 							int contadorPosF = 1; // contador para las posiciones femeninas
 							for (int i = 0; i < atletasConTiempo.size(); i++) { // AnADIMOS PRIMERO LOS QUE TIENEN
 																				// TIEMPO
-
+								String[] partes = atletasConTiempo.get(i).getCategoria().split("-");
 								if (atletasConTiempo.get(i).getSexo().equals(m)) {
 									Object[] temp = { atletasConTiempo.get(i).getDni(), contadorPosM,
-											atletasConTiempo.get(i).getSexo(), atletasConTiempo.get(i).getDorsal(),
+											partes[0], atletasConTiempo.get(i).getDorsal(),
 											atletasConTiempo.get(i).getNombre(), atletasConTiempo.get(i).getApellidos(),
 											atletasConTiempo.get(i).getFechaDeNacimiento(),
 											atletasConTiempo.get(i).getFecha_inscripcion(),
@@ -537,7 +537,7 @@ public class VentanaPrincipal {
 									contadorPosM++;
 								} else {
 									Object[] temp = { atletasConTiempo.get(i).getDni(), contadorPosF,
-											atletasConTiempo.get(i).getSexo(), atletasConTiempo.get(i).getDorsal(),
+											partes[0], atletasConTiempo.get(i).getDorsal(),
 											atletasConTiempo.get(i).getNombre(), atletasConTiempo.get(i).getApellidos(),
 											atletasConTiempo.get(i).getFechaDeNacimiento(),
 											atletasConTiempo.get(i).getFecha_inscripcion(),
@@ -550,9 +550,11 @@ public class VentanaPrincipal {
 							}
 
 							for (int i = 0; i < atletasSinTiempo.size(); i++) { // Y LUEGO LOS QUE NO
+								
+								String[] partes = atletasSinTiempo.get(i).getCategoria().split("-");
 								if (atletasSinTiempo.get(i).getSexo().equals(m)) {
 									Object[] temp = { atletasSinTiempo.get(i).getDni(), contadorPosM,
-											atletasSinTiempo.get(i).getSexo(), atletasSinTiempo.get(i).getDorsal(),
+											partes[0], atletasSinTiempo.get(i).getDorsal(),
 											atletasSinTiempo.get(i).getNombre(), atletasSinTiempo.get(i).getApellidos(),
 											atletasSinTiempo.get(i).getFechaDeNacimiento(),
 											atletasSinTiempo.get(i).getFecha_inscripcion(), "---" };
@@ -562,7 +564,7 @@ public class VentanaPrincipal {
 									contadorPosM++;
 								} else {
 									Object[] temp = { atletasSinTiempo.get(i).getDni(), contadorPosF,
-											atletasSinTiempo.get(i).getSexo(), atletasSinTiempo.get(i).getDorsal(),
+											partes[0], atletasSinTiempo.get(i).getDorsal(),
 											atletasSinTiempo.get(i).getNombre(), atletasSinTiempo.get(i).getApellidos(),
 											atletasSinTiempo.get(i).getFechaDeNacimiento(),
 											atletasSinTiempo.get(i).getFecha_inscripcion(),
@@ -694,7 +696,7 @@ public class VentanaPrincipal {
 
 	private JLabel getLblCSexo() {
 		if (lblCSexo == null) {
-			lblCSexo = new JLabel("Sexo");
+			lblCSexo = new JLabel("Categoria");
 			lblCSexo.setHorizontalAlignment(SwingConstants.CENTER);
 			lblCSexo.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		}
@@ -1517,7 +1519,7 @@ private JButton getBtnNuevaCarrera()
 
 	private JButton getBtnMenuCalendario() {
 		if (btnMenuCalendario == null) {
-			btnMenuCalendario = new JButton("MenÃƒÂº");
+			btnMenuCalendario = new JButton("Menu");
 			btnMenuCalendario.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					CardLayout card = (CardLayout) frame.getContentPane().getLayout();
@@ -1558,18 +1560,18 @@ private JButton getBtnNuevaCarrera()
 							String dni = (String) tableAtletas.getValueAt(fila, 0);
 							if (estado.equals("pagado")) {
 								JOptionPane.showMessageDialog(null,
-										"Al atleta con dni" + dni + " " + "se le tendrÃ¡ que devolver " + p * (pD / 100) + "â‚¬");
+										"Al atleta con dni" + dni + " " + "se le tendra que devolver " + p * (pD / 100) + " euros");
 								
 								try {
 									DataBaseManager.borrarAtleta(getComboBox().getSelectedItem().toString(), dni);
 								} catch (SQLException e1) {
 									JOptionPane.showMessageDialog(null,
-											"Ha habido algÃºn problema mientras se borraba al atleta de la base de datos");
+											"Ha habido algun problema mientras se borraba al atleta de la base de datos");
 									e1.printStackTrace();
 								}
 							} else {
 								JOptionPane.showMessageDialog(null, "El atleta con dni" + dni + " "
-										+ "figura como inscrito.\n" + "Se le devolver\u00E1 el precio \u00EDntegro, " + p + "â‚¬");
+										+ "figura como inscrito.\n" + "Se le devolver\u00E1 el precio \u00EDntegro, " + p + " euros");
 								try {
 									DataBaseManager.borrarAtleta(getComboBox().getSelectedItem().toString(), dni);
 								} catch (SQLException e1) {

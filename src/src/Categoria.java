@@ -2,15 +2,16 @@ package src;
 
 public class Categoria  implements Comparable<Categoria>{
 	public int edadm, edadM;
-	public String nombre, id;
+	public String nombre, id, sexo;
 	public String fk_carrera;
 	
-	public Categoria(String id, String nombre, int edadm, int edadM, String fk_carrera) {
+	public Categoria(String id, String nombre, int edadm, int edadM, String sexo, String fk_carrera) {
 		this.edadm = edadm;
 		this.edadM = edadM;
 		this.nombre = nombre;
 		this.fk_carrera = fk_carrera;
 		this.id = id;
+		this.sexo = sexo;
 	}
 
 	public int getEdadm() {
@@ -53,6 +54,14 @@ public class Categoria  implements Comparable<Categoria>{
 		this.id = id;
 	}
 
+	public String getSexo() {
+		return sexo;
+	}
+	
+	public void setSexo(String sexo) {
+		this.sexo = sexo;
+	}
+	
 	@Override
 	public int compareTo(Categoria o) {
 		if(edadM < o.getEdadM()) {
