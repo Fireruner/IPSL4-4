@@ -27,7 +27,11 @@ import src.DataBaseManager;
  import java.sql.SQLException;		
  import java.time.LocalDate;		
  import java.util.Date;		
- import java.awt.event.ActionEvent;		
+ import java.awt.event.ActionEvent;
+import java.awt.event.InputMethodListener;
+import java.awt.event.InputMethodEvent;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;		
  		
  public class DialogCarrera extends JDialog {		
  		
@@ -39,6 +43,7 @@ import src.DataBaseManager;
  	private JComboBox<Integer>  cbAno;		
  	private JSpinner spDevolucion;		
  	JSpinner spPrecio;		
+ 	private JButton okButton;
  	
  	private boolean editadas = false;
  		
@@ -71,6 +76,17 @@ import src.DataBaseManager;
  		}		
  		{		
  			txtNombre = new JTextField();		
+ 			txtNombre.addFocusListener(new FocusAdapter() {
+ 				@Override
+ 				public void focusLost(FocusEvent arg0) {
+ 					if(!txtNombre.getText().equals(""))
+ 						okButton.setEnabled(true);
+ 					else {
+ 						okButton.setEnabled(false);
+ 					}
+ 				}
+ 			});
+ 			
  			contentPanel.add(txtNombre, "cell 1 0,growx");		
  			txtNombre.setColumns(10);		
  		}		
@@ -162,7 +178,8 @@ import src.DataBaseManager;
  			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));		
  			getContentPane().add(buttonPane, BorderLayout.SOUTH);		
  			{		
- 				JButton okButton = new JButton("OK");		
+ 				okButton = new JButton("OK");		
+ 				okButton.setEnabled(false);
  				okButton.addActionListener(new ActionListener() {		
  					public void actionPerformed(ActionEvent arg0) 		
  					{		
@@ -191,6 +208,7 @@ import src.DataBaseManager;
  									Carrera carrera = new Carrera(txtNombre.getText(), (int)spPlazas.getValue(), selectedDate,"creada", (int)spPrecio.getValue(), (int)spDevolucion.getValue());		
  									DataBaseManager.anadirCarrera(carrera);	
  									if(!editadas) {
+ 										System.out.println("Nombre: " + txtNombre.getText());
 		 								CategoriasCarrera.getlm().add(new Categoria("Infantil-M-" +txtNombre.getText(), "Infantil-M", 3, 18, "masculino", txtNombre.getText()));
 		 								CategoriasCarrera.getlm().add(new Categoria("Junior-M-" +txtNombre.getText(), "Junior-M", 19, 23, "masculino", txtNombre.getText()));
 		 								CategoriasCarrera.getlm().add(new Categoria("Senior-M-" +txtNombre.getText(), "Senior-M", 24, 35, "masculino", txtNombre.getText()));
@@ -200,10 +218,11 @@ import src.DataBaseManager;
 		 								CategoriasCarrera.getlf().add(new Categoria("Senior-F-" +txtNombre.getText(), "Senior-F", 24, 35, "femenino", txtNombre.getText()));
 		 								CategoriasCarrera.getlf().add(new Categoria("Master-F-" +txtNombre.getText(), "Master-F", 36, 125, "femenino", txtNombre.getText()));
 		 								for(int i = 0; i<CategoriasCarrera.getlm().size(); i++) {
-												DataBaseManager.anadirCategoriaACarrera(CategoriasCarrera.getlm().get(i), carrera.getNombre());
+											System.out.println(CategoriasCarrera.getlm().get(i).getId());
+		 									DataBaseManager.anadirCategoriaACarrera(CategoriasCarrera.getlm().get(i), carrera.getNombre());
 										}
 		 								for(int i = 0; i<CategoriasCarrera.getlf().size(); i++) {
-											DataBaseManager.anadirCategoriaACarrera(CategoriasCarrera.getlf().get(i), carrera.getNombre());
+		 									DataBaseManager.anadirCategoriaACarrera(CategoriasCarrera.getlf().get(i), carrera.getNombre());
 									}
  									}
  									else {

@@ -235,6 +235,12 @@ public class VentanaPrincipal {
 			btnPagos = new JButton("Control de pagos");
 			btnPagos.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
+					try {
+						arreglaComboBoxes(comboCarreras);
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					CardLayout card = (CardLayout) frame.getContentPane().getLayout();
 					removeModelContent((MyTableModel) tablePagos.getModel());
 					card.show(frame.getContentPane(), "panelPagos");
@@ -762,6 +768,12 @@ public class VentanaPrincipal {
 			btnClasificacion = new JButton("Clasificaci\u00F3n");
 			btnClasificacion.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
+					try {
+						arreglaComboBoxes(comboClasificacion);
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					CardLayout card = (CardLayout) frame.getContentPane().getLayout();
 					card.show(frame.getContentPane(), "panelClasificacion");
 				}
@@ -1271,6 +1283,12 @@ public class VentanaPrincipal {
 			btnAtletas = new JButton("Atletas");
 			btnAtletas.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
+					try {
+						arreglaComboBoxes(comboBox);
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					CardLayout card = (CardLayout) frame.getContentPane().getLayout();
 					// actualizarTablaAtletas();
 					card.show(frame.getContentPane(), "pnlAtletasSegunCarrera");
@@ -1384,6 +1402,14 @@ public class VentanaPrincipal {
 			}
 		}
 		return comboClasificacion;
+	}
+	
+	private void arreglaComboBoxes(JComboBox param) throws SQLException {
+		ArrayList<String> carreras = DataBaseManager.getCarreras();
+		param.removeAllItems();
+		for (String carrera : carreras) {
+			param.addItem(carrera);
+		}
 	}
 	
 private JButton getBtnNuevaCarrera() 
