@@ -60,6 +60,8 @@ public class EditorCategorias extends JFrame {
 	private JLabel lblMasculino;
 	private JLabel lblFemenino;
 	private JButton btnAnadirF;
+	private JButton btnEliminarMasculino;
+	private JButton btnEliminarFemenino;
 
 	/**
 	 * Launch the application.
@@ -181,6 +183,8 @@ public class EditorCategorias extends JFrame {
 			panelBotones = new JPanel();
 			panelBotones.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 			panelBotones.add(getBtnOrdenar());
+			panelBotones.add(getBtnEliminarMasculino());
+			panelBotones.add(getBtnEliminarFemenino());
 			panelBotones.add(getBtnAnadirM());
 			panelBotones.add(getBtnAnadirF());
 			panelBotones.add(getBtnAceptar());
@@ -395,5 +399,27 @@ public class EditorCategorias extends JFrame {
 			});
 		}
 		return btnAnadirF;
+	}
+	private JButton getBtnEliminarMasculino() {
+		if (btnEliminarMasculino == null) {
+			btnEliminarMasculino = new JButton("Eliminar Masculino");
+			btnEliminarMasculino.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					model.removeRow(table.getSelectedRow());
+				}
+			});
+		}
+		return btnEliminarMasculino;
+	}
+	private JButton getBtnEliminarFemenino() {
+		if (btnEliminarFemenino == null) {
+			btnEliminarFemenino = new JButton("Eliminar Femenino");
+			btnEliminarFemenino.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					model_1.removeRow(table_1.getSelectedRow());
+				}
+			});
+		}
+		return btnEliminarFemenino;
 	}
 }

@@ -610,6 +610,5 @@ public class DataBaseManager
 			}
 			else
 				return false;
-		}
-		
+		}		
 }

@@ -2,6 +2,7 @@ package igu;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.HeadlessException;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -15,6 +16,7 @@ import javax.swing.border.TitledBorder;
 
 import src.Atleta;
 import src.Categoria;
+import src.CategoriasCarrera;
 import src.DataBaseManager;
 
 import javax.swing.JRadioButton;
@@ -222,46 +224,98 @@ public class VentanaDatosAtleta extends JDialog {
 			btnAceptar.setBounds(333, 237, 89, 23);
 			btnAceptar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					
-					String campoNombre = txtfldNombre.getText();
-					String campoApellido = txtfldApellidos.getText();
-					String campoDNI = txtfldDNI.getText();
-					
-					if(campoNombre.equals("") || campoApellido.equals("") || campoDNI.equals(""))
-					{
-						JOptionPane.showMessageDialog(null, "Debe introducir todos los campos para hacer el registro!");
-						return;
-					}
-
-					boolean valido;
-					
 					String carrera = (String)comboCarreras.getSelectedItem();
-					
 					try {
-						
-						valido = DataBaseManager.atletaEstaEnCarrera(txtfldDNI.getText().toUpperCase(), carrera);
-						if (valido) {
+						if(DataBaseManager.getCategoriasPorCarrera(carrera).size()>0) {
+							String campoNombre = txtfldNombre.getText();
+							String campoApellido = txtfldApellidos.getText();
+							String campoDNI = txtfldDNI.getText();
+							
+							if(campoNombre.equals("") || campoApellido.equals("") || campoDNI.equals(""))
+							{
+								JOptionPane.showMessageDialog(null, "Debe introducir todos los campos para hacer el registro!");
+								return;
+							}
 
-							JOptionPane.showMessageDialog(null, "El atleta ya est\u00E1 inscrito en la carrera");
+							boolean valido;
+							
+							
+							try {
+								
+								valido = DataBaseManager.atletaEstaEnCarrera(txtfldDNI.getText().toUpperCase(), carrera);
+								if (valido) {
+
+									JOptionPane.showMessageDialog(null, "El atleta ya est\u00E1 inscrito en la carrera");
+								}
+
+								else {
+									if(existeCategoria()) {
+										Atleta atleta = new Atleta(txtfldDNI.getText().toUpperCase(), txtfldNombre.getText(),
+												txtfldApellidos.getText(), comprobarSexo(), comprobarFechaNacimiento(),
+												carrera, comprobarFechaInscripcion(), "inscrito", null, null, comprobarCategoria(), null);
+										DataBaseManager.anadirCiertoAtleta(atleta);
+										atleta.imprimirResguardo();
+										dispose();
+									}
+									else {
+										JOptionPane.showMessageDialog(null, "Esta carrera no consta de una categoria para el atleta que se desea introducir.\nPor favor compruebe que existe una categoria referente al sexo y edad del atleta.");
+									}
+								}
+							} catch (SQLException e) {
+
+								e.printStackTrace();
+							} catch (IOException e) {
+
+								e.printStackTrace();
+							}
+								
 						}
-
 						else {
+							String campoNombre = txtfldNombre.getText();
+							String campoApellido = txtfldApellidos.getText();
+							String campoDNI = txtfldDNI.getText();
+							
+							if(campoNombre.equals("") || campoApellido.equals("") || campoDNI.equals(""))
+							{
+								JOptionPane.showMessageDialog(null, "Debe introducir todos los campos para hacer el registro!");
+								return;
+							}
 
-							Atleta atleta = new Atleta(txtfldDNI.getText().toUpperCase(), txtfldNombre.getText(),
-									txtfldApellidos.getText(), comprobarSexo(), comprobarFechaNacimiento(),
-									carrera, comprobarFechaInscripcion(), "inscrito", null, null, comprobarCategoria(), null);
-							DataBaseManager.anadirCiertoAtleta(atleta);
-							atleta.imprimirResguardo();
-							dispose();
+							boolean valido;
+						
+							
+							try {
+								
+								valido = DataBaseManager.atletaEstaEnCarrera(txtfldDNI.getText().toUpperCase(), carrera);
+								if (valido) {
+
+									JOptionPane.showMessageDialog(null, "El atleta ya est\u00E1 inscrito en la carrera");
+								}
+
+								else {
+
+									Atleta atleta = new Atleta(txtfldDNI.getText().toUpperCase(), txtfldNombre.getText(),
+											txtfldApellidos.getText(), comprobarSexo(), comprobarFechaNacimiento(),
+											carrera, comprobarFechaInscripcion(), "inscrito", null, null, null, null);
+									DataBaseManager.anadirCiertoAtleta(atleta);
+									atleta.imprimirResguardo();
+									dispose();
+								}
+							} catch (SQLException e) {
+
+								e.printStackTrace();
+							} catch (IOException e) {
+
+								e.printStackTrace();
+							}
 						}
-					} catch (SQLException e) {
-
+					} catch (HeadlessException e) {
+						// TODO Auto-generated catch block
 						e.printStackTrace();
-					} catch (IOException e) {
-
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-
 				}
 			});
 
@@ -351,7 +405,6 @@ public class VentanaDatosAtleta extends JDialog {
 		
 		String carrera = (String)comboCarreras.getSelectedItem();
 		ArrayList<Categoria> categoriasCarrera = DataBaseManager.getCategoriasPorCarrera(carrera);
-		
 		String solucion = "";
 		for(int i = 0; i<categoriasCarrera.size(); i++) {
 			if(categoriasCarrera.get(i).getEdadM()>=edad && categoriasCarrera.get(i).getEdadm()<=edad 
@@ -379,5 +432,27 @@ public class VentanaDatosAtleta extends JDialog {
 			}
 		}
 		return comboCarreras;
+	}
+	
+	private boolean existeCategoria() throws SQLException {
+		boolean solucion = false;
+		LocalDate fechaDeInscripcion = LocalDate.now(ZoneId.of("UTC"));
+		int ano = Integer.valueOf(cbxAno.getSelectedItem().toString());
+		int annoActual = fechaDeInscripcion.getYear();
+		int edad = annoActual - ano;
+		String carrera = (String)comboCarreras.getSelectedItem();
+		String sexo= "";
+		if(rdbtnHombre.isSelected())
+			sexo = "masculino";
+		else
+			sexo = "femenino";
+		ArrayList<Categoria> categoriasCarrera = DataBaseManager.getCategoriasPorCarrera(carrera);
+		for(int i = 0; i<categoriasCarrera.size(); i++) {
+			if(categoriasCarrera.get(i).getEdadM()>=edad && categoriasCarrera.get(i).getEdadm()<=edad 
+					&& categoriasCarrera.get(i).getSexo().equals(sexo)) {
+				solucion = true;
+			}
+		}
+		return solucion;
 	}
 }

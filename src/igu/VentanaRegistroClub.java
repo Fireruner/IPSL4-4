@@ -378,8 +378,13 @@ public class VentanaRegistroClub extends JDialog{
 					m.addColumn("Nombre");
 					
 					for(int i = 0; i<MiembrosClub.getl().size(); i++) {
-						String[] categoriaBuena = MiembrosClub.getl().get(i).getCategoria().split("-");
-						m.addRow(new Object[] {MiembrosClub.getl().get(i).getDni(), categoriaBuena[0], MiembrosClub.getl().get(i).getNombre()}); //CAMBIAR AL AÑADIR CATEGORIAS
+						if(MiembrosClub.getl().get(i).getCategoria()!=null) {
+							String[] categoriaBuena = MiembrosClub.getl().get(i).getCategoria().split("-");
+							m.addRow(new Object[] {MiembrosClub.getl().get(i).getDni(), categoriaBuena[0], MiembrosClub.getl().get(i).getNombre()}); //CAMBIAR AL AÑADIR CATEGORIAS
+						}
+						else {
+							m.addRow(new Object[] {MiembrosClub.getl().get(i).getDni(), "---", MiembrosClub.getl().get(i).getNombre()}); //CAMBIAR AL AÑADIR CATEGORIAS
+						}
 					}
 					tableClubInscritos.setModel(m);
 				}
