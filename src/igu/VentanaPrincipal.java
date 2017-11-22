@@ -15,6 +15,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import src.Atleta;
 import src.Carrera;
+import src.Categoria;
 import src.DataBaseManager;
 import src.GestorComprobaciones;
 import src.MyTableModel;
@@ -235,6 +236,12 @@ public class VentanaPrincipal {
 			btnPagos = new JButton("Control de pagos");
 			btnPagos.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
+					try {
+						arreglaComboBoxes(comboCarreras);
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					CardLayout card = (CardLayout) frame.getContentPane().getLayout();
 					removeModelContent((MyTableModel) tablePagos.getModel());
 					card.show(frame.getContentPane(), "panelPagos");
@@ -319,7 +326,7 @@ public class VentanaPrincipal {
 			modelPagos.addRow(cabeceras);
 			int rowCount = 0;
 
-			if (atletasSinPagar.size() > 1) {
+			if (atletasSinPagar.size() >= 1) {
 				for (String[] atleta : atletasSinPagar) {
 					boolean coincide = false;
 					for (String[] fueraPlazo : atletasFueraDePlazo) {
@@ -480,7 +487,13 @@ public class VentanaPrincipal {
 					ArrayList<Carrera> carreras = new ArrayList<Carrera>();
 					List<Atleta> atletasConTiempo = new ArrayList<Atleta>();
 					List<Atleta> atletasSinTiempo = new ArrayList<Atleta>(); // ya que el order by coloca primero a los
-																				// sin tiempo
+					ArrayList<Categoria> categorias = new ArrayList<Categoria>();   // sin tiempo
+					try {
+						categorias = DataBaseManager.getCategoriasPorCarrera(carrera);
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					boolean finalizada = false;
 
 					try {
@@ -499,11 +512,11 @@ public class VentanaPrincipal {
 									if (participantes.get(i)[9] != null) {
 										atletasConTiempo
 												.add(new Atleta(participantes.get(i)[0], participantes.get(i)[1],
-														participantes.get(i)[2], participantes.get(i)[3],
+														participantes.get(i)[2],
 														participantes.get(i)[4], participantes.get(i)[5],
 														participantes.get(i)[6], participantes.get(i)[7],
 														participantes.get(i)[8], participantes.get(i)[9],
-														participantes.get(i)[10], participantes.get(i)[11]));
+														participantes.get(i)[10], participantes.get(i)[3], participantes.get(i)[11]));
 									} else {
 										atletasSinTiempo
 												.add(new Atleta(participantes.get(i)[0], participantes.get(i)[1],
@@ -518,59 +531,73 @@ public class VentanaPrincipal {
 
 							// Si hay datos en la tabla, los borra
 							removeModelContent((MyTableModel) tablaResultados.getModel());
+							
+							for(int l = 0; l < categorias.size(); l++) {
 
-							int contadorPosM = 1; // contador para las posiciones masculinas
-							int contadorPosF = 1; // contador para las posiciones femeninas
-							for (int i = 0; i < atletasConTiempo.size(); i++) { // AnADIMOS PRIMERO LOS QUE TIENEN
-																				// TIEMPO
-
-								if (atletasConTiempo.get(i).getSexo().equals(m)) {
-									Object[] temp = { atletasConTiempo.get(i).getDni(), contadorPosM,
-											atletasConTiempo.get(i).getSexo(), atletasConTiempo.get(i).getDorsal(),
-											atletasConTiempo.get(i).getNombre(), atletasConTiempo.get(i).getApellidos(),
-											atletasConTiempo.get(i).getFechaDeNacimiento(),
-											atletasConTiempo.get(i).getFecha_inscripcion(),
-											atletasConTiempo.get(i).getTiempo() };
-
-									atletasConTiempo.get(i).setPosicion(String.valueOf(contadorPosM));
-									model.addRow(temp);
-									contadorPosM++;
-								} else {
-									Object[] temp = { atletasConTiempo.get(i).getDni(), contadorPosF,
-											atletasConTiempo.get(i).getSexo(), atletasConTiempo.get(i).getDorsal(),
-											atletasConTiempo.get(i).getNombre(), atletasConTiempo.get(i).getApellidos(),
-											atletasConTiempo.get(i).getFechaDeNacimiento(),
-											atletasConTiempo.get(i).getFecha_inscripcion(),
-											atletasConTiempo.get(i).getTiempo() };
-
-									atletasConTiempo.get(i).setPosicion(String.valueOf(contadorPosF));
-									model.addRow(temp);
-									contadorPosF++;
+								int contadorPosM = 1; // contador para las posiciones masculinas
+								int contadorPosF = 1; // contador para las posiciones femeninas
+								for (int i = 0; i < atletasConTiempo.size(); i++) { // AnADIMOS PRIMERO LOS QUE TIENEN
+									String[] partes = {"---"};									// TIEMPO
+									if(atletasConTiempo.get(i).getCategoria()!=null) {
+										partes = atletasConTiempo.get(i).getCategoria().split("-");
+									}
+									if(categorias.get(l).getId().equals(atletasConTiempo.get(i).getCategoria())) {
+										if (atletasConTiempo.get(i).getSexo().equals(m)) {
+											Object[] temp = { atletasConTiempo.get(i).getDni(), contadorPosM,
+													partes[0]+ "-" + partes[1], atletasConTiempo.get(i).getDorsal(),
+													atletasConTiempo.get(i).getNombre(), atletasConTiempo.get(i).getApellidos(),
+													atletasConTiempo.get(i).getFechaDeNacimiento(),
+													atletasConTiempo.get(i).getFecha_inscripcion(),
+													atletasConTiempo.get(i).getTiempo() };
+		
+											atletasConTiempo.get(i).setPosicion(String.valueOf(contadorPosM));
+											model.addRow(temp);
+											contadorPosM++;
+										} else {
+											Object[] temp = { atletasConTiempo.get(i).getDni(), contadorPosF,
+													partes[0]+ "-" + partes[1], atletasConTiempo.get(i).getDorsal(),
+													atletasConTiempo.get(i).getNombre(), atletasConTiempo.get(i).getApellidos(),
+													atletasConTiempo.get(i).getFechaDeNacimiento(),
+													atletasConTiempo.get(i).getFecha_inscripcion(),
+													atletasConTiempo.get(i).getTiempo() };
+		
+											atletasConTiempo.get(i).setPosicion(String.valueOf(contadorPosF));
+											model.addRow(temp);
+											contadorPosF++;
+										}
+									}
 								}
-							}
+							
 
-							for (int i = 0; i < atletasSinTiempo.size(); i++) { // Y LUEGO LOS QUE NO
-								if (atletasSinTiempo.get(i).getSexo().equals(m)) {
-									Object[] temp = { atletasSinTiempo.get(i).getDni(), contadorPosM,
-											atletasSinTiempo.get(i).getSexo(), atletasSinTiempo.get(i).getDorsal(),
-											atletasSinTiempo.get(i).getNombre(), atletasSinTiempo.get(i).getApellidos(),
-											atletasSinTiempo.get(i).getFechaDeNacimiento(),
-											atletasSinTiempo.get(i).getFecha_inscripcion(), "---" };
-
-									atletasSinTiempo.get(i).setPosicion(String.valueOf(contadorPosF));
-									model.addRow(temp);
-									contadorPosM++;
-								} else {
-									Object[] temp = { atletasSinTiempo.get(i).getDni(), contadorPosF,
-											atletasSinTiempo.get(i).getSexo(), atletasSinTiempo.get(i).getDorsal(),
-											atletasSinTiempo.get(i).getNombre(), atletasSinTiempo.get(i).getApellidos(),
-											atletasSinTiempo.get(i).getFechaDeNacimiento(),
-											atletasSinTiempo.get(i).getFecha_inscripcion(),
-											atletasSinTiempo.get(i).getTiempo() };
-
-									atletasSinTiempo.get(i).setPosicion(String.valueOf(contadorPosF));
-									model.addRow(temp);
-									contadorPosF++;
+								for (int i = 0; i < atletasSinTiempo.size(); i++) { // Y LUEGO LOS QUE NO
+									String[] partes = {"---", "", ""};
+									if(atletasSinTiempo.get(i).getCategoria()!=null) {
+										partes = atletasSinTiempo.get(i).getCategoria().split("-");
+									}
+									if(categorias.get(l).getId().equals(atletasSinTiempo.get(i).getCategoria())) {
+										if (atletasSinTiempo.get(i).getSexo().equals(m)) {
+											Object[] temp = { atletasSinTiempo.get(i).getDni(), contadorPosM,
+													partes[0]+ "-" + partes[1], atletasSinTiempo.get(i).getDorsal(),
+													atletasSinTiempo.get(i).getNombre(), atletasSinTiempo.get(i).getApellidos(),
+													atletasSinTiempo.get(i).getFechaDeNacimiento(),
+													atletasSinTiempo.get(i).getFecha_inscripcion(), "---" };
+		
+											atletasSinTiempo.get(i).setPosicion(String.valueOf(contadorPosF));
+											model.addRow(temp);
+											contadorPosM++;
+										} else {
+											Object[] temp = { atletasSinTiempo.get(i).getDni(), contadorPosF,
+													partes[0]+ "-" + partes[1], atletasSinTiempo.get(i).getDorsal(),
+													atletasSinTiempo.get(i).getNombre(), atletasSinTiempo.get(i).getApellidos(),
+													atletasSinTiempo.get(i).getFechaDeNacimiento(),
+													atletasSinTiempo.get(i).getFecha_inscripcion(),
+													"---" };
+		
+											atletasSinTiempo.get(i).setPosicion(String.valueOf(contadorPosF));
+											model.addRow(temp);
+											contadorPosF++;
+										}
+									}
 								}
 							}
 
@@ -694,7 +721,7 @@ public class VentanaPrincipal {
 
 	private JLabel getLblCSexo() {
 		if (lblCSexo == null) {
-			lblCSexo = new JLabel("Sexo");
+			lblCSexo = new JLabel("Categoria");
 			lblCSexo.setHorizontalAlignment(SwingConstants.CENTER);
 			lblCSexo.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		}
@@ -760,6 +787,12 @@ public class VentanaPrincipal {
 			btnClasificacion = new JButton("Clasificaci\u00F3n");
 			btnClasificacion.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
+					try {
+						arreglaComboBoxes(comboClasificacion);
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					CardLayout card = (CardLayout) frame.getContentPane().getLayout();
 					card.show(frame.getContentPane(), "panelClasificacion");
 				}
@@ -1201,12 +1234,17 @@ public class VentanaPrincipal {
 				String[] cabeceras = { "DNI", "Nombre", "Categoria", "Sexo", "Fecha de Inscripci\u00F3n", "Estado",
 						"Dorsal" };
 				modelAtletas.addRow(cabeceras);
-				if (atletas.size() > 1) {
+				if (atletas.size() >= 1) {
 					for (String[] a : atletas) {
 						if (a[5] == null)
 							a[5] = "No asignado";
-						String[] temp = a[2].split("-");
-						a[2] = temp[0];
+						if(a[2]!=null) {
+							String[] temp = a[2].split("-");
+							a[2] = temp[0];
+						}
+						else {
+							a[2]="";
+						}
 						modelAtletas.addRow(a);
 					}
 				}
@@ -1269,6 +1307,12 @@ public class VentanaPrincipal {
 			btnAtletas = new JButton("Atletas");
 			btnAtletas.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
+					try {
+						arreglaComboBoxes(comboBox);
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					CardLayout card = (CardLayout) frame.getContentPane().getLayout();
 					// actualizarTablaAtletas();
 					card.show(frame.getContentPane(), "pnlAtletasSegunCarrera");
@@ -1382,6 +1426,14 @@ public class VentanaPrincipal {
 			}
 		}
 		return comboClasificacion;
+	}
+	
+	private void arreglaComboBoxes(JComboBox param) throws SQLException {
+		ArrayList<String> carreras = DataBaseManager.getCarreras();
+		param.removeAllItems();
+		for (String carrera : carreras) {
+			param.addItem(carrera);
+		}
 	}
 	
 private JButton getBtnNuevaCarrera() 
@@ -1517,7 +1569,7 @@ private JButton getBtnNuevaCarrera()
 
 	private JButton getBtnMenuCalendario() {
 		if (btnMenuCalendario == null) {
-			btnMenuCalendario = new JButton("MenÃƒÂº");
+			btnMenuCalendario = new JButton("Menu");
 			btnMenuCalendario.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					CardLayout card = (CardLayout) frame.getContentPane().getLayout();
@@ -1558,18 +1610,18 @@ private JButton getBtnNuevaCarrera()
 							String dni = (String) tableAtletas.getValueAt(fila, 0);
 							if (estado.equals("pagado")) {
 								JOptionPane.showMessageDialog(null,
-										"Al atleta con dni" + dni + " " + "se le tendrÃ¡ que devolver " + p * (pD / 100) + "â‚¬");
+										"Al atleta con dni" + dni + " " + "se le tendra que devolver " + p * (pD / 100) + " euros");
 								
 								try {
 									DataBaseManager.borrarAtleta(getComboBox().getSelectedItem().toString(), dni);
 								} catch (SQLException e1) {
 									JOptionPane.showMessageDialog(null,
-											"Ha habido algÃºn problema mientras se borraba al atleta de la base de datos");
+											"Ha habido algun problema mientras se borraba al atleta de la base de datos");
 									e1.printStackTrace();
 								}
 							} else {
 								JOptionPane.showMessageDialog(null, "El atleta con dni" + dni + " "
-										+ "figura como inscrito.\n" + "Se le devolver\u00E1 el precio \u00EDntegro, " + p + "â‚¬");
+										+ "figura como inscrito.\n" + "Se le devolver\u00E1 el precio \u00EDntegro, " + p + " euros");
 								try {
 									DataBaseManager.borrarAtleta(getComboBox().getSelectedItem().toString(), dni);
 								} catch (SQLException e1) {

@@ -87,7 +87,7 @@ public class Atleta{
 		return club;
 	}
 	
-	private void setCategoria(String categoria) {
+	public void setCategoria(String categoria) {
 		this.categoria = categoria;
 	}
 	

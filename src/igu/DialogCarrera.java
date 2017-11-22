@@ -10,6 +10,7 @@ package igu;
  import java.awt.GridBagLayout;		
  import net.miginfocom.swing.MigLayout;		
  import src.Carrera;
+import src.Categoria;
 import src.CategoriasCarrera;
 import src.DataBaseManager;		
  		
@@ -26,7 +27,11 @@ import src.DataBaseManager;
  import java.sql.SQLException;		
  import java.time.LocalDate;		
  import java.util.Date;		
- import java.awt.event.ActionEvent;		
+ import java.awt.event.ActionEvent;
+import java.awt.event.InputMethodListener;
+import java.awt.event.InputMethodEvent;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;		
  		
  public class DialogCarrera extends JDialog {		
  		
@@ -38,6 +43,9 @@ import src.DataBaseManager;
  	private JComboBox<Integer>  cbAno;		
  	private JSpinner spDevolucion;		
  	JSpinner spPrecio;		
+ 	private JButton okButton;
+ 	
+ 	private boolean editadas = false;
  		
  	/**		
  	 * Launch the application.		
@@ -68,6 +76,17 @@ import src.DataBaseManager;
  		}		
  		{		
  			txtNombre = new JTextField();		
+ 			txtNombre.addFocusListener(new FocusAdapter() {
+ 				@Override
+ 				public void focusLost(FocusEvent arg0) {
+ 					if(!txtNombre.getText().equals(""))
+ 						okButton.setEnabled(true);
+ 					else {
+ 						okButton.setEnabled(false);
+ 					}
+ 				}
+ 			});
+ 			
  			contentPanel.add(txtNombre, "cell 1 0,growx");		
  			txtNombre.setColumns(10);		
  		}		
@@ -147,6 +166,7 @@ import src.DataBaseManager;
  			JButton btnCategoras = new JButton("Categor\u00EDas");
  			btnCategoras.addActionListener(new ActionListener() {
  				public void actionPerformed(ActionEvent arg0) {
+ 					editadas = true;
  					EditorCategorias ec = new EditorCategorias(txtNombre.getText());
  					ec.setVisible(true);
  				}
@@ -158,7 +178,8 @@ import src.DataBaseManager;
  			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));		
  			getContentPane().add(buttonPane, BorderLayout.SOUTH);		
  			{		
- 				JButton okButton = new JButton("OK");		
+ 				okButton = new JButton("OK");		
+ 				okButton.setEnabled(false);
  				okButton.addActionListener(new ActionListener() {		
  					public void actionPerformed(ActionEvent arg0) 		
  					{		
@@ -186,8 +207,31 @@ import src.DataBaseManager;
  								{		
  									Carrera carrera = new Carrera(txtNombre.getText(), (int)spPlazas.getValue(), selectedDate,"creada", (int)spPrecio.getValue(), (int)spDevolucion.getValue());		
  									DataBaseManager.anadirCarrera(carrera);	
- 									for(int i = 0; i<CategoriasCarrera.getl().size(); i++) {
- 										DataBaseManager.anadirCategoriaACarrera(CategoriasCarrera.getl().get(i), carrera.getNombre());
+ 									if(!editadas) {
+ 										System.out.println("Nombre: " + txtNombre.getText());
+		 								CategoriasCarrera.getlm().add(new Categoria("Infantil-M-" +txtNombre.getText(), "Infantil-M", 3, 18, "masculino", txtNombre.getText()));
+		 								CategoriasCarrera.getlm().add(new Categoria("Junior-M-" +txtNombre.getText(), "Junior-M", 19, 23, "masculino", txtNombre.getText()));
+		 								CategoriasCarrera.getlm().add(new Categoria("Senior-M-" +txtNombre.getText(), "Senior-M", 24, 35, "masculino", txtNombre.getText()));
+		 								CategoriasCarrera.getlm().add(new Categoria("Master-M-" +txtNombre.getText(), "Master-M", 36, 125, "masculino", txtNombre.getText()));
+		 								CategoriasCarrera.getlf().add(new Categoria("Infantil-F-" +txtNombre.getText(), "Infantil-F", 3, 18, "femenino", txtNombre.getText()));
+		 								CategoriasCarrera.getlf().add(new Categoria("Junior-F-" +txtNombre.getText(), "Junior-F", 19, 23, "femenino", txtNombre.getText()));
+		 								CategoriasCarrera.getlf().add(new Categoria("Senior-F-" +txtNombre.getText(), "Senior-F", 24, 35, "femenino", txtNombre.getText()));
+		 								CategoriasCarrera.getlf().add(new Categoria("Master-F-" +txtNombre.getText(), "Master-F", 36, 125, "femenino", txtNombre.getText()));
+		 								for(int i = 0; i<CategoriasCarrera.getlm().size(); i++) {
+											System.out.println(CategoriasCarrera.getlm().get(i).getId());
+		 									DataBaseManager.anadirCategoriaACarrera(CategoriasCarrera.getlm().get(i), carrera.getNombre());
+										}
+		 								for(int i = 0; i<CategoriasCarrera.getlf().size(); i++) {
+		 									DataBaseManager.anadirCategoriaACarrera(CategoriasCarrera.getlf().get(i), carrera.getNombre());
+									}
+ 									}
+ 									else {
+ 										for(int i = 0; i<CategoriasCarrera.getlm().size(); i++) {
+ 											DataBaseManager.anadirCategoriaACarrera(CategoriasCarrera.getlm().get(i), carrera.getNombre());
+ 										}
+ 										for(int i = 0; i<CategoriasCarrera.getlf().size(); i++) {
+ 											DataBaseManager.anadirCategoriaACarrera(CategoriasCarrera.getlf().get(i), carrera.getNombre());
+ 										}
  									}
  									JOptionPane.showMessageDialog(null, "Se ha registrado la carrera "+ carrera.getNombre() +" correctamente.");
  									dispose();
@@ -197,7 +241,7 @@ import src.DataBaseManager;
  							else		
  							{		
  								JOptionPane.showMessageDialog(null, "Esa carrera ya está registrada o no le ha asignado nombre.");		
- 							}		
+ 							}
  						} catch (SQLException e) {		
  							// TODO Autogenerated catch block		
  							e.printStackTrace();		
@@ -220,6 +264,10 @@ import src.DataBaseManager;
  				buttonPane.add(cancelButton);		
  			}		
  		}		
- 	}		
+ 	}
+ 	
+ 	public void setEditadas(boolean t) {
+ 		editadas = true;
+ 	}
  		
  }
