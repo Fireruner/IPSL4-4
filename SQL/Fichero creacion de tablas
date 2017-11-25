@@ -55,5 +55,5 @@ Create table Atleta
 	constraint fk_club foreign key (fk_club) references club (nombreClub),
 	constraint fk_categoria foreign key (fk_categoria) references categoria (ID_CAT),
 	constraint ck_sexo check (sexo in('masculino', 'femenino')),
-	constraint ck_estado check (estado in('inscrito', 'pagado'))
+	constraint ck_estado check (estado in('inscrito', 'pagado', 'presentado'))
 );
