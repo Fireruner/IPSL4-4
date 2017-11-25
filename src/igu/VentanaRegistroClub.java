@@ -349,12 +349,17 @@ public class VentanaRegistroClub extends JDialog{
 			btnConfirmar.setBounds(100, 115, 96, 23);
 			btnConfirmar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					comboBox.setEnabled(false);
-					textField.setEnabled(false);
-					btnConfirmar.setEnabled(false);
-					btnReiniciar.setEnabled(true);
-					for(int i = 0; i< panelRCEditarDatos.getComponentCount(); i++) {
-						panelRCEditarDatos.getComponent(i).setEnabled(true);
+					if(!textField.getText().isEmpty()) {
+						comboBox.setEnabled(false);
+						textField.setEnabled(false);
+						btnConfirmar.setEnabled(false);
+						btnReiniciar.setEnabled(true);
+						for(int i = 0; i< panelRCEditarDatos.getComponentCount(); i++) {
+							panelRCEditarDatos.getComponent(i).setEnabled(true);
+						}
+					}
+					else {
+						JOptionPane.showMessageDialog(null, "El club ha de tener un nombre.");
 					}
 				}
 			});
@@ -371,8 +376,15 @@ public class VentanaRegistroClub extends JDialog{
 					m.addColumn("DNI");
 					m.addColumn("Categoria");
 					m.addColumn("Nombre");
+					
 					for(int i = 0; i<MiembrosClub.getl().size(); i++) {
-						m.addRow(new Object[] {MiembrosClub.getl().get(i).getDni(), "Categoria prueba", MiembrosClub.getl().get(i).getNombre()}); //CAMBIAR AL AÑADIR CATEGORIAS
+						if(MiembrosClub.getl().get(i).getCategoria()!=null) {
+							String[] categoriaBuena = MiembrosClub.getl().get(i).getCategoria().split("-");
+							m.addRow(new Object[] {MiembrosClub.getl().get(i).getDni(), categoriaBuena[0], MiembrosClub.getl().get(i).getNombre()}); //CAMBIAR AL AÑADIR CATEGORIAS
+						}
+						else {
+							m.addRow(new Object[] {MiembrosClub.getl().get(i).getDni(), "---", MiembrosClub.getl().get(i).getNombre()}); //CAMBIAR AL AÑADIR CATEGORIAS
+						}
 					}
 					tableClubInscritos.setModel(m);
 				}
@@ -429,71 +441,77 @@ public class VentanaRegistroClub extends JDialog{
 			btnRegistrar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					if(MiembrosClub.getl().size()!=0) {
-					Club club = new Club(textField.getText(), MiembrosClub.getl(), (String) comboBox.getSelectedItem());
-					String nombreCarrera = (String) comboBox.getSelectedItem();
-					ArrayList<Carrera> carreras = new ArrayList<Carrera>();
-					try {
-						carreras = DataBaseManager.getCarrerasEnteras();
-					} catch (SQLException e3) {
-						// TODO Auto-generated catch block
-						e3.printStackTrace();
-					}
-					Carrera carreraElegida = null;
-					for(int i = 0; i<carreras.size(); i++) {
-						if(carreras.get(i).getNombre().equals(nombreCarrera)) {
-							carreraElegida = carreras.get(i);
-						}
-					}
-					ArrayList<String> a = new ArrayList<String>();
-					try {
-						a = DataBaseManager.getClubs();
-					} catch (SQLException e2) {
-						e2.printStackTrace();
-					}
-					
-					boolean existe = false;
-					for(int i = 0; i<a.size(); i++) {
-						if(club.getNombre().equals(a.get(i))) {
-							existe = true;
-						}
-					}
-					
-					if(!existe) {
+						if(!textField.getText().isEmpty()) {
+						Club club = new Club(textField.getText(), MiembrosClub.getl(), (String) comboBox.getSelectedItem());
+						String nombreCarrera = (String) comboBox.getSelectedItem();
+						ArrayList<Carrera> carreras = new ArrayList<Carrera>();
 						try {
-							DataBaseManager.anadirCiertoClub(club, nombreCarrera);
-						} catch (SQLException e1) {
-							e1.printStackTrace();
+							carreras = DataBaseManager.getCarrerasEnteras();
+						} catch (SQLException e3) {
+							// TODO Auto-generated catch block
+							e3.printStackTrace();
 						}
-					}
-					
-					for(int i = 0; i<MiembrosClub.getl().size(); i++) {
+						Carrera carreraElegida = null;
+						for(int i = 0; i<carreras.size(); i++) {
+							if(carreras.get(i).getNombre().equals(nombreCarrera)) {
+								carreraElegida = carreras.get(i);
+							}
+						}
+						ArrayList<String> a = new ArrayList<String>();
 						try {
-							DataBaseManager.anadirCiertoAtleta(MiembrosClub.getl().get(i));
-						} catch (SQLException e) {
-							e.printStackTrace();
+							a = DataBaseManager.getClubs();
+						} catch (SQLException e2) {
+							e2.printStackTrace();
 						}
-					}
-					int numeroAtletas = tableClubInscritos.getRowCount();
-
-					try {
-						if(carreraElegida!=null) {
-							if(numeroAtletas>0 && numeroAtletas<=50) {
-								club.imprimirResguardo("5%",carreraElegida.getPrecio());
-							}
-							else if(numeroAtletas>50 && numeroAtletas<=100) {
-								club.imprimirResguardo("10%",carreraElegida.getPrecio());
-							}
-							else {
-								club.imprimirResguardo("20%",carreraElegida.getPrecio());
+						
+						boolean existe = false;
+						for(int i = 0; i<a.size(); i++) {
+							if(club.getNombre().equals(a.get(i))) {
+								existe = true;
 							}
 						}
-					} catch (IOException e) {
-						e.printStackTrace();
+						
+						if(!existe) {
+							try {
+								DataBaseManager.anadirCiertoClub(club, nombreCarrera);
+							} catch (SQLException e1) {
+								e1.printStackTrace();
+							}
+							for(int i = 0; i<MiembrosClub.getl().size(); i++) {
+								try {
+									DataBaseManager.anadirCiertoAtleta(MiembrosClub.getl().get(i));
+								} catch (SQLException e) {
+									e.printStackTrace();
+								}
+							}
+							int numeroAtletas = tableClubInscritos.getRowCount();
+	
+							try {
+								if(carreraElegida!=null) {
+									if(numeroAtletas>0 && numeroAtletas<=50) {
+										club.imprimirResguardo("5%",carreraElegida.getPrecio());
+									}
+									else if(numeroAtletas>50 && numeroAtletas<=100) {
+										club.imprimirResguardo("10%",carreraElegida.getPrecio());
+									}
+									else {
+										club.imprimirResguardo("20%",carreraElegida.getPrecio());
+									}
+								}
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
+							MiembrosClub.vaciarLista();
+							dispose();
+						}
+						else {
+							JOptionPane.showMessageDialog(null, "Este club ya está inscrito para otra carrera.");
+						}
 					}
-					MiembrosClub.vaciarLista();
-					dispose();
+						else {
+							JOptionPane.showMessageDialog(null, "Debe de introducir el nombre del club.");
+						}
 				}
-				
 				else {
 					JOptionPane.showMessageDialog(null, "Debe de tener al menos 1 atleta inscrito en el club.");
 				}

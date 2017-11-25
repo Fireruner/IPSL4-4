@@ -130,7 +130,7 @@ public class DataBaseManager
 				result[0] = rs.getString("DNI");	
 				result[1] = rs.getString("NOMBRE");
 				result[2] = rs.getString("APELLIDOS");
-				result[3] = rs.getString("CATEGORIA");
+				result[3] = rs.getString("fk_categoria");
 				result[4] = rs.getString("SEXO");
 				result[5] = rs.getString("FECHA_NACIMIENTO");
 				result[6] = rs.getString("FK_CARRERA");
@@ -293,7 +293,7 @@ public class DataBaseManager
 		public static ArrayList<String[]> listarAtletas(String fk_carrera) throws SQLException {
 			ArrayList<String[]> c = new ArrayList<String[]>();
 			Connection con = getConnection();
-			PreparedStatement ps = con.prepareStatement("select dni, nombre, categoria, sexo, fecha_inscripcion, estado, dorsal"
+			PreparedStatement ps = con.prepareStatement("select dni, nombre, fk_categoria, sexo, fecha_inscripcion, estado, dorsal"
 					+ " from atleta where fk_carrera= ? order by fecha_inscripcion, estado");
 			ps.setString(1, fk_carrera);
 			ResultSet rs = ps.executeQuery();
@@ -301,7 +301,7 @@ public class DataBaseManager
 				String[] a = new String[7];
 				a[0] = rs.getString("dni");
 				a[1] = rs.getString("nombre");
-				a[2] = rs.getString("categoria");
+				a[2] = rs.getString("fk_categoria");
 				a[3] = rs.getString("sexo");
 				a[4] = rs.getString("fecha_inscripcion");
 				a[5] = rs.getString("estado");
@@ -508,4 +508,107 @@ public class DataBaseManager
 			}
 			return coincide;
 		}
+		public static int getPorcentajeDevolucion(String carrera) throws SQLException{
+			Connection con = getConnection();
+			PreparedStatement ps = con.prepareStatement("select porcentaje_devolucion from Carrera where nombre = ?");
+			ps.setString(1, carrera);
+			ResultSet rs = ps.executeQuery();
+			int porcentajeDevolucion = 0;
+			while(rs.next()) {
+			porcentajeDevolucion = rs.getInt("porcentaje_devolucion");
+			}
+			return porcentajeDevolucion;
+			
+		}
+		
+		public static int getPrecioCarrera(String carrera) throws SQLException{
+			Connection con = getConnection();
+			PreparedStatement ps = con.prepareStatement("select precio from Carrera where nombre = ?");
+			ps.setString(1, carrera);
+			ResultSet rs = ps.executeQuery();
+			int precio = 0;
+			while(rs.next()) {
+			precio = rs.getInt("precio");
+			}
+			return precio;
+		}
+		
+		public static void borrarAtleta(String carrera, String dni) throws SQLException{
+			Connection con = getConnection();
+			PreparedStatement ps = con.prepareStatement("delete from atleta where dni = ? and fk_carrera = ? ");
+			ps.setString(1, dni);
+			ps.setString(2, carrera);
+			ps.executeUpdate();
+		}
+		
+		
+		
+		public static boolean anadirCarrera(Carrera carrera) throws SQLException
+		{
+			
+			Connection con = getConnection();
+			String nombre = carrera.getNombre();
+			int plazas = carrera.getPlazasDisponibles();
+			java.sql.Date fecha = java.sql.Date.valueOf(carrera.getFechaCelebracion());
+			String estado = carrera.getEstado();
+			int precio = carrera.getPrecio();
+			int porcentaje = carrera.getPorcentajeDevolucion();
+			
+			PreparedStatement ps = con.prepareStatement("insert into carrera values (?,?,?,?,?,?)");
+			ps.setString(1, nombre);
+			ps.setInt(2, plazas);
+			ps.setDate(3, fecha);
+			ps.setString(4, estado);
+			ps.setInt(5, precio);
+			ps.setInt(6, porcentaje);
+			
+			if(ps.executeUpdate() == 1) {
+				return true;
+			}
+			else
+				return false;
+			
+		}
+		
+		public static ArrayList<Categoria> getCategoriasPorCarrera(String nombreCarrera) throws SQLException{
+			ArrayList<Categoria> categorias = new ArrayList<Categoria>();
+			
+			Connection con = getConnection();
+			
+			PreparedStatement ps = con.prepareStatement("select * from categoria where fk_carrera_categ = ?");
+			ps.setString(1, nombreCarrera);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next())
+			{
+				String id = rs.getString(1);
+				String nombre = rs.getString(2);
+				String edadm = rs.getString(3);
+				String edadM = rs.getString(4);
+				String sexo = rs.getString(5);
+				categorias.add(new Categoria(id,nombre,Integer.parseInt(edadm),Integer.parseInt(edadM), sexo, nombreCarrera));
+			}
+			ps.close();
+			rs.close();
+			con.close();
+			
+			return categorias;
+		}
+		
+		public static boolean anadirCategoriaACarrera(Categoria categoria, String carrera) throws SQLException{
+			Connection con = getConnection();
+			
+			PreparedStatement ps = con.prepareStatement("insert into categoria values (?, ?, ?, ?, ?, ?) ");
+			ps.setString(1, categoria.getId());
+			ps.setString(2, categoria.getNombre());
+			ps.setInt(3, categoria.getEdadm());
+			ps.setInt(4, categoria.getEdadM());
+			ps.setString(5, categoria.getSexo());
+			ps.setString(6, carrera);
+			
+			if(ps.executeUpdate() == 1) {
+				return true;
+			}
+			else
+				return false;
+		}		
 }
