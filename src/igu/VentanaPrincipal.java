@@ -78,69 +78,70 @@ public class VentanaPrincipal {
 	private JLabel lblTitulo;
 	private JLabel lblNombreDeCarrera;
 	private JPanel panelNombreCarrera;
-	
-	//Otros datos
-		private String m = "masculino";
-		private String f = "femenino";
-		private JPanel panelFiltroCarrera;
-		private JPanel panelTituloYColumnas;
-		private JPanel panelColumnas;
-		private JLabel lblCDNI;
-		private JLabel lblCPosicion;
-		private JLabel lblCSexo;
-		private JLabel lblCDorsal;
-		private JLabel lblCNombre;
-		private JLabel lblCApellidos;
-		private JLabel lblCFNacimiento;
-		private JLabel lblCFInscripcion;
-		private JLabel lblCTiempo;
-		private JButton btnClasificacion;
-		private JButton btnVolverAlMenu;
-		private JButton btMenu;
-		private JButton btnRegistrarCorredor;
-		
-		private JPanel panelFicheros;
-		private JPanel panelSeleccion;
-		private JButton btnSeleccion;
-		private JPanel panelInformacion;
-		private JLabel lblCarreraElegida;
-		private JPanel panelBotones;
-		private JButton btnCargar;
-		private JPanel panelVolver;
-		private JButton btnVolverAlMen;
-		private File archivo;
-		private boolean sinFallosFormato = true;
-		private boolean sinFallosDni = true;
-		private boolean sinFallosNombreCarrera = true;
-		private boolean sinFallosEstructura = true;
-		private GestorComprobaciones gc = new GestorComprobaciones();	
-		private JButton btnRegistrarTiempos;
-		
-		private JPanel pnlAtletasSegunCarrera;
-		private JTable tableAtletas;
-		private JButton btnMostrar;
-		private JButton btnMenu;
-		private JLabel lblListarAtletasSegn;
-		private JButton btnAtletas;
-		private MyTableModel modelAtletas;
-		
-		private JButton btnAsignarDorsales;
-		private JButton btnAsignarDorsal;
-		private String carreraSeleccionada;
-		private JLabel lblCarreraSeleccionada;
-		private JComboBox comboBox;
-		private JComboBox comboClasificacion;
-		private JComboBox comboCarreras;
-		private JButton btnNuevaCarrera;
-	
-		private JPanel pnCalendario;
-		private JCalendar calendar;
-		private JButton btnCalendario;
-		private JButton btnActualizarCalendario;
-		private ProcesaAccion pA;
-		private JButton btnMenuCalendario;
-		private JButton btnClubs;
-		private JButton btnCancelar;
+
+	// Otros datos
+	private String m = "masculino";
+	private String f = "femenino";
+	private JPanel panelFiltroCarrera;
+	private JPanel panelTituloYColumnas;
+	private JPanel panelColumnas;
+	private JLabel lblCDNI;
+	private JLabel lblCPosicion;
+	private JLabel lblCSexo;
+	private JLabel lblCDorsal;
+	private JLabel lblCNombre;
+	private JLabel lblCApellidos;
+	private JLabel lblCFNacimiento;
+	private JLabel lblCFInscripcion;
+	private JLabel lblCTiempo;
+	private JButton btnClasificacion;
+	private JButton btnVolverAlMenu;
+	private JButton btMenu;
+	private JButton btnRegistrarCorredor;
+
+	private JPanel panelFicheros;
+	private JPanel panelSeleccion;
+	private JButton btnSeleccion;
+	private JPanel panelInformacion;
+	private JLabel lblCarreraElegida;
+	private JPanel panelBotones;
+	private JButton btnCargar;
+	private JPanel panelVolver;
+	private JButton btnVolverAlMen;
+	private File archivo;
+	private boolean sinFallosFormato = true;
+	private boolean sinFallosDni = true;
+	private boolean sinFallosNombreCarrera = true;
+	private boolean sinFallosEstructura = true;
+	private GestorComprobaciones gc = new GestorComprobaciones();
+	private JButton btnRegistrarTiempos;
+
+	private JPanel pnlAtletasSegunCarrera;
+	private JTable tableAtletas;
+	private JButton btnMostrar;
+	private JButton btnMenu;
+	private JLabel lblListarAtletasSegn;
+	private JButton btnAtletas;
+	private MyTableModel modelAtletas;
+
+	private JButton btnAsignarDorsales;
+	private JButton btnAsignarDorsal;
+	private String carreraSeleccionada;
+	private JLabel lblCarreraSeleccionada;
+	private JComboBox comboBox;
+	private JComboBox comboClasificacion;
+	private JComboBox comboCarreras;
+	private JButton btnNuevaCarrera;
+
+	private JPanel pnCalendario;
+	private JCalendar calendar;
+	private JButton btnCalendario;
+	private JButton btnActualizarCalendario;
+	private ProcesaAccion pA;
+	private JButton btnMenuCalendario;
+	private JButton btnClubs;
+	private JButton btnCancelar;
+	private JButton btnPresentado;
 
 	/**
 	 * Launch the application.
@@ -487,7 +488,7 @@ public class VentanaPrincipal {
 					ArrayList<Carrera> carreras = new ArrayList<Carrera>();
 					List<Atleta> atletasConTiempo = new ArrayList<Atleta>();
 					List<Atleta> atletasSinTiempo = new ArrayList<Atleta>(); // ya que el order by coloca primero a los
-					ArrayList<Categoria> categorias = new ArrayList<Categoria>();   // sin tiempo
+					ArrayList<Categoria> categorias = new ArrayList<Categoria>(); // sin tiempo
 					try {
 						categorias = DataBaseManager.getCategoriasPorCarrera(carrera);
 					} catch (SQLException e) {
@@ -512,11 +513,11 @@ public class VentanaPrincipal {
 									if (participantes.get(i)[9] != null) {
 										atletasConTiempo
 												.add(new Atleta(participantes.get(i)[0], participantes.get(i)[1],
-														participantes.get(i)[2],
-														participantes.get(i)[4], participantes.get(i)[5],
-														participantes.get(i)[6], participantes.get(i)[7],
-														participantes.get(i)[8], participantes.get(i)[9],
-														participantes.get(i)[10], participantes.get(i)[3], participantes.get(i)[11]));
+														participantes.get(i)[2], participantes.get(i)[4],
+														participantes.get(i)[5], participantes.get(i)[6],
+														participantes.get(i)[7], participantes.get(i)[8],
+														participantes.get(i)[9], participantes.get(i)[10],
+														participantes.get(i)[3], participantes.get(i)[11]));
 									} else {
 										atletasSinTiempo
 												.add(new Atleta(participantes.get(i)[0], participantes.get(i)[1],
@@ -531,68 +532,70 @@ public class VentanaPrincipal {
 
 							// Si hay datos en la tabla, los borra
 							removeModelContent((MyTableModel) tablaResultados.getModel());
-							
-							for(int l = 0; l < categorias.size(); l++) {
+
+							for (int l = 0; l < categorias.size(); l++) {
 
 								int contadorPosM = 1; // contador para las posiciones masculinas
 								int contadorPosF = 1; // contador para las posiciones femeninas
 								for (int i = 0; i < atletasConTiempo.size(); i++) { // AnADIMOS PRIMERO LOS QUE TIENEN
-									String[] partes = {"---"};									// TIEMPO
-									if(atletasConTiempo.get(i).getCategoria()!=null) {
+									String[] partes = { "---" }; // TIEMPO
+									if (atletasConTiempo.get(i).getCategoria() != null) {
 										partes = atletasConTiempo.get(i).getCategoria().split("-");
 									}
-									if(categorias.get(l).getId().equals(atletasConTiempo.get(i).getCategoria())) {
+									if (categorias.get(l).getId().equals(atletasConTiempo.get(i).getCategoria())) {
 										if (atletasConTiempo.get(i).getSexo().equals(m)) {
 											Object[] temp = { atletasConTiempo.get(i).getDni(), contadorPosM,
-													partes[0]+ "-" + partes[1], atletasConTiempo.get(i).getDorsal(),
-													atletasConTiempo.get(i).getNombre(), atletasConTiempo.get(i).getApellidos(),
+													partes[0] + "-" + partes[1], atletasConTiempo.get(i).getDorsal(),
+													atletasConTiempo.get(i).getNombre(),
+													atletasConTiempo.get(i).getApellidos(),
 													atletasConTiempo.get(i).getFechaDeNacimiento(),
 													atletasConTiempo.get(i).getFecha_inscripcion(),
 													atletasConTiempo.get(i).getTiempo() };
-		
+
 											atletasConTiempo.get(i).setPosicion(String.valueOf(contadorPosM));
 											model.addRow(temp);
 											contadorPosM++;
 										} else {
 											Object[] temp = { atletasConTiempo.get(i).getDni(), contadorPosF,
-													partes[0]+ "-" + partes[1], atletasConTiempo.get(i).getDorsal(),
-													atletasConTiempo.get(i).getNombre(), atletasConTiempo.get(i).getApellidos(),
+													partes[0] + "-" + partes[1], atletasConTiempo.get(i).getDorsal(),
+													atletasConTiempo.get(i).getNombre(),
+													atletasConTiempo.get(i).getApellidos(),
 													atletasConTiempo.get(i).getFechaDeNacimiento(),
 													atletasConTiempo.get(i).getFecha_inscripcion(),
 													atletasConTiempo.get(i).getTiempo() };
-		
+
 											atletasConTiempo.get(i).setPosicion(String.valueOf(contadorPosF));
 											model.addRow(temp);
 											contadorPosF++;
 										}
 									}
 								}
-							
 
 								for (int i = 0; i < atletasSinTiempo.size(); i++) { // Y LUEGO LOS QUE NO
-									String[] partes = {"---", "", ""};
-									if(atletasSinTiempo.get(i).getCategoria()!=null) {
+									String[] partes = { "---", "", "" };
+									if (atletasSinTiempo.get(i).getCategoria() != null) {
 										partes = atletasSinTiempo.get(i).getCategoria().split("-");
 									}
-									if(categorias.get(l).getId().equals(atletasSinTiempo.get(i).getCategoria())) {
+									if (categorias.get(l).getId().equals(atletasSinTiempo.get(i).getCategoria())) {
 										if (atletasSinTiempo.get(i).getSexo().equals(m)) {
 											Object[] temp = { atletasSinTiempo.get(i).getDni(), contadorPosM,
-													partes[0]+ "-" + partes[1], atletasSinTiempo.get(i).getDorsal(),
-													atletasSinTiempo.get(i).getNombre(), atletasSinTiempo.get(i).getApellidos(),
+													partes[0] + "-" + partes[1], atletasSinTiempo.get(i).getDorsal(),
+													atletasSinTiempo.get(i).getNombre(),
+													atletasSinTiempo.get(i).getApellidos(),
 													atletasSinTiempo.get(i).getFechaDeNacimiento(),
 													atletasSinTiempo.get(i).getFecha_inscripcion(), "---" };
-		
+
 											atletasSinTiempo.get(i).setPosicion(String.valueOf(contadorPosF));
 											model.addRow(temp);
 											contadorPosM++;
 										} else {
 											Object[] temp = { atletasSinTiempo.get(i).getDni(), contadorPosF,
-													partes[0]+ "-" + partes[1], atletasSinTiempo.get(i).getDorsal(),
-													atletasSinTiempo.get(i).getNombre(), atletasSinTiempo.get(i).getApellidos(),
+													partes[0] + "-" + partes[1], atletasSinTiempo.get(i).getDorsal(),
+													atletasSinTiempo.get(i).getNombre(),
+													atletasSinTiempo.get(i).getApellidos(),
 													atletasSinTiempo.get(i).getFechaDeNacimiento(),
-													atletasSinTiempo.get(i).getFecha_inscripcion(),
-													"---" };
-		
+													atletasSinTiempo.get(i).getFecha_inscripcion(), "---" };
+
 											atletasSinTiempo.get(i).setPosicion(String.valueOf(contadorPosF));
 											model.addRow(temp);
 											contadorPosF++;
@@ -1042,7 +1045,8 @@ public class VentanaPrincipal {
 					}
 				}
 
-				// Lo que conseguimos asi es que aÃƒÂ±ada los corredores cuyo formato es correcto,
+				// Lo que conseguimos asi es que aÃƒÂ±ada los corredores cuyo formato es
+				// correcto,
 				// los que tengan un formato incorrecto han de ser revisados por el cliente
 
 				// Distintas comprobaciones con respecto a cada linea, los comprobadores se usan
@@ -1064,7 +1068,8 @@ public class VentanaPrincipal {
 			}
 
 			else {
-				// aqui no hace falta que aÃƒÂ±ada datos incorrectos, si la estructura del fichero
+				// aqui no hace falta que aÃƒÂ±ada datos incorrectos, si la estructura del
+				// fichero
 				// esta mal no debe aÃƒÂ±adir cada linea al fichero de salida
 				errorEstructura = true;
 			}
@@ -1203,6 +1208,7 @@ public class VentanaPrincipal {
 			pnlAtletasSegunCarrera.add(getLblCarreraSeleccionada());
 			pnlAtletasSegunCarrera.add(getComboBox());
 			pnlAtletasSegunCarrera.add(getBtnCancelar());
+			pnlAtletasSegunCarrera.add(getBtnPresentado());
 		}
 		return pnlAtletasSegunCarrera;
 	}
@@ -1238,12 +1244,11 @@ public class VentanaPrincipal {
 					for (String[] a : atletas) {
 						if (a[5] == null)
 							a[5] = "No asignado";
-						if(a[2]!=null) {
+						if (a[2] != null) {
 							String[] temp = a[2].split("-");
 							a[2] = temp[0];
-						}
-						else {
-							a[2]="";
+						} else {
+							a[2] = "";
 						}
 						modelAtletas.addRow(a);
 					}
@@ -1427,7 +1432,7 @@ public class VentanaPrincipal {
 		}
 		return comboClasificacion;
 	}
-	
+
 	private void arreglaComboBoxes(JComboBox param) throws SQLException {
 		ArrayList<String> carreras = DataBaseManager.getCarreras();
 		param.removeAllItems();
@@ -1435,14 +1440,12 @@ public class VentanaPrincipal {
 			param.addItem(carrera);
 		}
 	}
-	
-private JButton getBtnNuevaCarrera() 
-{
+
+	private JButton getBtnNuevaCarrera() {
 		if (btnNuevaCarrera == null) {
 			btnNuevaCarrera = new JButton("Crear nueva competici\u00F3n");
 			btnNuevaCarrera.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent arg0) 
-				{
+				public void actionPerformed(ActionEvent arg0) {
 					DialogCarrera carrera = new DialogCarrera();
 					carrera.setVisible(true);
 				}
@@ -1476,13 +1479,12 @@ private JButton getBtnNuevaCarrera()
 				if (!b.equals(pA)) {
 					((JButton) component).removeActionListener(b);
 				}
-				if(((JButton) component).getText().contains(" ")) {
+				if (((JButton) component).getText().contains(" ")) {
 					int numero = Integer.parseInt(((JButton) component).getText().substring(0, 1));
-				((JButton) component).setText(String.valueOf(numero));
+					((JButton) component).setText(String.valueOf(numero));
 				}
 			}
-			
-			
+
 		}
 		for (Carrera carrera : carreras) {
 			dia = carrera.getFechaCelebracion().getDayOfMonth();
@@ -1494,14 +1496,12 @@ private JButton getBtnNuevaCarrera()
 			while (((JButton) calendar.getDayChooser().getDayPanel().getComponent(i)).getText().equals("")) {
 				i--;
 			}
-			
-			
+
 			while (Integer
 					.parseInt(((JButton) calendar.getDayChooser().getDayPanel().getComponent(i)).getText()) != dia) {
-				
-				
+
 				i--;
-				
+
 			}
 
 			if (calendar.getYearChooser().getYear() == anno && calendar.getMonthChooser().getMonth() + 1 == mes) {
@@ -1609,9 +1609,9 @@ private JButton getBtnNuevaCarrera()
 							String estado = (String) tableAtletas.getValueAt(fila, 5);
 							String dni = (String) tableAtletas.getValueAt(fila, 0);
 							if (estado.equals("pagado")) {
-								JOptionPane.showMessageDialog(null,
-										"Al atleta con dni" + dni + " " + "se le tendra que devolver " + p * (pD / 100) + " euros");
-								
+								JOptionPane.showMessageDialog(null, "Al atleta con dni" + dni + " "
+										+ "se le tendra que devolver " + p * (pD / 100) + " euros");
+
 								try {
 									DataBaseManager.borrarAtleta(getComboBox().getSelectedItem().toString(), dni);
 								} catch (SQLException e1) {
@@ -1620,8 +1620,9 @@ private JButton getBtnNuevaCarrera()
 									e1.printStackTrace();
 								}
 							} else {
-								JOptionPane.showMessageDialog(null, "El atleta con dni" + dni + " "
-										+ "figura como inscrito.\n" + "Se le devolver\u00E1 el precio \u00EDntegro, " + p + " euros");
+								JOptionPane.showMessageDialog(null,
+										"El atleta con dni" + dni + " " + "figura como inscrito.\n"
+												+ "Se le devolver\u00E1 el precio \u00EDntegro, " + p + " euros");
 								try {
 									DataBaseManager.borrarAtleta(getComboBox().getSelectedItem().toString(), dni);
 								} catch (SQLException e1) {
@@ -1645,5 +1646,71 @@ private JButton getBtnNuevaCarrera()
 			btnCancelar.setBounds(599, 157, 171, 23);
 		}
 		return btnCancelar;
+	}
+
+	private JButton getBtnPresentado() {
+		if (btnPresentado == null) {
+			btnPresentado = new JButton("Presentar atleta");
+			btnPresentado.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					if (getComboBox().getSelectedItem() != null) {
+
+						if (tableAtletas.getSelectedRow() > 0) {
+							int fila = tableAtletas.getSelectedRow();
+							String estado = (String) tableAtletas.getValueAt(fila, 5);
+							String dni = (String) tableAtletas.getValueAt(fila, 0);
+							String fk_carrera = (String) getComboBox().getSelectedItem();
+							//String dorsal = (String) tableAtletas.getValueAt(fila, 6);
+
+							if (estado.equals("pagado")) {
+
+								if (validarCampo(fila,6) == false) {
+									JOptionPane.showMessageDialog(null, "Primero debe asignar un dorsal al corredor");
+								} else {
+
+									try {
+										DataBaseManager.cambiarEstadoAtleta(dni, fk_carrera, "presentado");
+										actualizarTablaAtletas();
+									} catch (SQLException e1) {
+										JOptionPane.showMessageDialog(null,
+												"Ha ocurrido un error al tratar de cambiar el estado del atleta");
+										e1.printStackTrace();
+									}
+								}
+
+							} else if (estado.equals("inscrito")) {
+								JOptionPane.showMessageDialog(null, "Primero debe pagar");
+							} else {
+								JOptionPane.showMessageDialog(null, "El atelta ya se ha presentado");
+							}
+
+						} else {
+							JOptionPane.showMessageDialog(null, "Primero debe seleccionar un atelta");
+						}
+
+					} else {
+						JOptionPane.showMessageDialog(null,
+								"Debe introducir una carrera antes de cancelar la inscripci\u00F3n");
+					}
+
+				}
+			});
+			btnPresentado.setBounds(600, 190, 145, 23);
+		}
+		// actualizarTablaAtletas();
+		return btnPresentado;
+	}
+	
+	private boolean validarCampo(int fila, int columna) {
+		String valor;
+		if (tableAtletas.getValueAt(fila, columna) == null) {
+
+			return false;
+		} else {
+			valor = (String) tableAtletas.getValueAt(fila, columna);
+			return true;
+
+		}
+
 	}
 }

@@ -610,5 +610,27 @@ public class DataBaseManager
 			}
 			else
 				return false;
-		}		
+		}	
+		
+		public static boolean cambiarEstadoAtleta(String dni, String fk_carrera, String estado) throws SQLException {
+			Connection con = getConnection();
+			
+			PreparedStatement ps = con.prepareStatement("update atleta Set estado = ? where dni = ? and fk_carrera = ?");
+			ps.setString(1, estado);
+			ps.setString(2, dni);
+			ps.setString(3, fk_carrera);
+			
+			
+			
+			if(ps.executeUpdate() == 1) {
+				ps.close();
+				con.close();
+				return true;
+			
+			} else {
+				ps.close();
+				con.close();
+				return false;
+			}
+		}
 }
