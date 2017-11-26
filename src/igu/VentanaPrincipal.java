@@ -142,6 +142,10 @@ public class VentanaPrincipal {
 	private JButton btnClubs;
 	private JButton btnCancelar;
 	private JButton btnPresentado;
+	private JPanel pnAtletasCancelados;
+	private JTable tableAtletasCacnelados;
+	private JButton btMostrarCancelados;
+	private JComboBox comboBox_1;
 
 	/**
 	 * Launch the application.
@@ -185,6 +189,7 @@ public class VentanaPrincipal {
 		frame.getContentPane().add(getPanelFicheros(), "panelFicheros");
 		frame.getContentPane().add(getPnlAtletasSegunCarrera(), "pnlAtletasSegunCarrera");
 		frame.getContentPane().add(getPnCalendario(), "pnCalendario");
+		frame.getContentPane().add(getPnAtletasCancelados(), "name_941368183664665");
 		pA = new ProcesaAccion();
 
 	}
@@ -1712,5 +1717,45 @@ public class VentanaPrincipal {
 
 		}
 
+	}
+	private JPanel getPnAtletasCancelados() {
+		if (pnAtletasCancelados == null) {
+			pnAtletasCancelados = new JPanel();
+			pnAtletasCancelados.setLayout(null);
+			pnAtletasCancelados.add(getTableAtletasCacnelados());
+			pnAtletasCancelados.add(getBtMostrarCancelados());
+			pnAtletasCancelados.add(getComboBox_1());
+		}
+		return pnAtletasCancelados;
+	}
+	private JTable getTableAtletasCacnelados() {
+		if (tableAtletasCacnelados == null) {
+			tableAtletasCacnelados = new JTable();
+			tableAtletasCacnelados.setBounds(34, 26, 560, 356);
+		}
+		return tableAtletasCacnelados;
+	}
+	private JButton getBtMostrarCancelados() {
+		if (btMostrarCancelados == null) {
+			btMostrarCancelados = new JButton("Mostrar");
+			btMostrarCancelados.setBounds(661, 53, 89, 23);
+		}
+		return btMostrarCancelados;
+	}
+	private JComboBox getComboBox_1() {
+		if (comboBox_1 == null) {
+			comboBox_1 = new JComboBox();
+			comboBox_1.setBounds(661, 98, 195, 20);
+			try {
+				ArrayList<String> carreras = DataBaseManager.getCarreras();
+				for (String carrera : carreras) {
+					comboBox_1.addItem(carrera);
+				}
+			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(null, SQLError + " recuperacionCarreras");
+				e.printStackTrace();
+			}
+		}
+		return comboBox_1;
 	}
 }

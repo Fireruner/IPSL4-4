@@ -633,4 +633,10 @@ public class DataBaseManager
 				return false;
 			}
 		}
+		
+//		public static int obtenerPrecioCarrera(String nombre) throws SQLException {
+//			Connection con = getConnection();
+//			
+//			PreparedStatement ps = con.prepareStatement("select precio from carrera where fk_carrera = ?");
+//		}
 }
