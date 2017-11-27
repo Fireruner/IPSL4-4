@@ -152,6 +152,8 @@ public class VentanaPrincipal {
 	private JComboBox comboBox_1;
 	private JLabel lblEscojaLaCarrera;
 	private JButton btnAtletasCancelados;
+	private JButton btnDevolver;
+	private JButton btnMenu_1;
 
 	/**
 	 * Launch the application.
@@ -1635,9 +1637,10 @@ public class VentanaPrincipal {
 
 									e2.printStackTrace();
 								}
+								String estadox = (String) tableAtletas.getValueAt(fila, 5);
 
 								AtletaCancelado atleta = new AtletaCancelado(dni, nombre,
-										getComboBox().getSelectedItem().toString(), fecha_inscripcion, "cancelado");
+										getComboBox().getSelectedItem().toString(), fecha_inscripcion, estadox);
 
 								try {
 									DataBaseManager.annadirAtletaCancelado(atleta);
@@ -1655,6 +1658,8 @@ public class VentanaPrincipal {
 							}
 
 							else {
+								
+								
 								JOptionPane.showMessageDialog(null,
 										"El atleta con dni" + dni + " " + "figura como inscrito.\n"
 												+ "Se le devolver\u00E1 el precio \u00EDntegro, " + p + " euros");
@@ -1665,8 +1670,10 @@ public class VentanaPrincipal {
 								} catch (SQLException e2) {
 									e2.printStackTrace();
 								}
+								String estadoxx = (String) tableAtletas.getValueAt(fila, 5);
+								
 								AtletaCancelado atleta1 = new AtletaCancelado(dni, nombre,
-										getComboBox().getSelectedItem().toString(), fecha_inscripcion, "cancelado");
+										getComboBox().getSelectedItem().toString(), fecha_inscripcion, estadoxx);
 								try {
 									DataBaseManager.annadirAtletaCancelado(atleta1);
 								} catch (SQLException e1) {
@@ -1724,17 +1731,15 @@ public class VentanaPrincipal {
 
 							} else if (estado.equals("inscrito")) {
 								JOptionPane.showMessageDialog(null, "Primero debe pagar");
-							} else if (estado.equals("cancelado")) {
+							} else if (estado.equals("cancelado") || estado.equals("devuelto")) {
 								JOptionPane.showMessageDialog(null,
 										"La inscripción de este atleta se ha cancelado. Ha de renovarla");
-							}
-
-							else {
-								JOptionPane.showMessageDialog(null, "El atelta ya se ha presentado");
+							} else {
+								JOptionPane.showMessageDialog(null, "El atleta ya se ha presentado");
 							}
 
 						} else {
-							JOptionPane.showMessageDialog(null, "Primero debe seleccionar un atelta");
+							JOptionPane.showMessageDialog(null, "Primero debe seleccionar un atleta");
 						}
 
 					} else {
@@ -1772,6 +1777,8 @@ public class VentanaPrincipal {
 			pnAtletasCancelados.add(getBtMostrarCancelados());
 			pnAtletasCancelados.add(getComboBox_1());
 			pnAtletasCancelados.add(getLblEscojaLaCarrera());
+			pnAtletasCancelados.add(getBtnDevolver());
+			pnAtletasCancelados.add(getBtnMenu_1());
 		}
 		return pnAtletasCancelados;
 	}
@@ -1830,15 +1837,17 @@ public class VentanaPrincipal {
 				int precio = DataBaseManager.getPrecioCarrera(getComboBox_1().getSelectedItem().toString());
 				int porcentaje = DataBaseManager.getPorcentajeDevolucion(getComboBox_1().getSelectedItem().toString());
 				int devolver;
-				if(porcentaje ==0) {
+				if (porcentaje == 0) {
 					devolver = precio;
-					
+
 				} else {
-				devolver = precio - precio
-						/ DataBaseManager.getPorcentajeDevolucion(getComboBox_1().getSelectedItem().toString()) * 100;
+					devolver = precio - precio
+							/ DataBaseManager.getPorcentajeDevolucion(getComboBox_1().getSelectedItem().toString())
+							* 100;
 				}
 				removeModelContent(modelAtletasCancelados);
-				String[] cabeceras = { "DNI", "Nombre", "Fecha de Inscripci\u00F3n", "Precio carrera", "Devolver", "Estado" };
+				String[] cabeceras = { "DNI", "Nombre", "Fecha de Inscripci\u00F3n", "Precio carrera", "Devolver",
+						"Estado" };
 				modelAtletasCancelados.addRow(cabeceras);
 				if (a.size() >= 1) {
 					for (AtletaCancelado b : a) {
@@ -1889,5 +1898,41 @@ public class VentanaPrincipal {
 			});
 		}
 		return btnAtletasCancelados;
+	}
+
+	private JButton getBtnDevolver() {
+		if (btnDevolver == null) {
+			btnDevolver = new JButton("Devolver");
+			btnDevolver.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					if (getComboBox_1().getSelectedItem() != null) {
+
+						if (tableAtletasCancelados.getSelectedRow() > 0) {
+							int fila = tableAtletasCancelados.getSelectedRow();
+							String dni = (String) tableAtletasCancelados.getValueAt(fila, 0);
+							
+							try {
+								
+								JOptionPane.showMessageDialog(null, "Se le ha devuelto al atleta con dni " + dni + " " + tableAtletasCancelados.getValueAt(fila,4) + "€");
+								DataBaseManager.cambiarEstadoAtleta(dni, getComboBox_1().getSelectedItem().toString(), "devuelto");
+								actualizarTablaAtletasCancelados();
+							} catch (SQLException e1) {
+								e1.printStackTrace();
+							}
+						}
+					}
+				}
+			});
+			btnDevolver.setBounds(661, 183, 89, 23);
+		}
+		return btnDevolver;
+	}
+
+	private JButton getBtnMenu_1() {
+		if (btnMenu_1 == null) {
+			btnMenu_1 = new JButton("Menu");
+			btnMenu_1.setBounds(661, 225, 89, 23);
+		}
+		return btnMenu_1;
 	}
 }
