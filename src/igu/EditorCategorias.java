@@ -405,7 +405,8 @@ public class EditorCategorias extends JFrame {
 			btnEliminarMasculino = new JButton("Eliminar Masculino");
 			btnEliminarMasculino.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					model.removeRow(table.getSelectedRow());
+					if(table.getSelectedRow()!=-1)
+						model.removeRow(table.getSelectedRow());
 				}
 			});
 		}
@@ -416,7 +417,8 @@ public class EditorCategorias extends JFrame {
 			btnEliminarFemenino = new JButton("Eliminar Femenino");
 			btnEliminarFemenino.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					model_1.removeRow(table_1.getSelectedRow());
+					if(table_1.getSelectedRow()!=-1)
+						model_1.removeRow(table_1.getSelectedRow());
 				}
 			});
 		}
