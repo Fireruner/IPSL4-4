@@ -55,5 +55,15 @@ Create table Atleta
 	constraint fk_club foreign key (fk_club) references club (nombreClub),
 	constraint fk_categoria foreign key (fk_categoria) references categoria (ID_CAT),
 	constraint ck_sexo check (sexo in('masculino', 'femenino')),
-	constraint ck_estado check (estado in('inscrito', 'pagado', 'presentado'))
+	constraint ck_estado check (estado in('inscrito', 'pagado', 'cancelado', 'presentado'))
+);
+
+Create table AtletaCancelado
+(
+	DNI varchar(9) not null,
+	Nombre varchar(50) not null,
+	fk_carrera varchar(20) not null,
+	fecha_inscripcion date not null,
+	constraint pk_atleta1 primary key (DNI, fk_carrera, fecha_inscripcion),
+	constraint fk_carrera1 foreign key (fk_carrera) references carrera (nombre)
 );

@@ -14,6 +14,7 @@ import javax.swing.SwingConstants;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import src.Atleta;
+import src.AtletaCancelado;
 import src.Carrera;
 import src.Categoria;
 import src.DataBaseManager;
@@ -21,6 +22,8 @@ import src.GestorComprobaciones;
 import src.MyTableModel;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.event.ActionEvent;
@@ -1613,23 +1616,44 @@ public class VentanaPrincipal {
 							int fila = tableAtletas.getSelectedRow();
 							String estado = (String) tableAtletas.getValueAt(fila, 5);
 							String dni = (String) tableAtletas.getValueAt(fila, 0);
+							String nombre = (String) tableAtletas.getValueAt(fila, 1);
+							DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");							
+							LocalDate fecha_inscripcion = LocalDate.parse(tableAtletas.getValueAt(fila, 4).toString(),dtf) ;
 							if (estado.equals("pagado")) {
 								JOptionPane.showMessageDialog(null, "Al atleta con dni" + dni + " "
 										+ "se le tendra que devolver " + p * (pD / 100) + " euros");
+								try {
+									DataBaseManager.cambiarEstadoAtleta(dni, getComboBox().getSelectedItem().toString(), "cancelado");
+								} catch (SQLException e2) {
+									
+									e2.printStackTrace();
+								}
+								
+								AtletaCancelado atleta = new AtletaCancelado(dni, nombre, getComboBox().getSelectedItem().toString(), fecha_inscripcion);
 
 								try {
-									DataBaseManager.borrarAtleta(getComboBox().getSelectedItem().toString(), dni);
+									DataBaseManager.annadirAtletaCancelado(atleta);
 								} catch (SQLException e1) {
 									JOptionPane.showMessageDialog(null,
 											"Ha habido algun problema mientras se borraba al atleta de la base de datos");
 									e1.printStackTrace();
 								}
-							} else {
+							} else if (estado.equals("presentado")) {
+								JOptionPane.showMessageDialog(null, "El atleta ya ha sido presentado");
+							}
+
+							else {
 								JOptionPane.showMessageDialog(null,
 										"El atleta con dni" + dni + " " + "figura como inscrito.\n"
 												+ "Se le devolver\u00E1 el precio \u00EDntegro, " + p + " euros");
 								try {
-									DataBaseManager.borrarAtleta(getComboBox().getSelectedItem().toString(), dni);
+									DataBaseManager.cambiarEstadoAtleta(dni, getComboBox().getSelectedItem().toString(), "cancelado");
+								} catch (SQLException e2) {
+									e2.printStackTrace();
+								}
+								AtletaCancelado atleta1 = new AtletaCancelado(dni, nombre, getComboBox().getSelectedItem().toString(), fecha_inscripcion);
+								try {
+									DataBaseManager.annadirAtletaCancelado(atleta1);
 								} catch (SQLException e1) {
 									JOptionPane.showMessageDialog(null,
 											"Ha habido alg\u00FAn problema mientras se borraba al atleta de la base de datos");
@@ -1665,11 +1689,11 @@ public class VentanaPrincipal {
 							String estado = (String) tableAtletas.getValueAt(fila, 5);
 							String dni = (String) tableAtletas.getValueAt(fila, 0);
 							String fk_carrera = (String) getComboBox().getSelectedItem();
-							//String dorsal = (String) tableAtletas.getValueAt(fila, 6);
+							// String dorsal = (String) tableAtletas.getValueAt(fila, 6);
 
 							if (estado.equals("pagado")) {
 
-								if (validarCampo(fila,6) == false) {
+								if (validarCampo(fila, 6) == false) {
 									JOptionPane.showMessageDialog(null, "Primero debe asignar un dorsal al corredor");
 								} else {
 
@@ -1705,7 +1729,7 @@ public class VentanaPrincipal {
 		// actualizarTablaAtletas();
 		return btnPresentado;
 	}
-	
+
 	private boolean validarCampo(int fila, int columna) {
 		String valor;
 		if (tableAtletas.getValueAt(fila, columna) == null) {
@@ -1718,9 +1742,11 @@ public class VentanaPrincipal {
 		}
 
 	}
+
 	private JPanel getPnAtletasCancelados() {
 		if (pnAtletasCancelados == null) {
 			pnAtletasCancelados = new JPanel();
+			pnAtletasCancelados.setBackground(Color.GRAY);
 			pnAtletasCancelados.setLayout(null);
 			pnAtletasCancelados.add(getTableAtletasCacnelados());
 			pnAtletasCancelados.add(getBtMostrarCancelados());
@@ -1728,6 +1754,7 @@ public class VentanaPrincipal {
 		}
 		return pnAtletasCancelados;
 	}
+
 	private JTable getTableAtletasCacnelados() {
 		if (tableAtletasCacnelados == null) {
 			tableAtletasCacnelados = new JTable();
@@ -1735,6 +1762,7 @@ public class VentanaPrincipal {
 		}
 		return tableAtletasCacnelados;
 	}
+
 	private JButton getBtMostrarCancelados() {
 		if (btMostrarCancelados == null) {
 			btMostrarCancelados = new JButton("Mostrar");
@@ -1742,6 +1770,7 @@ public class VentanaPrincipal {
 		}
 		return btMostrarCancelados;
 	}
+
 	private JComboBox getComboBox_1() {
 		if (comboBox_1 == null) {
 			comboBox_1 = new JComboBox();
@@ -1757,5 +1786,9 @@ public class VentanaPrincipal {
 			}
 		}
 		return comboBox_1;
+	}
+
+	private void actualizarTablaAtletasCancelados() {
+
 	}
 }

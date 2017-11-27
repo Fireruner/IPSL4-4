@@ -5,3 +5,5 @@ drop table club
 drop table categoria
 
 drop table carrera
+
+drop table atletaCancelado

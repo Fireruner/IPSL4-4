@@ -634,9 +634,27 @@ public class DataBaseManager
 			}
 		}
 		
-//		public static int obtenerPrecioCarrera(String nombre) throws SQLException {
-//			Connection con = getConnection();
-//			
-//			PreparedStatement ps = con.prepareStatement("select precio from carrera where fk_carrera = ?");
-//		}
+		public static boolean annadirAtletaCancelado(AtletaCancelado atleta) throws SQLException {
+			Connection con = getConnection();
+			String dni = atleta.getDni();
+			String nombre = atleta.getNombre();
+			String fk_carrera = atleta.getFk_carrera();
+			java.sql.Date fecha_inscripcion = java.sql.Date.valueOf(atleta.getFecha_inscripcion());
+			
+			PreparedStatement ps = con.prepareStatement("insert into AtletaCancelado values(?,?,?,?)");
+			
+			ps.setString(1, dni);
+			ps.setString(2, nombre);
+			ps.setString(3, fk_carrera);
+			ps.setDate(4, fecha_inscripcion);
+			
+			if(ps.executeUpdate() == 1) {
+				return true;
+			} else
+				return false;
+			
+			
+			
+		}
+		
 }
