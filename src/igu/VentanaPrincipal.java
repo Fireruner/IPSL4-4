@@ -126,6 +126,7 @@ public class VentanaPrincipal {
 	private JLabel lblListarAtletasSegn;
 	private JButton btnAtletas;
 	private MyTableModel modelAtletas;
+	private MyTableModel modelAtletasCancelados;
 
 	private JButton btnAsignarDorsales;
 	private JButton btnAsignarDorsal;
@@ -146,9 +147,11 @@ public class VentanaPrincipal {
 	private JButton btnCancelar;
 	private JButton btnPresentado;
 	private JPanel pnAtletasCancelados;
-	private JTable tableAtletasCacnelados;
+	private JTable tableAtletasCancelados;
 	private JButton btMostrarCancelados;
 	private JComboBox comboBox_1;
+	private JLabel lblEscojaLaCarrera;
+	private JButton btnAtletasCancelados;
 
 	/**
 	 * Launch the application.
@@ -192,7 +195,7 @@ public class VentanaPrincipal {
 		frame.getContentPane().add(getPanelFicheros(), "panelFicheros");
 		frame.getContentPane().add(getPnlAtletasSegunCarrera(), "pnlAtletasSegunCarrera");
 		frame.getContentPane().add(getPnCalendario(), "pnCalendario");
-		frame.getContentPane().add(getPnAtletasCancelados(), "name_941368183664665");
+		frame.getContentPane().add(getPnAtletasCancelados(), "pnAtletasCancelados");
 		pA = new ProcesaAccion();
 
 	}
@@ -210,6 +213,7 @@ public class VentanaPrincipal {
 			pnControles.add(getBtnAsignarDorsales());
 			pnControles.add(getBtnClubs());
 			pnControles.add(getBtnRegistrarCorredor());
+			pnControles.add(getBtnAtletasCancelados());
 			pnControles.add(getBtnRegistrarTiempos());
 		}
 		return pnControles;
@@ -1633,7 +1637,7 @@ public class VentanaPrincipal {
 								}
 
 								AtletaCancelado atleta = new AtletaCancelado(dni, nombre,
-										getComboBox().getSelectedItem().toString(), fecha_inscripcion);
+										getComboBox().getSelectedItem().toString(), fecha_inscripcion, "cancelado");
 
 								try {
 									DataBaseManager.annadirAtletaCancelado(atleta);
@@ -1644,9 +1648,10 @@ public class VentanaPrincipal {
 								}
 							} else if (estado.equals("presentado")) {
 								JOptionPane.showMessageDialog(null, "El atleta ya ha sido presentado");
-							}
-							else if(estado.equals("cancelado")) {
+							} else if (estado.equals("cancelado")) {
 								JOptionPane.showMessageDialog(null, "El atleta ya ha sido cancelado");
+							} else if (estado.equals("devuelto")) {
+								JOptionPane.showMessageDialog(null, "El atleta tendrá que volver a registrarse");
 							}
 
 							else {
@@ -1661,7 +1666,7 @@ public class VentanaPrincipal {
 									e2.printStackTrace();
 								}
 								AtletaCancelado atleta1 = new AtletaCancelado(dni, nombre,
-										getComboBox().getSelectedItem().toString(), fecha_inscripcion);
+										getComboBox().getSelectedItem().toString(), fecha_inscripcion, "cancelado");
 								try {
 									DataBaseManager.annadirAtletaCancelado(atleta1);
 								} catch (SQLException e1) {
@@ -1763,25 +1768,38 @@ public class VentanaPrincipal {
 			pnAtletasCancelados = new JPanel();
 			pnAtletasCancelados.setBackground(Color.GRAY);
 			pnAtletasCancelados.setLayout(null);
-			pnAtletasCancelados.add(getTableAtletasCacnelados());
+			pnAtletasCancelados.add(getTableAtletasCancelados());
 			pnAtletasCancelados.add(getBtMostrarCancelados());
 			pnAtletasCancelados.add(getComboBox_1());
+			pnAtletasCancelados.add(getLblEscojaLaCarrera());
 		}
 		return pnAtletasCancelados;
 	}
 
-	private JTable getTableAtletasCacnelados() {
-		if (tableAtletasCacnelados == null) {
-			tableAtletasCacnelados = new JTable();
-			tableAtletasCacnelados.setBounds(34, 26, 560, 356);
+	private JTable getTableAtletasCancelados() {
+		if (tableAtletasCancelados == null) {
+			modelAtletasCancelados = new MyTableModel();
+			modelAtletasCancelados.addColumn("DNI");
+			modelAtletasCancelados.addColumn("Nombre");
+			modelAtletasCancelados.addColumn("Fecha de inscripci\\u00F3n");
+			modelAtletasCancelados.addColumn("Precio carrera");
+			modelAtletasCancelados.addColumn("Devolver");
+			modelAtletasCancelados.addColumn("Estado");
+			tableAtletasCancelados = new JTable(modelAtletasCancelados);
+			tableAtletasCancelados.setBounds(34, 26, 560, 356);
 		}
-		return tableAtletasCacnelados;
+		return tableAtletasCancelados;
 	}
 
 	private JButton getBtMostrarCancelados() {
 		if (btMostrarCancelados == null) {
 			btMostrarCancelados = new JButton("Mostrar");
-			btMostrarCancelados.setBounds(661, 53, 89, 23);
+			btMostrarCancelados.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					actualizarTablaAtletasCancelados();
+				}
+			});
+			btMostrarCancelados.setBounds(661, 139, 89, 23);
 		}
 		return btMostrarCancelados;
 	}
@@ -1804,6 +1822,72 @@ public class VentanaPrincipal {
 	}
 
 	private void actualizarTablaAtletasCancelados() {
+		ArrayList<AtletaCancelado> a;
+		try {
+			if (DataBaseManager.existeCarrera((String) getComboBox_1().getSelectedItem())) {
+				carreraSeleccionada = (String) getComboBox_1().getSelectedItem();
+				a = DataBaseManager.listarAtletasCancelados(carreraSeleccionada);
+				int precio = DataBaseManager.getPrecioCarrera(getComboBox_1().getSelectedItem().toString());
+				int porcentaje = DataBaseManager.getPorcentajeDevolucion(getComboBox_1().getSelectedItem().toString());
+				int devolver;
+				if(porcentaje ==0) {
+					devolver = precio;
+					
+				} else {
+				devolver = precio - precio
+						/ DataBaseManager.getPorcentajeDevolucion(getComboBox_1().getSelectedItem().toString()) * 100;
+				}
+				removeModelContent(modelAtletasCancelados);
+				String[] cabeceras = { "DNI", "Nombre", "Fecha de Inscripci\u00F3n", "Precio carrera", "Devolver", "Estado" };
+				modelAtletasCancelados.addRow(cabeceras);
+				if (a.size() >= 1) {
+					for (AtletaCancelado b : a) {
+						String[] c = new String[6];
+						c[0] = b.getDni();
+						c[1] = b.getNombre();
+						c[2] = String.valueOf(b.getFecha_inscripcion());
+						c[3] = String.valueOf(precio);
+						c[4] = String.valueOf(devolver);
+						c[5] = b.getEstado();
+						modelAtletasCancelados.addRow(c);
+					}
+				}
+				tableAtletasCancelados.setModel(modelAtletasCancelados);
+			} else {
+				JOptionPane.showMessageDialog(null, "La carrera especificada no se encuentra en la base de datos.");
+			}
 
+		} catch (SQLException e) {
+
+			JOptionPane.showMessageDialog(null, SQLError + "lista de atletas cancelados");
+			e.printStackTrace();
+		}
+
+	}
+
+	private JLabel getLblEscojaLaCarrera() {
+		if (lblEscojaLaCarrera == null) {
+			lblEscojaLaCarrera = new JLabel("Escoja la carrera :");
+			lblEscojaLaCarrera.setBounds(661, 54, 152, 14);
+		}
+		return lblEscojaLaCarrera;
+	}
+
+	private JButton getBtnAtletasCancelados() {
+		if (btnAtletasCancelados == null) {
+			btnAtletasCancelados = new JButton("Atletas Cancelados");
+			btnAtletasCancelados.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					try {
+						arreglaComboBoxes(getComboBox_1());
+					} catch (SQLException a) {
+						a.printStackTrace();
+					}
+					CardLayout card = (CardLayout) frame.getContentPane().getLayout();
+					card.show(frame.getContentPane(), "pnAtletasCancelados");
+				}
+			});
+		}
+		return btnAtletasCancelados;
 	}
 }

@@ -4,16 +4,26 @@ import java.time.LocalDate;
 
 public class AtletaCancelado {
 	
-	String dni,nombre,fk_carrera;
+	String dni,nombre,fk_carrera, estado;
 	LocalDate fecha_inscripcion;
 	
-	public AtletaCancelado(String dni, String nombre, String fk_carrera, LocalDate fecha_inscripcion) {
+	
+	public AtletaCancelado(String dni, String nombre, String fk_carrera, LocalDate fecha_inscripcion, String estado) {
 		this.dni = dni;
 		this.nombre = nombre;
 		this.fk_carrera = fk_carrera;
 		this.fecha_inscripcion = fecha_inscripcion;
+		this.estado = estado;
 	}
 	
+	public String getEstado() {
+		return estado;
+	}
+
+	private void setEstado(String estado) {
+		this.estado = estado;
+	}
+
 	public String getDni() {
 		return dni;
 	}

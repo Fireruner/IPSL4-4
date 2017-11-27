@@ -639,14 +639,16 @@ public class DataBaseManager
 			String dni = atleta.getDni();
 			String nombre = atleta.getNombre();
 			String fk_carrera = atleta.getFk_carrera();
+			String estado = atleta.getEstado();
 			java.sql.Date fecha_inscripcion = java.sql.Date.valueOf(atleta.getFecha_inscripcion());
 			
-			PreparedStatement ps = con.prepareStatement("insert into AtletaCancelado values(?,?,?,?)");
+			PreparedStatement ps = con.prepareStatement("insert into AtletaCancelado values(?,?,?,?,?)");
 			
 			ps.setString(1, dni);
 			ps.setString(2, nombre);
 			ps.setString(3, fk_carrera);
 			ps.setDate(4, fecha_inscripcion);
+			ps.setString(5, estado);
 			
 			if(ps.executeUpdate() == 1) {
 				return true;
@@ -654,6 +656,25 @@ public class DataBaseManager
 				return false;
 			
 			
+			
+		}
+		
+		public static ArrayList<AtletaCancelado> listarAtletasCancelados(String fk_carrera) throws SQLException{
+			ArrayList<AtletaCancelado> a = new ArrayList<AtletaCancelado>();
+			Connection con = getConnection();
+			PreparedStatement ps = con.prepareStatement("select dni,nombre,fecha_inscripcion, estado from AtletaCancelado where fk_carrera = ?");
+			ps.setString(1, fk_carrera);
+			
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				String dni = rs.getString("dni");
+				String nombre = rs.getString("nombre");
+				String fecha_inscripcion = rs.getString("fecha_inscripcion");
+				String estado = rs.getString("estado");
+				a.add(new AtletaCancelado(dni,nombre,fk_carrera,LocalDate.parse(fecha_inscripcion),estado));
+				
+			}
+			return a;
 			
 		}
 		
