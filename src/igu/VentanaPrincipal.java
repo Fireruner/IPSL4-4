@@ -1932,6 +1932,14 @@ public class VentanaPrincipal {
 	private JButton getBtnMenu_1() {
 		if (btnMenu_1 == null) {
 			btnMenu_1 = new JButton("Menu");
+			btnMenu_1.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					removeModelContent(modelAtletasCancelados);
+					CardLayout card = (CardLayout) frame.getContentPane().getLayout();
+					card.show(frame.getContentPane(), "panelTitulo");
+					
+				}
+			});
 			btnMenu_1.setBounds(661, 225, 89, 23);
 		}
 		return btnMenu_1;
