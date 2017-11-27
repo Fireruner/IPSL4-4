@@ -1617,19 +1617,23 @@ public class VentanaPrincipal {
 							String estado = (String) tableAtletas.getValueAt(fila, 5);
 							String dni = (String) tableAtletas.getValueAt(fila, 0);
 							String nombre = (String) tableAtletas.getValueAt(fila, 1);
-							DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");							
-							LocalDate fecha_inscripcion = LocalDate.parse(tableAtletas.getValueAt(fila, 4).toString(),dtf) ;
+							DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+							LocalDate fecha_inscripcion = LocalDate.parse(tableAtletas.getValueAt(fila, 4).toString(),
+									dtf);
 							if (estado.equals("pagado")) {
 								JOptionPane.showMessageDialog(null, "Al atleta con dni" + dni + " "
 										+ "se le tendra que devolver " + p * (pD / 100) + " euros");
 								try {
-									DataBaseManager.cambiarEstadoAtleta(dni, getComboBox().getSelectedItem().toString(), "cancelado");
+									DataBaseManager.cambiarEstadoAtleta(dni, getComboBox().getSelectedItem().toString(),
+											"cancelado");
+									actualizarTablaAtletas();
 								} catch (SQLException e2) {
-									
+
 									e2.printStackTrace();
 								}
-								
-								AtletaCancelado atleta = new AtletaCancelado(dni, nombre, getComboBox().getSelectedItem().toString(), fecha_inscripcion);
+
+								AtletaCancelado atleta = new AtletaCancelado(dni, nombre,
+										getComboBox().getSelectedItem().toString(), fecha_inscripcion);
 
 								try {
 									DataBaseManager.annadirAtletaCancelado(atleta);
@@ -1641,17 +1645,23 @@ public class VentanaPrincipal {
 							} else if (estado.equals("presentado")) {
 								JOptionPane.showMessageDialog(null, "El atleta ya ha sido presentado");
 							}
+							else if(estado.equals("cancelado")) {
+								JOptionPane.showMessageDialog(null, "El atleta ya ha sido cancelado");
+							}
 
 							else {
 								JOptionPane.showMessageDialog(null,
 										"El atleta con dni" + dni + " " + "figura como inscrito.\n"
 												+ "Se le devolver\u00E1 el precio \u00EDntegro, " + p + " euros");
 								try {
-									DataBaseManager.cambiarEstadoAtleta(dni, getComboBox().getSelectedItem().toString(), "cancelado");
+									DataBaseManager.cambiarEstadoAtleta(dni, getComboBox().getSelectedItem().toString(),
+											"cancelado");
+									actualizarTablaAtletas();
 								} catch (SQLException e2) {
 									e2.printStackTrace();
 								}
-								AtletaCancelado atleta1 = new AtletaCancelado(dni, nombre, getComboBox().getSelectedItem().toString(), fecha_inscripcion);
+								AtletaCancelado atleta1 = new AtletaCancelado(dni, nombre,
+										getComboBox().getSelectedItem().toString(), fecha_inscripcion);
 								try {
 									DataBaseManager.annadirAtletaCancelado(atleta1);
 								} catch (SQLException e1) {
@@ -1709,7 +1719,12 @@ public class VentanaPrincipal {
 
 							} else if (estado.equals("inscrito")) {
 								JOptionPane.showMessageDialog(null, "Primero debe pagar");
-							} else {
+							} else if (estado.equals("cancelado")) {
+								JOptionPane.showMessageDialog(null,
+										"La inscripción de este atleta se ha cancelado. Ha de renovarla");
+							}
+
+							else {
 								JOptionPane.showMessageDialog(null, "El atelta ya se ha presentado");
 							}
 
