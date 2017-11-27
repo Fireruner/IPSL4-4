@@ -1915,6 +1915,7 @@ public class VentanaPrincipal {
 								
 								JOptionPane.showMessageDialog(null, "Se le ha devuelto al atleta con dni " + dni + " " + tableAtletasCancelados.getValueAt(fila,4) + "€");
 								DataBaseManager.cambiarEstadoAtleta(dni, getComboBox_1().getSelectedItem().toString(), "devuelto");
+								DataBaseManager.cambiarEstadoAtletaCancelado(dni, getComboBox_1().getSelectedItem().toString(), (String)tableAtletasCancelados.getValueAt(fila, 2), "devuelto");
 								actualizarTablaAtletasCancelados();
 							} catch (SQLException e1) {
 								e1.printStackTrace();

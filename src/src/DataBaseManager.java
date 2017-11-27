@@ -677,5 +677,28 @@ public class DataBaseManager
 			return a;
 			
 		}
+		public static boolean cambiarEstadoAtletaCancelado(String dni, String fk_carrera,String fecha_inscripcion, String estado) throws SQLException {
+			Connection con = getConnection();
+			
+			PreparedStatement ps = con.prepareStatement("update atletaCancelado Set estado = ? where dni = ? and fk_carrera = ? and fecha_inscripcion = ?");
+			ps.setString(1, estado);
+			ps.setString(2, dni);
+			ps.setString(3, fk_carrera);
+			java.sql.Date fecha_inscripcion1 = java.sql.Date.valueOf(fecha_inscripcion);
+			ps.setDate(4, fecha_inscripcion1);
+			
+			
+			
+			if(ps.executeUpdate() == 1) {
+				ps.close();
+				con.close();
+				return true;
+			
+			} else {
+				ps.close();
+				con.close();
+				return false;
+			}
+		} 
 		
 }
