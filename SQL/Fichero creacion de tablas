@@ -65,6 +65,7 @@ Create table AtletaCancelado
 	fk_carrera varchar(20) not null,
 	fecha_inscripcion date not null,
 	estado varchar(20) not null,	
+	devolucion float,
 	constraint pk_atleta1 primary key (DNI, fk_carrera, fecha_inscripcion),
 	constraint fk_carrera1 foreign key (fk_carrera) references carrera (nombre),
 	constraint ck_estado2 check (estado in('inscrito', 'pagado', 'cancelado', 'presentado', 'devuelto'))

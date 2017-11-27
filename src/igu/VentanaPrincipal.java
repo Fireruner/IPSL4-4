@@ -523,7 +523,7 @@ public class VentanaPrincipal {
 						}
 						if (finalizada) {
 							for (int i = 0; i < participantes.size(); i++) {
-								if (participantes.get(i)[6].equals(carrera)) {
+								if (participantes.get(i)[6].equals(carrera) && participantes.get(i)[8].equals("presentado")) {
 									if (participantes.get(i)[9] != null) {
 										atletasConTiempo
 												.add(new Atleta(participantes.get(i)[0], participantes.get(i)[1],
@@ -1029,7 +1029,7 @@ public class VentanaPrincipal {
 			if (partes.length == 2) {
 				if (partes[0].equals("---")) {
 					if (gc.comprobadorPresencia(partes[1], nombreCarrera)
-							&& "pagado".equals(DataBaseManager.comprobarAtletaPagado(partes[1], nombreCarrera))) { // sin
+							&& "presentado".equals(DataBaseManager.comprobarAtletaPresentado(partes[1], nombreCarrera))) { // sin
 																													// tiempo?
 						DataBaseManager.anadirTiempoAtleta(nombreCarrera, partes[0], partes[1]); // buscamos su dni en
 																									// la bbdd y le
@@ -1039,7 +1039,7 @@ public class VentanaPrincipal {
 				} else {
 					// con tiempo
 					if (gc.comprobadorTiempos(partes[0]) && gc.comprobadorPresencia(partes[1], nombreCarrera)
-							&& "pagado".equals(DataBaseManager.comprobarAtletaPagado(partes[1], nombreCarrera))) { // si
+							&& "presentado".equals(DataBaseManager.comprobarAtletaPresentado(partes[1], nombreCarrera))) { // si
 																													// el
 																													// tiempo
 																													// es
@@ -1059,7 +1059,7 @@ public class VentanaPrincipal {
 					}
 				}
 
-				// Lo que conseguimos asi es que aÃƒÂ±ada los corredores cuyo formato es
+				// Lo que conseguimos asi es que annada los corredores cuyo formato es
 				// correcto,
 				// los que tengan un formato incorrecto han de ser revisados por el cliente
 
@@ -1070,7 +1070,7 @@ public class VentanaPrincipal {
 					comprobadorDNI = true;
 					errorPresencia = true;
 				} else {
-					if (!"pagado".equals(DataBaseManager.comprobarAtletaPagado(partes[1], nombreCarrera))) {
+					if (!"presentado".equals(DataBaseManager.comprobarAtletaPresentado(partes[1], nombreCarrera))) {
 						comprobadorPago = true;
 						errorPago = true;
 					}
@@ -1082,9 +1082,9 @@ public class VentanaPrincipal {
 			}
 
 			else {
-				// aqui no hace falta que aÃƒÂ±ada datos incorrectos, si la estructura del
+				// aqui no hace falta que annada datos incorrectos, si la estructura del
 				// fichero
-				// esta mal no debe aÃƒÂ±adir cada linea al fichero de salida
+				// esta mal no debe annadir cada linea al fichero de salida
 				errorEstructura = true;
 			}
 
@@ -1094,19 +1094,19 @@ public class VentanaPrincipal {
 			} else if (!comprobadorTiempo && comprobadorDNI && !comprobadorPago) {
 				datosIncorrectos.add(cadena + "   El corredor no esta en la base de datos");
 			} else if (!comprobadorTiempo && !comprobadorDNI && comprobadorPago) {
-				datosIncorrectos.add(cadena + "   El corredor no ha pagado para competir en esta carrera");
+				datosIncorrectos.add(cadena + "   El corredor no se ha presentado para competir en esta carrera");
 			} else if (comprobadorTiempo && comprobadorDNI && !comprobadorPago) {
 				datosIncorrectos.add(
 						cadena + "   El corredor no esta en la base de datos y el formato de tiempo es incorrecto");
 			} else if (comprobadorTiempo && !comprobadorDNI && comprobadorPago) {
 				datosIncorrectos.add(cadena
-						+ "   El formato de tiempo es incorrecto y el corredor no ha pagado para competir en esta carrera");
+						+ "   El formato de tiempo es incorrecto y el corredor no se ha presentado para competir en esta carrera");
 			} else if (!comprobadorTiempo && comprobadorDNI && comprobadorPago) {
 				datosIncorrectos.add(cadena
-						+ "   El corredor no esta en la base de datos y el corredor no ha pagado para competir en esta carrera");
+						+ "   El corredor no esta en la base de datos y el corredor no se ha presentado para competir en esta carrera");
 			} else if (comprobadorTiempo && comprobadorDNI && comprobadorPago) {
 				datosIncorrectos.add(cadena
-						+ "   El formato de tiempo es incorrecto, el corredor no esta en la base de datos y no ha pagado para competir en esta carrera");
+						+ "   El formato de tiempo es incorrecto, el corredor no esta en la base de datos y no se ha presentado para competir en esta carrera");
 			}
 		}
 
@@ -1131,7 +1131,7 @@ public class VentanaPrincipal {
 			}
 			if (errorPago) {
 				JOptionPane.showMessageDialog(null,
-						"Alguno de los corredores no ha sido a\u00F1adido debido a que no ha pagado la carrera.");
+						"Alguno de los corredores no ha sido a\u00F1adido debido a que no se ha presentado la carrera.");
 				sinFallosEstructura = false;
 			}
 		}
@@ -1603,16 +1603,20 @@ public class VentanaPrincipal {
 			btnCancelar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 
-					int pD = 0;
-					int p = 0;
+					double pD = 0.0;
+					double p = 0.0;
+					double devo = 0.0;
 					if (getComboBox().getSelectedItem() != null) {
 
 						try {
-							int porcentajeDevolucion = DataBaseManager
+							double porcentajeDevolucion = DataBaseManager
 									.getPorcentajeDevolucion(getComboBox().getSelectedItem().toString());
-							int precio = DataBaseManager.getPrecioCarrera(getComboBox().getSelectedItem().toString());
+							double precio = DataBaseManager.getPrecioCarrera(getComboBox().getSelectedItem().toString());
+							double operacion = precio-((precio/100)*(100-porcentajeDevolucion));
+							System.out.println(operacion);
 							pD = porcentajeDevolucion;
 							p = precio;
+							devo = operacion;
 						} catch (SQLException e1) {
 							JOptionPane.showMessageDialog(null, "Ha habido un problema con la base de datos");
 							e1.printStackTrace();
@@ -1627,20 +1631,24 @@ public class VentanaPrincipal {
 							LocalDate fecha_inscripcion = LocalDate.parse(tableAtletas.getValueAt(fila, 4).toString(),
 									dtf);
 							if (estado.equals("pagado")) {
+								
 								JOptionPane.showMessageDialog(null, "Al atleta con dni" + dni + " "
-										+ "se le tendra que devolver " + p * (pD / 100) + " euros");
+										+ "se le tendra que devolver " + devo + " euros");
 								try {
 									DataBaseManager.cambiarEstadoAtleta(dni, getComboBox().getSelectedItem().toString(),
 											"cancelado");
+									DataBaseManager.cambiarEstadoAtletaCancelado(dni, getComboBox().getSelectedItem().toString(), 
+											tableAtletas.getValueAt(fila, 4).toString(), "cancelado", devo);
 									actualizarTablaAtletas();
 								} catch (SQLException e2) {
 
 									e2.printStackTrace();
 								}
-								String estadox = (String) tableAtletas.getValueAt(fila, 5);
+								
 
 								AtletaCancelado atleta = new AtletaCancelado(dni, nombre,
-										getComboBox().getSelectedItem().toString(), fecha_inscripcion, estadox);
+										getComboBox().getSelectedItem().toString(), fecha_inscripcion, "cancelado", devo);
+								
 
 								try {
 									DataBaseManager.annadirAtletaCancelado(atleta);
@@ -1654,7 +1662,7 @@ public class VentanaPrincipal {
 							} else if (estado.equals("cancelado")) {
 								JOptionPane.showMessageDialog(null, "El atleta ya ha sido cancelado");
 							} else if (estado.equals("devuelto")) {
-								JOptionPane.showMessageDialog(null, "El atleta tendrá que volver a registrarse");
+								JOptionPane.showMessageDialog(null, "El atleta tendra que volver a registrarse");
 							}
 
 							else {
@@ -1662,18 +1670,21 @@ public class VentanaPrincipal {
 								
 								JOptionPane.showMessageDialog(null,
 										"El atleta con dni" + dni + " " + "figura como inscrito.\n"
-												+ "Se le devolver\u00E1 el precio \u00EDntegro, " + p + " euros");
+												+ "Al no haber pagado no habra devolucion.");
 								try {
 									DataBaseManager.cambiarEstadoAtleta(dni, getComboBox().getSelectedItem().toString(),
 											"cancelado");
+									DataBaseManager.cambiarEstadoAtletaCancelado(dni, getComboBox().getSelectedItem().toString(), 
+											tableAtletas.getValueAt(fila, 4).toString(), "cancelado", 0); //devo
 									actualizarTablaAtletas();
+									actualizarTablaAtletasCancelados();
 								} catch (SQLException e2) {
 									e2.printStackTrace();
 								}
-								String estadoxx = (String) tableAtletas.getValueAt(fila, 5);
+								
 								
 								AtletaCancelado atleta1 = new AtletaCancelado(dni, nombre,
-										getComboBox().getSelectedItem().toString(), fecha_inscripcion, estadoxx);
+										getComboBox().getSelectedItem().toString(), fecha_inscripcion, "cancelado", 0);
 								try {
 									DataBaseManager.annadirAtletaCancelado(atleta1);
 								} catch (SQLException e1) {
@@ -1733,7 +1744,7 @@ public class VentanaPrincipal {
 								JOptionPane.showMessageDialog(null, "Primero debe pagar");
 							} else if (estado.equals("cancelado") || estado.equals("devuelto")) {
 								JOptionPane.showMessageDialog(null,
-										"La inscripción de este atleta se ha cancelado. Ha de renovarla");
+										"La inscripcion de este atleta se ha cancelado. Ha de renovarla");
 							} else {
 								JOptionPane.showMessageDialog(null, "El atleta ya se ha presentado");
 							}
@@ -1834,16 +1845,15 @@ public class VentanaPrincipal {
 			if (DataBaseManager.existeCarrera((String) getComboBox_1().getSelectedItem())) {
 				carreraSeleccionada = (String) getComboBox_1().getSelectedItem();
 				a = DataBaseManager.listarAtletasCancelados(carreraSeleccionada);
-				int precio = DataBaseManager.getPrecioCarrera(getComboBox_1().getSelectedItem().toString());
-				int porcentaje = DataBaseManager.getPorcentajeDevolucion(getComboBox_1().getSelectedItem().toString());
-				int devolver;
+				double precio = DataBaseManager.getPrecioCarrera(getComboBox_1().getSelectedItem().toString());
+				double porcentaje = DataBaseManager.getPorcentajeDevolucion(getComboBox_1().getSelectedItem().toString());
+				double devolver;
 				if (porcentaje == 0) {
-					devolver = precio;
-
+					devolver = 0;
+				
 				} else {
-					devolver = precio - precio
-							/ DataBaseManager.getPorcentajeDevolucion(getComboBox_1().getSelectedItem().toString())
-							* 100;
+					devolver = precio - ((precio / 100 ) * (100-DataBaseManager.getPorcentajeDevolucion(getComboBox_1().getSelectedItem().toString())));
+							
 				}
 				removeModelContent(modelAtletasCancelados);
 				String[] cabeceras = { "DNI", "Nombre", "Fecha de Inscripci\u00F3n", "Precio carrera", "Devolver",
@@ -1856,7 +1866,7 @@ public class VentanaPrincipal {
 						c[1] = b.getNombre();
 						c[2] = String.valueOf(b.getFecha_inscripcion());
 						c[3] = String.valueOf(precio);
-						c[4] = String.valueOf(devolver);
+						c[4] = String.valueOf(b.getDevolucion());
 						c[5] = b.getEstado();
 						modelAtletasCancelados.addRow(c);
 					}
@@ -1913,9 +1923,10 @@ public class VentanaPrincipal {
 							
 							try {
 								
-								JOptionPane.showMessageDialog(null, "Se le ha devuelto al atleta con dni " + dni + " " + tableAtletasCancelados.getValueAt(fila,4) + "€");
+								JOptionPane.showMessageDialog(null, "Se le ha devuelto al atleta con dni " + dni + " " + tableAtletasCancelados.getValueAt(fila,4) + " euros");
 								DataBaseManager.cambiarEstadoAtleta(dni, getComboBox_1().getSelectedItem().toString(), "devuelto");
-								DataBaseManager.cambiarEstadoAtletaCancelado(dni, getComboBox_1().getSelectedItem().toString(), (String)tableAtletasCancelados.getValueAt(fila, 2), "devuelto");
+								DataBaseManager.cambiarEstadoAtletaCancelado(dni, getComboBox_1().getSelectedItem().toString(), (String)tableAtletasCancelados.getValueAt(fila, 2), "devuelto",
+										(double)tableAtletasCancelados.getValueAt(fila, 4));
 								actualizarTablaAtletasCancelados();
 							} catch (SQLException e1) {
 								e1.printStackTrace();
